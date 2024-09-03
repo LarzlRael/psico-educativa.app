@@ -36,12 +36,12 @@ class Request {
     return res;
   }
 
-  static Future<http.Response?> sendRequestWithToken(
+  static Future<http.Response?> sendAuthRequest(
     RequestType method,
     String url, {
     Map<String, dynamic>? body,
   }) async {
-    final token = await KeyValueStorageServiceImpl().getValue<String>('token');
+    final token = await KeyValueStorageServiceImpl().getValue<String>(TOKEN);
     final headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',

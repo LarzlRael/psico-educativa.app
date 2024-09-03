@@ -1,0 +1,17 @@
+part of '../screens.dart';
+
+class CheckOutStatusScreen extends ConsumerWidget {
+  static String routeName = '/checkout';
+  const CheckOutStatusScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, ref) {
+    return Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+        ),
+      ),
+    );
+  }
+}
