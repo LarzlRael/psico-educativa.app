@@ -47,3 +47,57 @@ class HeaderLoginRegister extends StatelessWidget {
     );
   }
 }
+
+class LabelLoginRegister extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final String route;
+  const LabelLoginRegister({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.route,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: () {
+            context.push('/forgot_password');
+          },
+          child: const SimpleText(
+            'Olvide mi contraseña',
+            padding: EdgeInsets.all(5),
+            /* lightThemeColor: Colors.indigo, */
+            fontWeight: FontWeight.bold,
+            fontSize: 15,
+          ),
+        ),
+        const SizedBox(height: 5),
+        GestureDetector(
+          onTap: () {
+            context.push(route);
+          },
+          child: Column(
+            children: [
+              SimpleText(
+                 title,
+                /* lightThemeColor: Colors.indigo, */
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+              ),
+              SimpleText(
+                 subtitle,
+                /* lightThemeColor: Colors.indigo, */
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+}

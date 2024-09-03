@@ -3,6 +3,30 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:psico_educativa_app/constants/key_constants.dart';
 import 'package:psico_educativa_app/services/services.dart';
+import 'package:psico_educativa_app/config/local_notifications.dart';
+
+class PushNotificationInit {
+  static Future initializeApp() async {
+    // Push Notifications
+    await Firebase.initializeApp();
+    /* await requestPermission(); */
+  }
+
+  // Apple / Web
+  /* static requestPermission() async {
+    NotificationSettings settings = await messaging.requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,2
+        criticalAlert: false,
+        provisional: false,
+        sound: true);
+
+    print('User push notification status ${settings.authorizationStatus}');
+} */
+}
+
 
 final notificationNotifierProvider =
     StateNotifierProvider<NotificationNotifier, NotificationState>(
@@ -66,7 +90,8 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
 
   void handleRemoteMessage(RemoteMessage message) {
     if (message.notification == null) return;
-    print('onMessage: ${message.notification}');
+    /* print('onMessage: ${message.notification.}'); */
+
     /* final notification = PushMessage(
       messageId: clearMessageId(message.messageId),
       title: message.notification!.title ?? '',
@@ -84,6 +109,12 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
       title: notification.title,
     );
     add(NotificationsReceived(notification)); */
+    LocalNotification.showLocalNotification(
+      id: message.messageId.hashCode,
+      title: message.notification!.title ?? '',
+      body: message.notification!.body?? '',
+      data: null,
+    );
   }
 }
 

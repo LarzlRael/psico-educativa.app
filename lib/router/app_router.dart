@@ -8,7 +8,7 @@ import 'package:psico_educativa_app/screens/screens.dart';
 final goRouterProvider = Provider((ref) {
   final goRouterNotifier = ref.read(goRouterNotifierProvider);
   return GoRouter(
-      initialLocation: '/splash',
+      initialLocation: CheckOutStatusScreen.routeName,
       /* initialLocation: '/games/keyboard_sign_page', */
       refreshListenable: goRouterNotifier,
       routes: [
@@ -34,7 +34,7 @@ final goRouterProvider = Provider((ref) {
         ),
         GoRoute(
           path: CheckOutStatusScreen.routeName,
-          builder: (context, state) => CheckOutStatusScreen(),
+          builder: (context, state) => const CheckOutStatusScreen(),
         ),
         GoRoute(
           path: SignInScreen.routeName,

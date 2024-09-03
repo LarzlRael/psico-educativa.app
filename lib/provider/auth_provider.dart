@@ -20,17 +20,17 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   // Método para manejar el inicio de sesión
   Future<bool> login(String username, String password) async {
-    state = state.copyWith(isLoading: true, errorMessage: null);
+    state = state.copyWith(errorMessage: null);
 
     try {
       // Aquí deberías integrar tu lógica de autenticación (API, base de datos, etc.)
 
-      final user = await AuthServices.signIn(username, password);
+      final user = await AuthServices.signIn(username.trim(), password.trim());
       return saveUserAndToken(user,
           errorMessage: 'Nombre de usuario o contraseña incorrectos');
     } catch (e) {
       state = state.copyWith(
-        isLoading: false,
+        authenticateStatus: AuthStatus.noAuthenticated,
         errorMessage: 'Error de autenticación: ${e.toString()}',
       );
       return false;
@@ -48,7 +48,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
       return state.authenticateStatus == AuthStatus.authenticated;
     } catch (e) {
       state = state.copyWith(
-        isLoading: false,
         errorMessage: 'Error de autenticación: ${e.toString()}',
         authenticateStatus: AuthStatus.noAuthenticated,
       );
@@ -59,7 +58,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
   Future<bool> saveUserAndToken(UserApi? user, {String? errorMessage}) async {
     if (user == null) {
       state = state.copyWith(
-        isLoading: false,
         errorMessage: errorMessage,
         authenticateStatus: AuthStatus.noAuthenticated,
       );
@@ -68,9 +66,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     await keyValueStorageService.setKeyValue<String>(TOKEN, user.accessToken);
     await keyValueStorageService.setKeyValue<int>(ID_USER, user.id);
     state = state.copyWith(
-        authenticateStatus: AuthStatus.authenticated,
-        isLoading: false,
-        user: user);
+        authenticateStatus: AuthStatus.authenticated, user: user);
     return true;
   }
 
@@ -95,23 +91,21 @@ class AuthNotifier extends StateNotifier<AuthState> {
   Future<bool> loginWithGoogle() async {
     final googleAuth = await AuthServices.signInWithGoogle();
     state = state.copyWith(
-        authenticateStatus: AuthStatus.authenticated,
-        isLoading: false,
-        user: googleAuth);
+      authenticateStatus: AuthStatus.authenticated,
+      user: googleAuth,
+    );
     return googleAuth == null;
   }
 }
 
 /// Estado que representa el proceso de inicio de sesión.
 class AuthState {
-  final bool isLoading;
   final AuthStatus authenticateStatus;
   final String? errorMessage;
   final UserApi?
       user; // Nueva propiedad que guarda la información del usuario autenticado
 
   AuthState({
-    required this.isLoading,
     required this.authenticateStatus,
     this.errorMessage,
     this.user,
@@ -119,20 +113,17 @@ class AuthState {
 
   // Estados iniciales
   factory AuthState.initial() => AuthState(
-        isLoading: false,
-        authenticateStatus: AuthStatus.checking,
+        authenticateStatus: AuthStatus.noAuthenticated,
         errorMessage: null,
         user: null,
       );
 
   AuthState copyWith({
-    bool? isLoading,
     AuthStatus? authenticateStatus,
     String? errorMessage,
     UserApi? user,
   }) {
     return AuthState(
-      isLoading: isLoading ?? this.isLoading,
       authenticateStatus: authenticateStatus ?? this.authenticateStatus,
       errorMessage: errorMessage,
       user: user ?? this.user,

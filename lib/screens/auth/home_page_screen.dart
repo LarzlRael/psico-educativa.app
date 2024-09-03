@@ -1,14 +1,18 @@
 part of '../screens.dart';
 
-
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
-  static const routeName ="/home_screen";
+  static const routeName = "/";
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    final authProviderN = ref.watch(authNotifierProvider.notifier);
     return Scaffold(
       body: Center(
-      child: Text('Hi from home_page_screen'),
+        child: FilledButton(
+            onPressed: () async {
+              await authProviderN.logout();
+            },
+            child: Text('cerrar sesion')),
       ),
     );
   }

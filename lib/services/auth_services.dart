@@ -62,9 +62,9 @@ Future<void> saveFMCToken() async {
   };
 
   final resp = await Request.sendAuthRequest(
-      RequestType.post, '/devices/new-device',
+      RequestType.post, 'devices/new-device',
       body: data);
-
+  
   /* if (validateStatus(resp!.statusCode)) {
     final user = userApiFromJson(resp.body);
     return user;

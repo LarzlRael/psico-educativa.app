@@ -1,6 +1,16 @@
 part of '../screens.dart';
 
 
+
+
+Future<void> requestPermissionLocalNotification() async {
+  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      ?.requestNotificationsPermission();
+}
+
 class HandleNotificationInteraction extends HookWidget {
   final Widget child;
   const HandleNotificationInteraction({
@@ -57,3 +67,5 @@ class HandleNotificationInteraction extends HookWidget {
     default:
   }
 } */
+
+

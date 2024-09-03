@@ -117,18 +117,20 @@ class SignInScreen extends HookConsumerWidget {
                                     _formKey.currentState!.value['password'])
                                 .then((value) {
                               isLocalLoading.value = false;
-                              if (value) {
+                              /* if (value) {
                                 context.push('/home_screen');
-                              } else {}
+                              } else {
+                                isLocalLoading.value = false;
+                              } */
                             });
                           }
                         },
                       ),
-                      /* const LabelLoginRegister(
+                      const LabelLoginRegister(
                         title: '¿No tienes cuenta?',
                         subtitle: 'Registrate',
                         route: 'register',
-                      ), */
+                      ),
                     ],
                   )
                 ],
