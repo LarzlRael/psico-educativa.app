@@ -18,10 +18,7 @@ class SignInScreen extends HookConsumerWidget {
           physics: const BouncingScrollPhysics(),
           child: Container(
             height: MediaQuery.of(context).size.height,
-            padding: const EdgeInsets.only(
-              left: 30.0,
-              right: 30.0,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 30),
             child: FormBuilder(
               enabled: !isLocalLoading.value,
               key: _formKey,
@@ -33,28 +30,22 @@ class SignInScreen extends HookConsumerWidget {
                       const HeaderLoginRegister(
                         headerTitle: 'Iniciar sesión',
                       ),
-                      const SimpleText(
-                        'o',
-                        fontSize: 20,
-                        color: Colors.grey,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      ),
                       LoginButton(
-                        onPressed: () async {
-                          /*  var googleinfo =
-                              await GoogleSignInServices.signiWithGoogle(); */
-                           authProviderN.loginWithGoogle().then((value){
-                              /* if() */
-                           });
+                        spacing: 20,
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal,
+                        onPressed: () {
+                          authProviderN.loginWithGoogle().then((value) {
+                            /* if() */
+                          });
                         },
                         text: "Iniciar sesión con google",
                         backGroundColor: Colors.white,
-                        /* icon: SvgPicture.asset(
-                          'assets/svg/google_icon.svg',
+                        icon: Image.asset(
+                          'assets/icons/google_icon.png',
                           width: 30,
                           height: 30,
-                        ), */
+                        ),
                         textColor: Colors.black87,
                       ),
 

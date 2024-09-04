@@ -7,6 +7,8 @@ import 'package:psico_educativa_app/services/services.dart';
 
 enum AuthStatus { checking, noAuthenticated, authenticated }
 
+enum AuthType { emailPassword, google, none }
+
 final authNotifierProvider =
     StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   return AuthNotifier();
@@ -38,6 +40,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<bool> renewToken() async {
+    /* TODO method to verify is google or not */
     try {
       // Aquí deberías integrar tu lógica de autenticación (API, base de datos, etc.)
 
@@ -50,6 +53,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       state = state.copyWith(
         errorMessage: 'Error de autenticación: ${e.toString()}',
         authenticateStatus: AuthStatus.noAuthenticated,
+        authType: AuthType.none,
       );
       return state.authenticateStatus == AuthStatus.authenticated;
     }
@@ -60,21 +64,30 @@ class AuthNotifier extends StateNotifier<AuthState> {
       state = state.copyWith(
         errorMessage: errorMessage,
         authenticateStatus: AuthStatus.noAuthenticated,
+        authType: AuthType.none,
       );
       return false;
     }
     await keyValueStorageService.setKeyValue<String>(TOKEN, user.accessToken);
     await keyValueStorageService.setKeyValue<int>(ID_USER, user.id);
     state = state.copyWith(
-        authenticateStatus: AuthStatus.authenticated, user: user);
+      authenticateStatus: AuthStatus.authenticated,
+      user: user,
+      authType: AuthType.emailPassword,
+    );
     return true;
   }
 
   // Método para manejar el cierre de sesión
   Future<void> logout() async {
-    state = AuthState.initial();
+    state = state.copyWith(authenticateStatus: AuthStatus.checking, user: null);
     await keyValueStorageService.removeKey('token');
     await keyValueStorageService.removeKey('id_user');
+    await AuthServices.signOutFromGoogle();
+    /* if (state.authType == AuthType.google) {
+    } */
+    state = state.copyWith(
+        authenticateStatus: AuthStatus.noAuthenticated, user: null);
   }
 
   void checkAuthStatus() async {
@@ -89,23 +102,35 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<bool> loginWithGoogle() async {
+    state = state.copyWith(authenticateStatus: AuthStatus.checking);
     final googleAuth = await AuthServices.signInWithGoogle();
+    if (googleAuth == null) {
+      state = state.copyWith(
+        authenticateStatus: AuthStatus.noAuthenticated,
+        user: null,
+      );
+
+      return false;
+    }
     state = state.copyWith(
       authenticateStatus: AuthStatus.authenticated,
       user: googleAuth,
     );
-    return googleAuth == null;
+
+    return true;
   }
 }
 
 /// Estado que representa el proceso de inicio de sesión.
 class AuthState {
   final AuthStatus authenticateStatus;
+  final AuthType authType;
   final String? errorMessage;
   final UserApi?
       user; // Nueva propiedad que guarda la información del usuario autenticado
 
   AuthState({
+    required this.authType,
     required this.authenticateStatus,
     this.errorMessage,
     this.user,
@@ -114,17 +139,20 @@ class AuthState {
   // Estados iniciales
   factory AuthState.initial() => AuthState(
         authenticateStatus: AuthStatus.noAuthenticated,
+        authType: AuthType.none,
         errorMessage: null,
         user: null,
       );
 
   AuthState copyWith({
+    AuthType? authType,
     AuthStatus? authenticateStatus,
     String? errorMessage,
     UserApi? user,
   }) {
     return AuthState(
       authenticateStatus: authenticateStatus ?? this.authenticateStatus,
+      authType: authType ?? this.authType,
       errorMessage: errorMessage,
       user: user ?? this.user,
     );

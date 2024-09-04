@@ -44,15 +44,24 @@ Future<UserApi?> renewToken() async {
 Future<UserApi?> signInWithGoogle() async {
   final GoogleSignInAccount? account = await googleSignIn.signIn();
 
-  final googleKey = await account!.authentication;
+  final googleKey = await account?.authentication;
+  if (googleKey == null) return null;
 
   final resp = await Request.sendAuthRequest(
-      RequestType.post, '/auth/google-auth', body: {
+      RequestType.post, 'auth/google-signIn', body: {
     'googleToken': googleKey.idToken,
     'fmcToken': await getFCMToken() ?? ''
   });
 
   return validateStatus(resp!.statusCode) ? userApiFromJson(resp.body) : null;
+}
+Future<void> signOutFromGoogle() async {
+  try {
+    await googleSignIn.signOut();
+    print('User signed out from Google');
+  } catch (error) {
+    print('Error signing out from Google: $error');
+  }
 }
 
 Future<void> saveFMCToken() async {
@@ -64,7 +73,7 @@ Future<void> saveFMCToken() async {
   final resp = await Request.sendAuthRequest(
       RequestType.post, 'devices/new-device',
       body: data);
-  
+
   /* if (validateStatus(resp!.statusCode)) {
     final user = userApiFromJson(resp.body);
     return user;

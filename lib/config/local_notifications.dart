@@ -53,7 +53,7 @@ class LocalNotification {
             htmlFormatSummaryText: true */
     ); */
 
-    final androidDetails = AndroidNotificationDetails(
+    const androidDetails =   AndroidNotificationDetails(
       'channelId',
       'channelName',
       playSound: true,

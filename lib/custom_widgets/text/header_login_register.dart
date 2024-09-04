@@ -12,19 +12,19 @@ class HeaderLoginRegister extends StatelessWidget {
     return Column(
       children: [
         Container(
-          margin: const EdgeInsets.symmetric(vertical: 35),
+          margin: const EdgeInsets.symmetric(vertical: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              /* Image.asset(
-          'assets/icon.png',
-          height: 35,
-        ), */
-              const SizedBox(width: 10),
+              Image.asset(
+          appIcon,
+          height: 100,
+        ),
+              /* const SizedBox(width: 10),
               Text(
                 headerTitle,
                 style: Theme.of(context).textTheme.headlineSmall,
-              )
+              ) */
               /* SimpleText(
           left: 10,
           text: title,

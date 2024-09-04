@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Psico educativa</string>
+    <!-- 
+    <string
+      name="android_host_deep_linking"
+    >asl-deep-linking-next.vercel.app</string> -->
+  
+    <!-- Agrega más cadenas según sea necesario -->
+  
+  </resources>
+  

@@ -7,6 +7,7 @@ import 'package:psico_educativa_app/config/local_notifications.dart';
 import 'package:psico_educativa_app/provider/notification_provider.dart';
 import 'package:psico_educativa_app/router/app_router.dart';
 import 'package:psico_educativa_app/screens/screens.dart';
+import 'package:psico_educativa_app/shared/theme.dart';
 import 'firebase_options.dart';
 
 /* void main() => runApp(const MyApp()); */
@@ -39,9 +40,10 @@ class MyApp extends ConsumerWidget {
       title: 'Material App',
       routerConfig: appRouter,
       debugShowCheckedModeBanner: false,
+      theme: AppTheme(isDarkMode: false).getTheme(),
       builder: (context, child) => HandleNotificationInteraction(
-          child: child!,
-        ),
+        child: child!,
+      ),
     );
   }
 }
