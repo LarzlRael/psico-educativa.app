@@ -1,6 +1,9 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:mime/mime.dart';
+import 'package:http_parser/http_parser.dart';
+
 import 'package:psico_educativa_app/config/environment.dart';
 import 'package:psico_educativa_app/constants/key_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';

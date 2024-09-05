@@ -1,4 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:go_router/go_router.dart';
+import 'package:psico_educativa_app/main.dart';
+import 'package:psico_educativa_app/models/models.dart';
+import 'package:psico_educativa_app/shared/utils.dart';
+
+import '../screens/screens.dart';
 
 class LocalNotification {
   static Future<void> requestPermissionLocalNotification() async {
@@ -23,19 +31,20 @@ class LocalNotification {
 
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
-      /* onDidReceiveNotificationResponse: onDidReceiveNotificationResponse, */
+      onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
     );
   }
 
   static void showLocalNotification({
     required int id,
-     String? title,
-     String? body,
-     String? data,
-     
+    String? title,
+    String? body,
+    String? payload,
+    String? notificationImage,
   }) async {
-    /* final String iconPath = notification.user.profileImageUrl ??
-        'https://res.cloudinary.com/negocioexitoso-online/image/upload/v1699626771/subastareas/icon_my26qq.png';
+    print(payload);
+    final String iconPath = notificationImage ??
+        'https://res.cloudinary.com/druajlfie/image/upload/v1725496374/logo-psicoeducativa_clean_v6py19.png';
 
     final String largeIconPath =
         await downloadAndSaveFile(iconPath, 'largeIcon');
@@ -51,15 +60,15 @@ class LocalNotification {
             htmlFormatContentTitle: true,
             summaryText: 'summary <i>text</i>',
             htmlFormatSummaryText: true */
-    ); */
+    );
 
-    const androidDetails =   AndroidNotificationDetails(
+    var androidDetails = AndroidNotificationDetails(
       'channelId',
       'channelName',
       playSound: true,
       importance: Importance.max,
       priority: Priority.high,
-      /* styleInformation: bigPictureStyleInformation, */
+      styleInformation: bigPictureStyleInformation,
     );
 
     final notificationDetails = NotificationDetails(
@@ -75,15 +84,17 @@ class LocalNotification {
       title,
       body,
       notificationDetails,
-      payload: data,
+      payload: payload,
     );
   }
 
-  /* static void onDidReceiveNotificationResponse(NotificationResponse response) {
-    final getPayload = response.payload!.split('-');
+  static void onDidReceiveNotificationResponse(NotificationResponse response) {
+    
 
-    final notificaionId = int.parse(getPayload[0]);
-    final notificaionType = getPayload[1];
-    goNotificationDestinyPageWithAppRouter(notificaionId, notificaionType);
-  } */
+    if (response.payload == null) return;
+    final convertedData = oneDataFromJson(response.payload!);
+    inspect(navigatorKey);
+    navigatorKey.currentState!.context.pushNamed(
+        '${HomeScreen.routeName}/${NewCoursePromo.routeName}/${convertedData.idCourse}');
+  }
 }

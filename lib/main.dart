@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -10,16 +11,15 @@ import 'package:psico_educativa_app/screens/screens.dart';
 import 'package:psico_educativa_app/shared/theme.dart';
 import 'firebase_options.dart';
 
-/* void main() => runApp(const MyApp()); */
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await PushNotificationInit.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  await NotificationNotifier.initializeApp();
   await Environment.initEnvironment();
 
   /* await UserPreferences.init(); */
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  
   /* await FirebaseUtils().initializeRemoteConfig(); */
   await LocalNotification.initializeLocalNotification();
   return runApp(
@@ -38,10 +38,11 @@ class MyApp extends ConsumerWidget {
     final appRouter = ref.watch(goRouterProvider);
     return MaterialApp.router(
       title: 'Material App',
+
       routerConfig: appRouter,
       debugShowCheckedModeBanner: false,
       theme: AppTheme(isDarkMode: false).getTheme(),
-      builder: (context, child) => HandleNotificationInteraction(
+      builder: (context, child) => HandleNotificationInteractions(
         child: child!,
       ),
     );

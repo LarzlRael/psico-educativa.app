@@ -15,7 +15,6 @@ class GoRouterNotifier extends ChangeNotifier {
   GoRouterNotifier(this._authNotifier) {
     _authNotifier.addListener((state) {
       authStatus = state.authenticateStatus;
-
     });
   }
   AuthStatus get authStatus => _authStatus;

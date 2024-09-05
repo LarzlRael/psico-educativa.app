@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:psico_educativa_app/main.dart';
 import 'package:psico_educativa_app/provider/auth_provider.dart';
 import 'package:psico_educativa_app/router/app_router_notifier.dart';
 import 'package:psico_educativa_app/screens/screens.dart';
@@ -11,6 +12,7 @@ final goRouterProvider = Provider((ref) {
       initialLocation: CheckOutStatusScreen.routeName,
       /* initialLocation: '/games/keyboard_sign_page', */
       refreshListenable: goRouterNotifier,
+      navigatorKey: navigatorKey,
       routes: [
         ///* Primera pantalla
         /* GoRoute(
@@ -41,9 +43,20 @@ final goRouterProvider = Provider((ref) {
           builder: (context, state) => SignInScreen(),
         ),
         GoRoute(
-          path: HomeScreen.routeName,
-          builder: (context, state) => const HomeScreen(),
-        ),
+            path: HomeScreen.routeName,
+            builder: (context, state) => const HomeScreen(),
+            routes: [
+              GoRoute(
+                path:
+                    '${NewCoursePromo.routeName}/id-course', // NOTE: Don't need to specify "/" character for router’s parents
+                builder: (context, state) {
+                  final idCourse = state.pathParameters["id-course"];
+                  return NewCoursePromo(
+                    idCourse: int.parse(idCourse!),
+                  );
+                },
+              ),
+            ]),
 
         /* GoRoute(
       path: WelcomePage.routeName,
@@ -152,13 +165,12 @@ final goRouterProvider = Provider((ref) {
         final login = SignInScreen.routeName;
         final register = RegisterScreen.routeName;
         final checkOutStatus = CheckOutStatusScreen.routeName;
-        
 
         final isGoingTo = state.matchedLocation;
         final authStatus = goRouterNotifier.authStatus;
 
-        if (authStatus == AuthStatus.noAuthenticated &&
-            authStatus == AuthStatus.checking) return null;
+        if (isGoingTo == checkOutStatus && authStatus == AuthStatus.checking)
+          return null;
 
         if (authStatus == AuthStatus.noAuthenticated) {
           if (isGoingTo == login || isGoingTo == register) return null;

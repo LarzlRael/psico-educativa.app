@@ -50,18 +50,23 @@ Future<UserApi?> signInWithGoogle() async {
   final resp = await Request.sendAuthRequest(
       RequestType.post, 'auth/google-signIn', body: {
     'googleToken': googleKey.idToken,
-    'fmcToken': await getFCMToken() ?? ''
+    'fmcToken': await getFCMToken() 
   });
 
   return validateStatus(resp!.statusCode) ? userApiFromJson(resp.body) : null;
 }
+
 Future<void> signOutFromGoogle() async {
-  try {
-    await googleSignIn.signOut();
-    print('User signed out from Google');
-  } catch (error) {
-    print('Error signing out from Google: $error');
+  if (googleSignIn.currentUser != null) {
+    // Verificar si hay un usuario activo
+    try {
+      await googleSignIn.signOut();
+      print('User signed out from Google');
+    } catch (error) {
+      print('Error signing out from Google: $error');
+    }
   }
+  return;
 }
 
 Future<void> saveFMCToken() async {

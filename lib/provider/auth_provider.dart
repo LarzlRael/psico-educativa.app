@@ -84,10 +84,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
     await keyValueStorageService.removeKey('token');
     await keyValueStorageService.removeKey('id_user');
     await AuthServices.signOutFromGoogle();
-    /* if (state.authType == AuthType.google) {
-    } */
+
     state = state.copyWith(
-        authenticateStatus: AuthStatus.noAuthenticated, user: null);
+      authenticateStatus: AuthStatus.noAuthenticated,
+      user: null,
+      authType: AuthType.none,
+    );
   }
 
   void checkAuthStatus() async {

@@ -1,61 +1,78 @@
 part of '../screens.dart';
 
-
-
-
 Future<void> requestPermissionLocalNotification() async {
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
       ?.requestNotificationsPermission();
 }
 
-class HandleNotificationInteraction extends HookWidget {
+class HandleNotificationInteractions extends ConsumerStatefulWidget {
+  const HandleNotificationInteractions({super.key, required this.child});
   final Widget child;
-  const HandleNotificationInteraction({
-    super.key,
-    required this.child,
-  });
 
+  @override
+  HandleNotificationInteractionsState createState() =>
+      HandleNotificationInteractionsState();
+}
+
+class HandleNotificationInteractionsState
+    extends ConsumerState<HandleNotificationInteractions> {
   Future<void> setupInteractedMessage() async {
+    // Obtener cualquier mensaje que causó que la aplicación se abriera desde un estado terminado.
     RemoteMessage? initialMessage =
         await FirebaseMessaging.instance.getInitialMessage();
 
-    /* if (initialMessage != null) {
+    // Si el mensaje también contiene una propiedad de datos con un "type" de "chat",
+    // navegar a una pantalla de chat
+    if (initialMessage != null) {
       _handleMessage(initialMessage);
-    } */
+    }
+
+    // También manejar cualquier interacción cuando la aplicación está en segundo plano a través de un listener de Stream
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
   }
 
-  /* void _handleMessage(RemoteMessage message) {
-    final context = useContext();
-    context.read<NotificationProvider>().handleRemoteMessage(message);
+  void _handleMessage(RemoteMessage message) {
+    ref
+        .read(notificationNotifierProvider.notifier)
+        .handleRemoteMessage(message);
 
-    final notification =
-        notificationModelFromJson(message.data['data_from_server']);
-
+    final notification = oneNotificationFromJson(message.data['information']);
     goNotificationDestinyPage(context, notification);
-  } */
+    inspect(notification);
+    
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Ejecutar la configuración de mensajes interactuados
+    setupInteractedMessage();
+  }
 
   @override
   Widget build(BuildContext context) {
-    useEffect(() {
-      setupInteractedMessage();
-      return null;
-    }, const []);
-    return child;
+    return Consumer(
+      builder: (context, watch, child) {
+        return widget.child;
+      },
+    );
   }
 }
 
-/* void goNotificationDestinyPage(
+void goNotificationDestinyPage(
   BuildContext context,
   NotificationModel notification,
 ) {
-  switch (notification.type) {
-    case 'new_comment':
-      context.push('/homework_detail/${notification.idHomework}');
+  switch (notification.data?.pageDestination) {
+    case 'new_course':
+      context.push(
+          '${HomeScreen.routeName}/${NewCoursePromo.routeName}/${notification.data?.idCourse}');
       break;
-    case 'new_offer':
+    /* case 'new_offer':
       context.push('/auction_with_offerPage/${notification.idHomework}');
       break;
     case 'homework_finished':
@@ -63,9 +80,28 @@ class HandleNotificationInteraction extends HookWidget {
       break;
     case 'offer_accepted':
       context.push('/pending_homeworks_offers_accepts');
-      break;
+      break; */
     default:
   }
-} */
-
-
+}
+void goNotificationRoutePage(
+  BuildContext context,
+  NotificationModel notification,
+) {
+  switch (notification.data?.pageDestination) {
+    case 'new_course':
+      context.push(
+          '${HomeScreen.routeName}/${NewCoursePromo.routeName}/${notification.data?.idCourse}');
+      break;
+    /* case 'new_offer':
+      context.push('/auction_with_offerPage/${notification.idHomework}');
+      break;
+    case 'homework_finished':
+      context.push('/my_homeworks_page', extra: 1);
+      break;
+    case 'offer_accepted':
+      context.push('/pending_homeworks_offers_accepts');
+      break; */
+    default:
+  }
+}

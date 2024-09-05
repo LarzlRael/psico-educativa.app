@@ -1,32 +1,26 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:psico_educativa_app/constants/key_constants.dart';
+import 'package:psico_educativa_app/firebase_options.dart';
+import 'package:psico_educativa_app/models/models.dart';
+import 'package:psico_educativa_app/services/notification_services.dart';
 import 'package:psico_educativa_app/services/services.dart';
 import 'package:psico_educativa_app/config/local_notifications.dart';
 
-class PushNotificationInit {
-  static Future initializeApp() async {
-    // Push Notifications
-    await Firebase.initializeApp();
-    /* await requestPermission(); */
-  }
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
 
-  // Apple / Web
-  /* static requestPermission() async {
-    NotificationSettings settings = await messaging.requestPermission(
-        alert: true,
-        announcement: false,
-        badge: true,
-        carPlay: false,2
-        criticalAlert: false,
-        provisional: false,
-        sound: true);
-
-    print('User push notification status ${settings.authorizationStatus}');
-} */
+  print("ricibiste una notification push madafa: ${message.messageId}");
+  final convertData = oneNotificationFromJson(message.data['information']);
+  inspect(convertData);
+  /* goNotificationDestinyPage() */
 }
-
 
 final notificationNotifierProvider =
     StateNotifierProvider<NotificationNotifier, NotificationState>(
@@ -36,9 +30,21 @@ final notificationNotifierProvider =
 class NotificationNotifier extends StateNotifier<NotificationState> {
   final keyValueStorageService = KeyValueStorageServiceImpl();
   NotificationNotifier()
-      : super(NotificationState(message: '', tokenDevice: '')) {
-    _getAndSaveFCMToken();
+      : super(NotificationState(
+            message: '',
+            tokenDevice: '',
+            notifications: [],
+            isLoading: false)) {
     _onForegroundMessage();
+    getNotification();
+    _getAndSaveFCMToken();
+  }
+
+  void getNotification() async {
+    state = state.copyWith(isLoading: true);
+    final notifications = await getNotificationService();
+
+    state = state.copyWith(isLoading: false, notifications: notifications);
   }
 
   void setNotification(String message) {
@@ -51,22 +57,17 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   late String? token;
-  Future initializeApp() async {
+
+  static Future initializeApp() async {
     // Push Notifications
-    await Firebase.initializeApp();
-    /* await requestPermission(); */
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
 
-    token = (await messaging.getToken());
-
-    print('Token: $token');
-
-    state = state.copyWith(tokenDevice: token!);
-    // Handlers
-    /* FirebaseMessaging.onBackgroundMessage(_backgroundHandler);
-    FirebaseMessaging.onMessage.listen(_onMessageHandler);
-    FirebaseMessaging.onMessageOpenedApp.listen(_onMessageOpenApp); */
-
-    // Local Notifications
+  void addNewNotification(NotificationModel notificationModel) {
+    state = state
+        .copyWith(notifications: [notificationModel, ...state.notifications]);
   }
 
   void initialStatusCheck() async {
@@ -85,35 +86,27 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
   }
 
   void _onForegroundMessage() {
+    print('FOREGROUND IS OK');
     FirebaseMessaging.onMessage.listen(handleRemoteMessage);
   }
 
   void handleRemoteMessage(RemoteMessage message) {
     if (message.notification == null) return;
-    /* print('onMessage: ${message.notification.}'); */
 
-    /* final notification = PushMessage(
-      messageId: clearMessageId(message.messageId),
-      title: message.notification!.title ?? '',
-      body: message.notification!.body ?? '',
-      sentDate: message.sentTime ?? DateTime.now(),
-      data: message.data,
-      imageUrl: Platform.isAndroid
-          ? message.notification!.android?.imageUrl
-          : message.notification!.apple?.imageUrl,
-    );
+/* convert notification */
+
+/* Convert payload data */
+
+    final notificationConverted =
+        oneNotificationFromJson(message.data['information']);
+
+    addNewNotification(notificationConverted);
     LocalNotification.showLocalNotification(
-      id: notification.messageId.hashCode,
-      body: notification.body,
-      data: notification.messageId,
-      title: notification.title,
-    );
-    add(NotificationsReceived(notification)); */
-    LocalNotification.showLocalNotification(
-      id: message.messageId.hashCode,
-      title: message.notification!.title ?? '',
-      body: message.notification!.body?? '',
-      data: null,
+      id: notificationConverted.id,
+      title: notificationConverted.title,
+      body: notificationConverted.body,
+      notificationImage: notificationConverted.imageUrl.toString(),
+      payload: jsonEncode(notificationConverted.data)
     );
   }
 }
@@ -121,18 +114,27 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
 class NotificationState {
   final String message;
   final String tokenDevice;
+  final List<NotificationModel> notifications; // Array de notificaciones
+  final bool isLoading; // Estado de carga
+
   NotificationState({
     required this.message,
     required this.tokenDevice,
+    required this.notifications,
+    required this.isLoading,
   });
 
   NotificationState copyWith({
     String? message,
     String? tokenDevice,
+    List<NotificationModel>? notifications,
+    bool? isLoading,
   }) {
     return NotificationState(
       message: message ?? this.message,
       tokenDevice: tokenDevice ?? this.tokenDevice,
+      notifications: notifications ?? this.notifications,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 }

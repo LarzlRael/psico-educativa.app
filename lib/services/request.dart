@@ -67,8 +67,6 @@ class Request {
     return res;
   }
 
-  /* 
-  TODO use this method
   static Future<http.Response> sendRequestWithFile(
     RequestType requestType,
     String url,
@@ -79,10 +77,12 @@ class Request {
     final token = await KeyValueStorageServiceImpl().getValue<String>('token');
     final Uri uri = Uri.parse('${Environment.serverApi}/$url');
 
-    final mimeType = mime(filePath)!.split('/');
+    final mimeType = lookupMimeType(filePath)!.split('/');
+
     final headers = {
       'Authorization': 'Bearer $token',
     };
+
     final uploadFile = await http.MultipartFile.fromPath(
       'file',
       filePath,
@@ -100,5 +100,5 @@ class Request {
     res = await http.Response.fromStream(streamResponse);
 
     return res;
-  } */
+  }
 }
