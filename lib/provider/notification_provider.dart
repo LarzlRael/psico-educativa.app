@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:psico_educativa_app/constants/key_constants.dart';
 import 'package:psico_educativa_app/firebase_options.dart';
 import 'package:psico_educativa_app/models/models.dart';
+import 'package:psico_educativa_app/provider/loca_notification_provider.dart';
 import 'package:psico_educativa_app/services/notification_services.dart';
 import 'package:psico_educativa_app/services/services.dart';
 import 'package:psico_educativa_app/config/local_notifications.dart';
@@ -24,19 +25,20 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 final notificationNotifierProvider =
     StateNotifierProvider<NotificationNotifier, NotificationState>(
-  (ref) => NotificationNotifier(),
+  (ref) => NotificationNotifier(ref),
 );
 
 class NotificationNotifier extends StateNotifier<NotificationState> {
+  final Ref ref; // Añade `Ref`
   final keyValueStorageService = KeyValueStorageServiceImpl();
-  NotificationNotifier()
+  NotificationNotifier(this.ref)
       : super(NotificationState(
             message: '',
             tokenDevice: '',
             notifications: [],
             isLoading: false)) {
     _onForegroundMessage();
-    getNotification();
+    /* getNotification(); */
     _getAndSaveFCMToken();
   }
 
@@ -101,13 +103,20 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
         oneNotificationFromJson(message.data['information']);
 
     addNewNotification(notificationConverted);
-    LocalNotification.showLocalNotification(
+    ref.read(localNotificationProvider.notifier).showLocalNotification(
+          id: notificationConverted.id,
+          title: notificationConverted.title,
+          body: notificationConverted.body,
+          notificationImage: notificationConverted.imageUrl.toString(),
+          payload: jsonEncode(notificationConverted.data),
+        );
+    /*   LocalNotification.showLocalNotification(
       id: notificationConverted.id,
       title: notificationConverted.title,
       body: notificationConverted.body,
       notificationImage: notificationConverted.imageUrl.toString(),
       payload: jsonEncode(notificationConverted.data)
-    );
+    ); */
   }
 }
 

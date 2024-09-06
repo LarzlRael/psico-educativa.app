@@ -13,7 +13,9 @@ import 'package:psico_educativa_app/custom_widgets/custom_widgets.dart';
 import 'package:psico_educativa_app/models/models.dart';
 import 'package:psico_educativa_app/provider/auth_provider.dart';
 import 'package:psico_educativa_app/provider/notification_provider.dart';
+import 'package:psico_educativa_app/router/app_router.dart';
 import 'package:psico_educativa_app/services/services.dart';
+import 'package:psico_educativa_app/shared/router_utils.dart';
 
 part 'splash_screen_page.dart';
 part 'auth/signin_screen.dart';

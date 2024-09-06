@@ -5,13 +5,15 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:psico_educativa_app/config/environment.dart';
 import 'package:psico_educativa_app/config/local_notifications.dart';
+import 'package:psico_educativa_app/provider/auth_provider.dart';
+import 'package:psico_educativa_app/provider/loca_notification_provider.dart';
 import 'package:psico_educativa_app/provider/notification_provider.dart';
 import 'package:psico_educativa_app/router/app_router.dart';
 import 'package:psico_educativa_app/screens/screens.dart';
 import 'package:psico_educativa_app/shared/theme.dart';
 import 'firebase_options.dart';
 
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
@@ -21,7 +23,7 @@ void main() async {
   /* await UserPreferences.init(); */
   
   /* await FirebaseUtils().initializeRemoteConfig(); */
-  await LocalNotification.initializeLocalNotification();
+  /* await LocalNotification.initializeLocalNotification(); */
   return runApp(
     const ProviderScope(
       child: MyApp(),
@@ -36,6 +38,8 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final notificationProvider = ref.watch(notificationNotifierProvider);
     final appRouter = ref.watch(goRouterProvider);
+    final notifierProvider = ref.watch(authNotifierProvider);
+    final localNotificationNotifier = ref.read(localNotificationProvider.notifier);
     return MaterialApp.router(
       title: 'Material App',
 

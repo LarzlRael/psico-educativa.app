@@ -36,7 +36,7 @@ class SignInScreen extends HookConsumerWidget {
                         fontWeight: FontWeight.normal,
                         onPressed: () {
                           authProviderN.loginWithGoogle().then((value) {
-                            /* if() */
+                            isLocalLoading.value = false;
                           });
                         },
                         text: "Iniciar sesión con google",

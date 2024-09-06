@@ -2,7 +2,7 @@ part of '../screens.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
-  static const routeName = "/";
+  static const routeName = "/home";
   @override
   Widget build(BuildContext context, ref) {
     final authProviderN = ref.watch(authNotifierProvider.notifier);
@@ -22,7 +22,7 @@ class HomeScreen extends ConsumerWidget {
                 },
                 child: Text('cerrar sesion',
                     style: TextStyle(color: Colors.black))),
-            notificationProviderS.isLoading
+           /*  notificationProviderS.isLoading
                 ? CircularProgressIndicator()
                 : Expanded(
                     child: ListView.builder(
@@ -39,7 +39,7 @@ class HomeScreen extends ConsumerWidget {
                             subtitle: Text(notification.body),
                           );
                         }),
-                  )
+                  ) */
           ],
         ),
       ),

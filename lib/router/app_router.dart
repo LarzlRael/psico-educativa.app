@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -12,24 +14,7 @@ final goRouterProvider = Provider((ref) {
       initialLocation: CheckOutStatusScreen.routeName,
       /* initialLocation: '/games/keyboard_sign_page', */
       refreshListenable: goRouterNotifier,
-      navigatorKey: navigatorKey,
       routes: [
-        ///* Primera pantalla
-        /* GoRoute(
-        path: HomePage.routeName,
-        builder: (context, state) => HomePage(),
-        routes: [
-          GoRoute(
-            path: ':phrase',
-            builder: (context, state) => HomePage(
-              phrase: state.params['phrase'],
-            ),
-          ),
-        ]), */
-        /* GoRoute(
-      path: SplashScreenPage.routeName,
-      builder: (context, state) => SplashScreenPage(),
-    ), */
         GoRoute(
           path: RegisterScreen.routeName,
           builder: (context, state) => RegisterScreen(),
@@ -43,22 +28,22 @@ final goRouterProvider = Provider((ref) {
           builder: (context, state) => SignInScreen(),
         ),
         GoRoute(
-            path: HomeScreen.routeName,
-            builder: (context, state) => const HomeScreen(),
-            routes: [
-              GoRoute(
-                path:
-                    '${NewCoursePromo.routeName}/id-course', // NOTE: Don't need to specify "/" character for router’s parents
-                builder: (context, state) {
-                  final idCourse = state.pathParameters["id-course"];
-                  return NewCoursePromo(
-                    idCourse: int.parse(idCourse!),
-                  );
-                },
-              ),
-            ]),
+          path: HomeScreen.routeName,
+          builder: (context, state) => const HomeScreen(),
+        ),
+        GoRoute(
+          path: '${NewCoursePromo.routeName}/:id_course',
+          builder: (context, state) {
+            inspect(state.pathParameters);
+            final letter = state.pathParameters['id_course'];
+            return NewCoursePromo(
+              idCourse: int.parse(letter!),
+            );
+          },
+        ),
+      ]
 
-        /* GoRoute(
+      /* GoRoute(
       path: WelcomePage.routeName,
       builder: (context, state) => WelcomePage(),
     ),
@@ -160,7 +145,7 @@ final goRouterProvider = Provider((ref) {
       builder: (_, state) => KeyboardLettersPage(),
     ),
   */
-      ],
+      ,
       redirect: (context, state) {
         final login = SignInScreen.routeName;
         final register = RegisterScreen.routeName;

@@ -1,7 +1,7 @@
 part of '../screens.dart';
 
 class CheckOutStatusScreen extends ConsumerWidget {
-  static String routeName = '/checkout';
+  static String routeName = '/';
   const CheckOutStatusScreen({super.key});
 
   @override

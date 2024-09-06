@@ -111,9 +111,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
         authenticateStatus: AuthStatus.noAuthenticated,
         user: null,
       );
+      logout();
 
       return false;
     }
+
     state = state.copyWith(
       authenticateStatus: AuthStatus.authenticated,
       user: googleAuth,
@@ -140,7 +142,7 @@ class AuthState {
 
   // Estados iniciales
   factory AuthState.initial() => AuthState(
-        authenticateStatus: AuthStatus.noAuthenticated,
+        authenticateStatus: AuthStatus.checking,
         authType: AuthType.none,
         errorMessage: null,
         user: null,

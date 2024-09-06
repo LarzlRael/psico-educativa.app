@@ -41,9 +41,14 @@ class HandleNotificationInteractionsState
         .handleRemoteMessage(message);
 
     final notification = oneNotificationFromJson(message.data['information']);
-    goNotificationDestinyPage(context, notification);
+    print('handlemessage!!!!!!!!!');
+    /* goNotificationDestinyPage(context, notification); */
+    final appRouter = ref.watch(goRouterProvider);
+
     inspect(notification);
-    
+    goNotificationDestinyPage(appRouter, notification.data);
+    /* appRouter.push(
+        '${NewCoursePromo.routeName}/${notification.data!.idCourse}'); */
   }
 
   @override
@@ -63,45 +68,3 @@ class HandleNotificationInteractionsState
   }
 }
 
-void goNotificationDestinyPage(
-  BuildContext context,
-  NotificationModel notification,
-) {
-  switch (notification.data?.pageDestination) {
-    case 'new_course':
-      context.push(
-          '${HomeScreen.routeName}/${NewCoursePromo.routeName}/${notification.data?.idCourse}');
-      break;
-    /* case 'new_offer':
-      context.push('/auction_with_offerPage/${notification.idHomework}');
-      break;
-    case 'homework_finished':
-      context.push('/my_homeworks_page', extra: 1);
-      break;
-    case 'offer_accepted':
-      context.push('/pending_homeworks_offers_accepts');
-      break; */
-    default:
-  }
-}
-void goNotificationRoutePage(
-  BuildContext context,
-  NotificationModel notification,
-) {
-  switch (notification.data?.pageDestination) {
-    case 'new_course':
-      context.push(
-          '${HomeScreen.routeName}/${NewCoursePromo.routeName}/${notification.data?.idCourse}');
-      break;
-    /* case 'new_offer':
-      context.push('/auction_with_offerPage/${notification.idHomework}');
-      break;
-    case 'homework_finished':
-      context.push('/my_homeworks_page', extra: 1);
-      break;
-    case 'offer_accepted':
-      context.push('/pending_homeworks_offers_accepts');
-      break; */
-    default:
-  }
-}
