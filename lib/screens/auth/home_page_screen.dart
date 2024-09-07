@@ -17,12 +17,17 @@ class HomeScreen extends ConsumerWidget {
             Text('hello ${authProviderS.user?.username}'),
             Text('token ${authProviderS.user?.accessToken}'),
             FilledButton(
+                onPressed: () => context.push('${NewCoursePromoScreen.routeName}/10'),
+                child: Text(
+                  'Ir a curso ',
+                )),
+            FilledButton(
                 onPressed: () async {
                   await authProviderN.logout();
                 },
                 child: Text('cerrar sesion',
                     style: TextStyle(color: Colors.black))),
-           /*  notificationProviderS.isLoading
+            /*  notificationProviderS.isLoading
                 ? CircularProgressIndicator()
                 : Expanded(
                     child: ListView.builder(

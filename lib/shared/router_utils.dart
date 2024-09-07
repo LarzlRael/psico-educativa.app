@@ -10,7 +10,7 @@ void goNotificationDestinyPage(
   switch (notificationData?.pageDestination) {
     case 'new-course-promo':
       appRouter.push(
-          '${NewCoursePromo.routeName}/${notificationData?.idCourse}');
+          '${NewCoursePromoScreen.routeName}/${notificationData?.idCourse}');
       break;
     /* case 'new_offer':
       context.push('/auction_with_offerPage/${notification.idHomework}');

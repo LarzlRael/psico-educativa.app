@@ -32,11 +32,11 @@ final goRouterProvider = Provider((ref) {
           builder: (context, state) => const HomeScreen(),
         ),
         GoRoute(
-          path: '${NewCoursePromo.routeName}/:id_course',
+          path: '${NewCoursePromoScreen.routeName}/:id_course',
           builder: (context, state) {
             inspect(state.pathParameters);
             final letter = state.pathParameters['id_course'];
-            return NewCoursePromo(
+            return NewCoursePromoScreen(
               idCourse: int.parse(letter!),
             );
           },
