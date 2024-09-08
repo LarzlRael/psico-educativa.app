@@ -12,7 +12,7 @@ class Request {
   static Future<http.Response?> sendRequest(
     RequestType method,
     String url, {
-    Map<String, String>? body,
+    Map<String, dynamic>? body,
   }) async {
     final headers = {
       'Content-Type': 'application/json',
@@ -107,11 +107,37 @@ Future<T?> sendGenericRequest<T>(
   String url,
   T Function(String) functionToConvert, {
   RequestType method = RequestType.get,
+  Map<String, dynamic>? body,
 } // Opcional: agregar el método HTTP con un valor por defecto
     ) async {
   try {
     // Realiza la solicitud HTTP usando el método y URL proporcionados
-    final resp = await Request.sendAuthRequest(method, url);
+    final resp = await Request.sendRequest(method, url, body: body);
+
+    // Verifica si la respuesta es válida
+    if (resp != null && validateStatus(resp.statusCode)) {
+      // Usa la función proporcionada para convertir la respuesta
+      return functionToConvert(resp.body);
+    }
+  } catch (e) {
+    // Maneja cualquier error que ocurra durante la solicitud
+    print("Error during request: $e");
+  }
+
+  // Retorna null si la solicitud falla o si no es válida
+  return null;
+}
+
+Future<T?> sendGenericAuthRequest<T>(
+  String url,
+  T Function(String) functionToConvert, {
+  RequestType method = RequestType.get,
+  Map<String, dynamic>? body,
+} // Opcional: agregar el método HTTP con un valor por defecto
+    ) async {
+  try {
+    // Realiza la solicitud HTTP usando el método y URL proporcionados
+    final resp = await Request.sendAuthRequest(method, url, body: body);
 
     // Verifica si la respuesta es válida
     if (resp != null && validateStatus(resp.statusCode)) {

@@ -1,6 +1,6 @@
 part of '../screens.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends HookConsumerWidget {
   const HomeScreen({super.key});
   static const routeName = "/home";
   @override
@@ -8,8 +8,24 @@ class HomeScreen extends ConsumerWidget {
     final authProviderN = ref.watch(authNotifierProvider.notifier);
     final authProviderS = ref.read(authNotifierProvider);
 
-    final notificationProviderS = ref.read(notificationNotifierProvider);
+    final courserN = ref.read(courseNotifierProvider.notifier);
+    final courserS = ref.watch(courseNotifierProvider);
+
+    useEffect(() {
+      /* courseNotifierProviderN.getCourseDetails(idCourse).then((value) {}); */
+      Future.microtask(() => courserN.getCourses());
+    }, []);
+
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () async {
+                await authProviderN.logout();
+              },
+              icon: Icon(Icons.login))
+        ],
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -17,34 +33,32 @@ class HomeScreen extends ConsumerWidget {
             Text('hello ${authProviderS.user?.username}'),
             Text('token ${authProviderS.user?.accessToken}'),
             FilledButton(
-                onPressed: () => context.push('${NewCoursePromoScreen.routeName}/10'),
+                onPressed: () =>
+                    context.push('${NewCoursePromoScreen.routeName}/10'),
                 child: Text(
                   'Ir a curso ',
                 )),
-            FilledButton(
-                onPressed: () async {
-                  await authProviderN.logout();
-                },
-                child: Text('cerrar sesion',
-                    style: TextStyle(color: Colors.black))),
-            /*  notificationProviderS.isLoading
+            courserS.isLoading
                 ? CircularProgressIndicator()
                 : Expanded(
                     child: ListView.builder(
-                        itemCount: notificationProviderS.notifications.length,
+                        itemCount: courserS.courses.length,
                         itemBuilder: (BuildContext context, int index) {
-                          final notification =
-                              notificationProviderS.notifications[index];
+                          final notification = courserS.courses[index];
 
                           return ListTile(
+                            onTap: () {
+                              context.push(
+                                  '${NewCoursePromoScreen.routeName}/${notification.id}');
+                            },
                             leading: notification.imageUrl == null
                                 ? null
                                 : Image.network(notification.imageUrl!),
-                            title: Text(notification.title),
-                            subtitle: Text(notification.body),
+                            title: Text(notification.courseName),
+                            subtitle: Text(notification.requirements),
                           );
                         }),
-                  ) */
+                  )
           ],
         ),
       ),

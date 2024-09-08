@@ -43,3 +43,34 @@ flutter pub run flutter_launcher_icons
 dart run change_app_package_name:main com.new.package.name
 
 ```
+
+
+Splash native package_name using plugin
+
+[Change App Package Name](https://pub.dev/packages/flutter_native_splash¸
+```yaml
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/icon.png
+  #branding: assets/branding-development.png
+  color_dark: "#121212"
+  image_dark: assets/icon.png
+  #branding_dark: assets/branding-development.png
+
+  android_12:
+    image: assets/icon.png
+    icon_background_color: "#ffffff"
+    image_dark: assets/icon.png
+    icon_background_color_dark: "#121212"
+  
+  web: false
+```
+
+  
+Run the package 
+After adding your settings to pubspec.yaml, run the following command in the terminal:
+
+```javascript
+dart run flutter_native_splash:create
+```
