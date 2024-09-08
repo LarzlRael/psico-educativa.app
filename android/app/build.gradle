@@ -9,6 +9,13 @@ plugins {
 }
 
 android {
+
+    def keystoreProperties = new Properties()
+    def keystorePropertiesFile = rootProject.file('key.properties')
+    if (keystorePropertiesFile.exists()) {
+        keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
     namespace = "com.psico.educativa"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
