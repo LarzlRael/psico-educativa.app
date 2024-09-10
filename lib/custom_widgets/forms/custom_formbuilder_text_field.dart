@@ -6,11 +6,13 @@ class CustomFormBuilderTextField extends HookWidget {
   final String placeholder;
   final bool passwordField;
   final TextInputType keyboardType;
+  final String? Function(String?)? validator;
   const CustomFormBuilderTextField({
     super.key,
     required this.name,
     required this.icon,
     required this.placeholder,
+    this.validator,
     this.keyboardType = TextInputType.text,
     this.passwordField = false,
   });
@@ -29,7 +31,7 @@ class CustomFormBuilderTextField extends HookWidget {
           keyboardType: keyboardType,
           obscureText: passwordField && obscureText.value,
           name: name,
-          validator: FormBuilderValidators.required(),
+          validator: validator,
           decoration: InputDecoration(
             border: InputBorder.none,
             labelText: placeholder,

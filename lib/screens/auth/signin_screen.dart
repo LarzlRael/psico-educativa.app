@@ -30,24 +30,6 @@ class SignInScreen extends HookConsumerWidget {
                       const HeaderLoginRegister(
                         headerTitle: 'Iniciar sesión',
                       ),
-                      LoginButton(
-                        spacing: 20,
-                        fontSize: 14,
-                        fontWeight: FontWeight.normal,
-                        onPressed: () {
-                          authProviderN.loginWithGoogle().then((value) {
-                            isLocalLoading.value = false;
-                          });
-                        },
-                        text: "Iniciar sesión con google",
-                        backGroundColor: Colors.white,
-                        icon: Image.asset(
-                          'assets/icons/google_icon.png',
-                          width: 30,
-                          height: 30,
-                        ),
-                        textColor: Colors.black87,
-                      ),
 
                       /* FormBuilderTextField(
                     name: 'username',
@@ -117,10 +99,34 @@ class SignInScreen extends HookConsumerWidget {
                           }
                         },
                       ),
-                      const LabelLoginRegister(
+                      const SimpleText(
+                        'O',
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        color: Colors.grey,
+                      ),
+                      LoginButton(
+                        spacing: 20,
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal,
+                        onPressed: () {
+                          authProviderN.loginWithGoogle().then((value) {
+                            isLocalLoading.value = false;
+                          });
+                        },
+                        text: "Iniciar sesión con google",
+                        backGroundColor: Colors.white,
+                        icon: Image.asset(
+                          'assets/icons/google_icon.png',
+                          width: 30,
+                          height: 30,
+                        ),
+                        textColor: Colors.black87,
+                      ),
+                      /* Spacer(), */
+                      LabelLoginRegister(
                         title: '¿No tienes cuenta?',
                         subtitle: 'Registrate',
-                        route: 'register',
+                        route: VerificationCodeScreen.routeName,
                       ),
                     ],
                   )

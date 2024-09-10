@@ -38,8 +38,8 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final notificationProvider = ref.watch(notificationNotifierProvider);
     final appRouter = ref.watch(goRouterProvider);
+    
     final notifierProvider = ref.watch(authNotifierProvider);
-    final localNotificationNotifier = ref.read(localNotificationProvider.notifier);
     return MaterialApp.router(
       title: 'Material App',
 

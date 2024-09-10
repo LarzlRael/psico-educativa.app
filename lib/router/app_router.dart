@@ -11,14 +11,10 @@ import 'package:psico_educativa_app/screens/screens.dart';
 final goRouterProvider = Provider((ref) {
   final goRouterNotifier = ref.read(goRouterNotifierProvider);
   return GoRouter(
-      initialLocation: CheckOutStatusScreen.routeName,
+      initialLocation: SignInScreen.routeName,
       /* initialLocation: '/games/keyboard_sign_page', */
       refreshListenable: goRouterNotifier,
       routes: [
-        GoRoute(
-          path: RegisterScreen.routeName,
-          builder: (context, state) => RegisterScreen(),
-        ),
         GoRoute(
           path: CheckOutStatusScreen.routeName,
           builder: (context, state) => const CheckOutStatusScreen(),
@@ -26,6 +22,18 @@ final goRouterProvider = Provider((ref) {
         GoRoute(
           path: SignInScreen.routeName,
           builder: (context, state) => SignInScreen(),
+        ),
+        GoRoute(
+          path: RegisterScreen.routeName,
+          builder: (context, state) => RegisterScreen(),
+        ),
+        GoRoute(
+          path: ForgotPasswordScreen.routeName,
+          builder: (context, state) => ForgotPasswordScreen(),
+        ),
+        GoRoute(
+          path: VerificationCodeScreen.routeName,
+          builder: (context, state) => const VerificationCodeScreen(),
         ),
         GoRoute(
           path: HomeScreen.routeName,
@@ -41,115 +49,20 @@ final goRouterProvider = Provider((ref) {
             );
           },
         ),
-      ]
-
-      /* GoRoute(
-      path: WelcomePage.routeName,
-      builder: (context, state) => WelcomePage(),
-    ),
-    GoRoute(
-        path: LetterAndNumbersPage.routeName,
-        builder: (context, state) => LetterAndNumbersPage(),
-        routes: [
-          GoRoute(
-              path: ':letter',
-              builder: (context, state) {
-                final letter = state.params['letter'];
-                return LetterAndNumbersPageDetail(signChar: letter!);
-              }),
-        ]),
-
-    GoRoute(
-        path: SendMessageWithSignPage.routeName,
-        builder: (_, __) => const SendMessageWithSignPage(),
-        routes: [
-          GoRoute(
-            path: ':phrase',
-            builder: (_, state) {
-              final phrase = state.params['phrase'];
-              return SendMessageWithSignPage();
-            },
-          ),
-        ]),
-    GoRoute(
-      path: SelectGameMenuPage.routeName,
-      builder: (_, __) => SelectGameMenuPage(),
-    ),
-    GoRoute(
-        path: '/select_level_page/:gameTitle/:gameDestinty',
-        builder: (_, state) {
-          final gameTitle = state.params['gameTitle'];
-          final gameDestinty = state.params['gameDestinty'];
-          final iconGame = state.extra as IconData;
-          return SelectLevelPage(
-            gameTitle: gameTitle!,
-            gameRouteDestinyPage: gameDestinty,
-            iconGame: iconGame,
-          );
-        }),
-    GoRoute(
-      path: SettingsPage.routeName,
-      builder: (_, __) => const SettingsPage(),
-    ),
-
-    GoRoute(
-      path: '/games',
-      builder: (_, __) => const SelectGameMenuPage(),
-      routes: [
-        GoRoute(
-          path: 'test_your_memory_page',
-          builder: (_, state) {
-            final level = state.extra as Level;
-            return TestYourMemoryPage(
-              level: level,
-            );
-          },
-        ),
-        GoRoute(
-          path: 'word_in_sight_page',
-          builder: (_, __) => const WordInSightPage(),
-        ),
-        GoRoute(
-          path: 'guess_the_word_page',
-          builder: (_, __) => const GuessTheWordPage(),
-        ),
-        GoRoute(
-          path: 'flipping_cards_page',
-          builder: (_, state) {
-            final level = state.extra as Level;
-            return FlippingCardGame(
-              level: level,
-            );
-          },
-        ),
-        GoRoute(
-          path: 'drag_and_drop_game',
-          builder: (_, state) => MatchImageGame(),
-        ),
-        GoRoute(
-          path: 'keyboard_page',
-          builder: (_, state) => KeyboardLettersPage(),
-        ),
-        GoRoute(
-          path: 'guess_the_word_keyboard',
-          builder: (_, state) => GuessTheWordKeyboard(),
-        ),
-        GoRoute(
-          path: 'keyboard_sign_page',
-          builder: (_, state) => KeyboardSignPage(),
-        ),
       ],
-    ),
-    GoRoute(
-      path: KeyboardLettersPage.routeName,
-      builder: (_, state) => KeyboardLettersPage(),
-    ),
-  */
-      ,
       redirect: (context, state) {
         final login = SignInScreen.routeName;
         final register = RegisterScreen.routeName;
+        final forgotPassword = ForgotPasswordScreen.routeName;
         final checkOutStatus = CheckOutStatusScreen.routeName;
+        const verificationCodeScreen = VerificationCodeScreen.routeName;
+
+        final publicRoutes = [
+          login,
+          register,
+          forgotPassword,
+          verificationCodeScreen
+        ];
 
         final isGoingTo = state.matchedLocation;
         final authStatus = goRouterNotifier.authStatus;
@@ -158,14 +71,17 @@ final goRouterProvider = Provider((ref) {
           return null;
 
         if (authStatus == AuthStatus.noAuthenticated) {
-          if (isGoingTo == login || isGoingTo == register) return null;
-
-          return login;
+          if (publicRoutes.contains(isGoingTo)) {
+            return null;
+          }
         }
+        // Si el usuario está autenticado
         if (authStatus == AuthStatus.authenticated) {
-          if (isGoingTo == login ||
-              isGoingTo == register ||
-              isGoingTo == checkOutStatus) return HomeScreen.routeName;
+          // Si está intentando acceder a una ruta pública o `CheckOutStatusScreen`, redirigir al HomeScreen.
+
+          if (publicRoutes.contains(isGoingTo) || isGoingTo == checkOutStatus) {
+            return HomeScreen.routeName;
+          }
         }
         return null;
       });

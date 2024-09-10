@@ -6,8 +6,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_builder_file_picker/form_builder_file_picker.dart';
 import 'package:go_router/go_router.dart';
 import 'package:psico_educativa_app/constants/app_info.dart';
+import 'package:psico_educativa_app/screens/screens.dart';
 
-part 'simple_text.dart';
+part 'text/simple_text.dart';
+part 'text/app_bar_with_back_icon.dart';
 part 'buttons/login_button.dart';
 part 'forms/chip_choice.dart';
 part 'forms/custom_dropdown.dart';

@@ -17,9 +17,9 @@ class HeaderLoginRegister extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-          appIcon,
-          height: 100,
-        ),
+                appIcon,
+                height: 100,
+              ),
               /* const SizedBox(width: 10),
               Text(
                 headerTitle,
@@ -61,38 +61,68 @@ class LabelLoginRegister extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorSchema = Theme.of(context).colorScheme;
+    
     return Column(
       children: [
-        GestureDetector(
-          onTap: () {
-            context.push('/forgot_password');
-          },
-          child: const SimpleText(
-            'Olvide mi contraseña',
-            padding: EdgeInsets.all(5),
-            /* lightThemeColor: Colors.indigo, */
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
-          ),
-        ),
         const SizedBox(height: 5),
         GestureDetector(
-          onTap: () {
-            context.push(route);
-          },
+          onTap: () => context.push(route),
           child: Column(
             children: [
-              SimpleText(
-                 title,
+              /* SimpleText(
+                title,
                 /* lightThemeColor: Colors.indigo, */
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w500,
                 fontSize: 15,
               ),
               SimpleText(
-                 subtitle,
+                subtitle,
                 /* lightThemeColor: Colors.indigo, */
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w500,
                 fontSize: 15,
+              ), */
+              RichText(
+                text: TextSpan(
+                  // Texto y estilo general
+                  style: DefaultTextStyle.of(context)
+                      .style, // Estilo predeterminado
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: title,
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    const TextSpan(
+                      text: "--",
+                      style: TextStyle(
+                        color: Colors.transparent,
+                      ),
+                    ),
+                    TextSpan(
+                      text: subtitle,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15,
+                        color: colorSchema.secondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+              InkWell(
+                onTap: () {
+                  print('go to forgot password');
+                  context.push(ForgotPasswordScreen.routeName);
+                },
+                child: const SimpleText(
+                  'Olvide mi contraseña ',
+                  padding: EdgeInsets.all(5),
+                  /* lightThemeColor: Colors.indigo, */
+                  color: Colors.grey,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 15,
+                ),
               ),
             ],
           ),

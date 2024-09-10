@@ -4,6 +4,7 @@ import 'package:psico_educativa_app/models/models.dart';
 import 'package:psico_educativa_app/services/auth_services.dart'
     as AuthServices;
 import 'package:psico_educativa_app/services/services.dart';
+import 'package:psico_educativa_app/shared/validations.dart';
 
 enum AuthStatus { checking, noAuthenticated, authenticated }
 
@@ -34,6 +35,52 @@ class AuthNotifier extends StateNotifier<AuthState> {
       state = state.copyWith(
         authenticateStatus: AuthStatus.noAuthenticated,
         errorMessage: 'Error de autenticación: ${e.toString()}',
+      );
+      return false;
+    }
+  }
+
+  Future<bool> register(Map<String, dynamic> body) async {
+    state = state.copyWith(errorMessage: null);
+
+    try {
+      // Aquí deberías integrar tu lógica de autenticación (API, base de datos, etc.)
+
+      final user = await sendGenericRequest(
+        '/auth/register',
+        userApiFromJson,
+        method: RequestType.post,
+        body: body,
+      );
+
+      return saveUserAndToken(user,
+          errorMessage: 'Hubo un error en el registro');
+    } catch (e) {
+      state = state.copyWith(
+        authenticateStatus: AuthStatus.noAuthenticated,
+        errorMessage: 'Error durante el registro: ${e.toString()}',
+      );
+      return false;
+    }
+  }
+
+  Future<bool> forgotPasswordRequest(Map<String, dynamic> body) async {
+    state = state.copyWith(errorMessage: null);
+
+    try {
+      // Aquí deberías integrar tu lógica de autenticación (API, base de datos, etc.)
+
+      final resp = await Request.sendRequest(
+        RequestType.post,
+        'auth/forgot-password',
+        body: body,
+      );
+      return validateStatus(resp?.statusCode);
+    } catch (e) {
+      state = state.copyWith(
+        authenticateStatus: AuthStatus.noAuthenticated,
+        errorMessage:
+            'Error durante el solicitud de cambio de contraseña: ${e.toString()}',
       );
       return false;
     }
