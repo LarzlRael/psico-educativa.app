@@ -126,17 +126,20 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   // Método para manejar el cierre de sesión
-  Future<void> logout() async {
+  Future<bool> logout() async {
+    print('logout');
     state = state.copyWith(authenticateStatus: AuthStatus.checking, user: null);
-    await keyValueStorageService.removeKey('token');
-    await keyValueStorageService.removeKey('id_user');
+    await keyValueStorageService.removeKey(TOKEN);
+    await keyValueStorageService.removeKey(ID_USER);
     await AuthServices.signOutFromGoogle();
+    
 
     state = state.copyWith(
       authenticateStatus: AuthStatus.noAuthenticated,
       user: null,
       authType: AuthType.none,
     );
+    return true;
   }
 
   void checkAuthStatus() async {

@@ -42,10 +42,9 @@ class MyApp extends ConsumerWidget {
     final notifierProvider = ref.watch(authNotifierProvider);
     return MaterialApp.router(
       title: 'Material App',
-
       routerConfig: appRouter,
       debugShowCheckedModeBanner: false,
-      theme: AppTheme(isDarkMode: false).getTheme(),
+      theme: AppTheme(isDarkMode: true).getTheme(),
       builder: (context, child) => HandleNotificationInteractions(
         child: child!,
       ),

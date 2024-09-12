@@ -1,12 +1,44 @@
 part of '../screens.dart';
 
-class VerificationCodeScreen extends HookWidget {
+class VerificationCodeScreen extends HookConsumerWidget {
   const VerificationCodeScreen({super.key});
   static const routeName = "/verification_code_screen";
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     final code = useState<String>('1234');
+    final socketNotifier = ref.read(socketProvider.notifier);
+    final socketState = ref.watch(socketProvider);
     final onEditing = useState<bool>(true);
+    void handleCodeVerification(String code) async {
+      // Enviar el código al servidor
+      socketNotifier.sendMessage(
+          'code_verification',
+          json.encode({
+            'code': code,
+            'email': 'rael.thassss@gmail.com',
+          }));
+
+      // Escuchar la respuesta
+      socketState.socket?.on('code_verification', (data) {
+        final response = data as Map<String, dynamic>;
+        inspect(response);
+        if (response['success'] == true) {
+          print('Code verification successful from server mada faca');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('CORRECT'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        } else {
+          // Manejar el caso cuando la respuesta no es exitosa
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Code verification failed')),
+          );
+        }
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Verification Code'),
@@ -32,14 +64,7 @@ class VerificationCodeScreen extends HookWidget {
                   color: Colors.blue[700]),
             ),
           ),
-          onCompleted: (String value) {
-            code.value = value;
-            if (value == code.value) {
-              print('Code is correct');
-            } else {
-              print('Code is incorrect');
-            }
-          },
+          onCompleted: handleCodeVerification,
           onEditing: (bool value) {
             onEditing.value = value;
 

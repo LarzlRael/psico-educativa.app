@@ -40,6 +40,10 @@ final goRouterProvider = Provider((ref) {
           builder: (context, state) => const HomeScreen(),
         ),
         GoRoute(
+          path: UserProfileScreen.routeName,
+          builder: (context, state) => const UserProfileScreen(),
+        ),
+        GoRoute(
           path: '${NewCoursePromoScreen.routeName}/:id_course',
           builder: (context, state) {
             inspect(state.pathParameters);

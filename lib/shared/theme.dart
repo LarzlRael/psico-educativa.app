@@ -36,7 +36,7 @@ class AppTheme {
           primary:
               const Color(0xfff2e205), // Asigna el color primario directamente
           secondary: const Color(0xff85d14b),
-          brightness: Brightness.light,
+          brightness: isDarkMode ? Brightness.dark : Brightness.light,
         ),
         /* appBarTheme: AppBarTheme(
           centerTitle: true,

@@ -82,21 +82,20 @@ class SignInScreen extends HookConsumerWidget {
                               _formKey.currentState!.validate();
                           print(_formKey.currentState!.value['username']);
                           print(_formKey.currentState!.value['password']);
-                          if (validationSuccess) {
-                            _formKey.currentState!.save();
-                            isLocalLoading.value = true;
-                            authProviderN
-                                .login(_formKey.currentState!.value['username'],
-                                    _formKey.currentState!.value['password'])
-                                .then((value) {
-                              isLocalLoading.value = false;
-                              /* if (value) {
+                          if (!validationSuccess) return;
+                          _formKey.currentState!.save();
+                          isLocalLoading.value = true;
+                          authProviderN
+                              .login(_formKey.currentState!.value['username'],
+                                  _formKey.currentState!.value['password'])
+                              .then((value) {
+                            isLocalLoading.value = false;
+                            /* if (value) {
                                 context.push('/home_screen');
                               } else {
                                 isLocalLoading.value = false;
                               } */
-                            });
-                          }
+                          });
                         },
                       ),
                       const SimpleText(

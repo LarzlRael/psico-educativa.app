@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -17,6 +18,7 @@ import 'package:psico_educativa_app/models/models.dart';
 import 'package:psico_educativa_app/provider/auth_provider.dart';
 import 'package:psico_educativa_app/provider/courses_provider.dart';
 import 'package:psico_educativa_app/provider/notification_provider.dart';
+import 'package:psico_educativa_app/provider/socket/socket_provider.dart';
 import 'package:psico_educativa_app/router/app_router.dart';
 import 'package:psico_educativa_app/services/services.dart';
 import 'package:psico_educativa_app/shared/router_utils.dart';
@@ -27,6 +29,8 @@ part 'auth/register_screen.dart';
 part 'auth/verification_code_screen.dart';
 part 'auth/forgot_password_screen.dart';
 part 'auth/home_page_screen.dart';
+part 'user/user_profile_screen.dart';
+
 part 'auth/check_out_status_screen.dart';
 part 'courses/new_course_promo.dart';
 

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -21,6 +23,12 @@ part 'forms/custom_file_field.dart';
 part 'forms/custom_formbuilder_text_area.dart';
 part 'forms/custom_row_formbuilder_text_field.dart';
 part 'forms/input_styles.dart';
+part 'avatar/custom_circle_avatar.dart';
+
+
+
+
+part 'background/background_circle.dart';
 
 part 'text/header_login_register.dart';
 
