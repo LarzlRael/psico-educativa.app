@@ -34,23 +34,28 @@ class HomeScreen extends HookConsumerWidget {
                       onTap: () => context.push(UserProfileScreen.routeName),
                       child: Container(
                         height: 55,
-                        width: 140,
+                        /* width: 140, */
+
                         padding: const EdgeInsets.symmetric(horizontal: 2),
                         decoration: BoxDecoration(
                             color: colorScheme.primary.withOpacity(0.4),
                             borderRadius: BorderRadius.circular(30)),
-                        child: Row(children: [
-                          UserAvatar(
-                            username: authProviderS.user!.username,
-                            urlImage: authProviderS.user!.profileImageUrl,
-                            firstName: authProviderS.user!.firstName,
-                            lastName: authProviderS.user!.lastName,
-                          ),
-                          const SizedBox(width: 15),
-                          SimpleText(authProviderS.user!.username,
-                              fontSize: 18),
-                          const SizedBox(width: 5),
-                        ]),
+                        child: Wrap(
+                          /* alignment: WrapAlignment.center, */
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            UserAvatar(
+                              username: authProviderS.user!.username,
+                              urlImage: authProviderS.user!.profileImageUrl,
+                              firstName: authProviderS.user!.firstName,
+                              lastName: authProviderS.user!.lastName,
+                            ),
+                            const SizedBox(width: 15),
+                            SimpleText(authProviderS.user!.username,
+                                fontSize: 18),
+                            const SizedBox(width: 5),
+                          ],
+                        ),
                       ),
                     ),
                     Spacer(),
@@ -64,7 +69,7 @@ class HomeScreen extends HookConsumerWidget {
                         onPressed: () {
                           authProviderN.logout().then((value) {
                             if (value) {
-                               if (!context.mounted) return;
+                              if (!context.mounted) return;
                               context.go(SignInScreen.routeName);
                             }
                           });

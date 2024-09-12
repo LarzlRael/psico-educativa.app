@@ -5,21 +5,20 @@ class VerificationCodeScreen extends HookConsumerWidget {
   static const routeName = "/verification_code_screen";
   @override
   Widget build(BuildContext context, ref) {
-    final code = useState<String>('1234');
     final socketNotifier = ref.read(socketProvider.notifier);
     final socketState = ref.watch(socketProvider);
     final onEditing = useState<bool>(true);
     void handleCodeVerification(String code) async {
       // Enviar el código al servidor
       socketNotifier.sendMessage(
-          'code_verification',
+          'code-verification',
           json.encode({
             'code': code,
             'email': 'rael.thassss@gmail.com',
           }));
 
       // Escuchar la respuesta
-      socketState.socket?.on('code_verification', (data) {
+      socketState.socket?.on('code-verification', (data) {
         final response = data as Map<String, dynamic>;
         inspect(response);
         if (response['success'] == true) {

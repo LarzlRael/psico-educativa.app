@@ -13,6 +13,7 @@ class LoginButton extends StatelessWidget {
   final double fontSize;
   final double spacing;
   final FontWeight fontWeight;
+  final bool disabled;
 
   const LoginButton({
     super.key,
@@ -27,6 +28,7 @@ class LoginButton extends StatelessWidget {
     this.marginHorizontal = 0,
     this.fontSize = 17,
     this.spacing = 5,
+    this.disabled = false,
     this.fontWeight = FontWeight.bold,
   });
 
@@ -39,6 +41,7 @@ class LoginButton extends StatelessWidget {
     );
     final color = backGroundColor ?? Theme.of(context).colorScheme.secondary;
     return Container(
+      width: double.infinity,
       margin: EdgeInsets.symmetric(
           vertical: marginVertical, horizontal: marginHorizontal),
       child: ElevatedButton(
@@ -53,9 +56,11 @@ class LoginButton extends StatelessWidget {
             /* side: BorderSide(color: Colors.red), */
           ),
         ),
-        onPressed: isLoading ? null : onPressed,
+        onPressed: isLoading || disabled ? null : onPressed,
         child: isLoading
-            ? const CircularProgressIndicator()
+            ? const CircularProgressIndicator(
+                color: Colors.grey,
+              )
             : showIcon
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.start,

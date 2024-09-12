@@ -40,8 +40,8 @@ class HeaderLoginRegister extends StatelessWidget {
         SimpleText(
           headerTitle,
           fontSize: 25,
-          fontWeight: FontWeight.w900,
-          padding: const EdgeInsets.all(10),
+          fontWeight: FontWeight.w700,
+          padding: const EdgeInsets.all(5),
         ),
       ],
     );

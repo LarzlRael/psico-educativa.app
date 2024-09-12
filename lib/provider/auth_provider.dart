@@ -72,7 +72,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
       final resp = await Request.sendRequest(
         RequestType.post,
-        'auth/forgot-password',
+        'auth/generate-verification-code',
         body: body,
       );
       return validateStatus(resp?.statusCode);
@@ -132,7 +132,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
     await keyValueStorageService.removeKey(TOKEN);
     await keyValueStorageService.removeKey(ID_USER);
     await AuthServices.signOutFromGoogle();
-    
 
     state = state.copyWith(
       authenticateStatus: AuthStatus.noAuthenticated,
@@ -142,9 +141,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
     return true;
   }
 
+/* TODO CHECK this */
   void checkAuthStatus() async {
     final token = await keyValueStorageService.getValue<String>(TOKEN);
-
     if (token == null) logout();
     try {
       await renewToken();
@@ -156,22 +155,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
   Future<bool> loginWithGoogle() async {
     state = state.copyWith(authenticateStatus: AuthStatus.checking);
     final googleAuth = await AuthServices.signInWithGoogle();
-    if (googleAuth == null) {
-      state = state.copyWith(
-        authenticateStatus: AuthStatus.noAuthenticated,
-        user: null,
-      );
-      logout();
 
-      return false;
-    }
-
-    state = state.copyWith(
-      authenticateStatus: AuthStatus.authenticated,
-      user: googleAuth,
-    );
-
-    return true;
+    return saveUserAndToken(googleAuth);
   }
 }
 

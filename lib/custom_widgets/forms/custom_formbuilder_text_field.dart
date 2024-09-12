@@ -7,6 +7,7 @@ class CustomFormBuilderTextField extends HookWidget {
   final bool passwordField;
   final TextInputType keyboardType;
   final String? Function(String?)? validator;
+  final EdgeInsetsGeometry? margin;
   const CustomFormBuilderTextField({
     super.key,
     required this.name,
@@ -15,6 +16,7 @@ class CustomFormBuilderTextField extends HookWidget {
     this.validator,
     this.keyboardType = TextInputType.text,
     this.passwordField = false,
+    this.margin = const EdgeInsets.symmetric(vertical: 5.0),
   });
 
   @override
@@ -22,7 +24,7 @@ class CustomFormBuilderTextField extends HookWidget {
     final obscureText = useState(true);
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10.0),
+      margin: margin,
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
@@ -37,13 +39,13 @@ class CustomFormBuilderTextField extends HookWidget {
             labelText: placeholder,
             labelStyle: const TextStyle(
               color: Colors.grey,
-              fontSize: 16,
+              fontSize: 14,
             ),
             suffixIcon: passwordField
                 ? IconButton(
                     icon: obscureText.value
                         ? const Icon(Icons.password, size: 20)
-                        : const Icon(Icons.password, size: 20),
+                        : const Icon(FontAwesomeIcons.eye, size: 20),
                     onPressed: () => obscureText.value = !obscureText.value,
                   )
                 : null,
