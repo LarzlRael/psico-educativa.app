@@ -33,10 +33,7 @@ class HomeScreen extends HookConsumerWidget {
                     InkWell(
                       onTap: () => context.push(UserProfileScreen.routeName),
                       child: Container(
-                        height: 55,
-                        /* width: 140, */
-
-                        padding: const EdgeInsets.symmetric(horizontal: 2),
+                        padding: const EdgeInsets.symmetric(horizontal: 10,vertical:7),
                         decoration: BoxDecoration(
                             color: colorScheme.primary.withOpacity(0.4),
                             borderRadius: BorderRadius.circular(30)),
@@ -51,7 +48,7 @@ class HomeScreen extends HookConsumerWidget {
                               lastName: authProviderS.user!.lastName,
                             ),
                             const SizedBox(width: 15),
-                            SimpleText(authProviderS.user!.username,
+                            SimpleText(authProviderS.user!.username.toCapitalize(),
                                 fontSize: 18),
                             const SizedBox(width: 5),
                           ],

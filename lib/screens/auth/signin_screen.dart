@@ -18,7 +18,7 @@ class SignInScreen extends HookConsumerWidget {
           physics: const BouncingScrollPhysics(),
           child: Container(
             height: MediaQuery.of(context).size.height,
-            padding: const EdgeInsets.symmetric(horizontal: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -39,7 +39,8 @@ class SignInScreen extends HookConsumerWidget {
                           FormBuilderValidators.required(),
                         ]),
                       ),
-                      const CustomFormBuilderTextField(
+                      /* dont user const, BUG 🐛 */
+                       CustomFormBuilderTextField(
                         name: 'password',
                         icon: FontAwesomeIcons.lock,
                         placeholder: 'Contraseña',
@@ -49,7 +50,7 @@ class SignInScreen extends HookConsumerWidget {
                   ),
                 ),
                 LoginButton(
-                  isLoading: !isLocalLoading.value,
+                  isLoading: isLocalLoading.value,
                   text: "Iniciar sesión",
                   textColor: Colors.white,
                   showIcon: false,
@@ -71,8 +72,23 @@ class SignInScreen extends HookConsumerWidget {
 
                     if (resp) {
                       if (context.mounted) {
-                        Navigator.pushNamed(context, '/home_screen');
+                        toastification.show(
+                          context:
+                              context, // optional if you use ToastificationWrapper
+                          title: Text('Bienvenido'),
+                          backgroundColor: Colors.green,
+                          alignment: Alignment.bottomCenter,
+                          autoCloseDuration: const Duration(seconds: 5),
+                        );
+                        context.push(HomeScreen.routeName);
                       }
+                    } else {
+                      toastification.show(
+                        type: ToastificationType.error,
+                        title: Text('Usuario o contraseña error'),
+                        primaryColor: Colors.orange,
+                        autoCloseDuration: const Duration(seconds: 5),
+                      );
                     }
                   },
                 ),
@@ -85,7 +101,7 @@ class SignInScreen extends HookConsumerWidget {
                   spacing: 20,
                   fontSize: 14,
                   /* TODO disable google button while is loading */
-                  /* isLoading: isLocalLoading.value, */
+                  disabled: isLocalLoading.value,
                   fontWeight: FontWeight.normal,
                   onPressed: () async {
                     await authProviderN.loginWithGoogle();

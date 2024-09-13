@@ -11,8 +11,8 @@ import 'package:psico_educativa_app/provider/notification_provider.dart';
 import 'package:psico_educativa_app/router/app_router.dart';
 import 'package:psico_educativa_app/screens/screens.dart';
 import 'package:psico_educativa_app/shared/theme.dart';
-import 'firebase_options.dart';
 
+import 'package:toastification/toastification.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +21,7 @@ void main() async {
   await Environment.initEnvironment();
 
   /* await UserPreferences.init(); */
-  
+
   /* await FirebaseUtils().initializeRemoteConfig(); */
   /* await LocalNotification.initializeLocalNotification(); */
   return runApp(
@@ -38,9 +38,10 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final notificationProvider = ref.watch(notificationNotifierProvider);
     final appRouter = ref.watch(goRouterProvider);
-    
+
     final notifierProvider = ref.watch(authNotifierProvider);
-    return MaterialApp.router(
+    return ToastificationWrapper(
+        child: MaterialApp.router(
       title: 'Material App',
       routerConfig: appRouter,
       debugShowCheckedModeBanner: false,
@@ -48,6 +49,6 @@ class MyApp extends ConsumerWidget {
       builder: (context, child) => HandleNotificationInteractions(
         child: child!,
       ),
-    );
+    ));
   }
 }

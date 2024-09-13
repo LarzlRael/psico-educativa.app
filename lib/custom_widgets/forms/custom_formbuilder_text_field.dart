@@ -44,12 +44,12 @@ class CustomFormBuilderTextField extends HookWidget {
             suffixIcon: passwordField
                 ? IconButton(
                     icon: obscureText.value
-                        ? const Icon(Icons.password, size: 20)
-                        : const Icon(FontAwesomeIcons.eye, size: 20),
+                        ? const Icon(FontAwesomeIcons.eyeSlash, size: 15)
+                        : const Icon(FontAwesomeIcons.eye, size: 15),
                     onPressed: () => obscureText.value = !obscureText.value,
                   )
                 : null,
-            prefixIcon: Icon(icon, size: 20),
+            prefixIcon: Icon(icon, size: 15),
           ),
         ),
       ),

@@ -14,10 +14,10 @@ class RegisterScreen extends HookConsumerWidget {
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Container(
-            /* height: MediaQuery.of(context).size.height, */
+            height: MediaQuery.of(context).size.height,
             padding: const EdgeInsets.only(
-              bottom: 30,
-              top: 20,
+              bottom: 15,
+              top: 15,
               left: 15.0,
               right: 15.0,
             ),
@@ -58,7 +58,7 @@ class RegisterScreen extends HookConsumerWidget {
                   ),
                 ),
                 LoginButton(
-                  text: "Regitrarse",
+                  text: "Registrarse",
                   showIcon: false,
                   textColor: Colors.white,
                   /* borderRadius: 50, */

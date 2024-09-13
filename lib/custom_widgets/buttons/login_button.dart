@@ -40,6 +40,7 @@ class LoginButton extends StatelessWidget {
       fontWeight: fontWeight,
     );
     final color = backGroundColor ?? Theme.of(context).colorScheme.secondary;
+
     return Container(
       width: double.infinity,
       margin: EdgeInsets.symmetric(
@@ -53,35 +54,29 @@ class LoginButton extends StatelessWidget {
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
-            /* side: BorderSide(color: Colors.red), */
           ),
         ),
-        onPressed: isLoading || disabled ? null : onPressed,
+        onPressed: (isLoading || disabled) ? null : onPressed, // Aquí se desactiva el botón
         child: isLoading
             ? const CircularProgressIndicator(
                 color: Colors.grey,
               )
-            : showIcon
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      icon,
-                      SizedBox(width: spacing),
-                      Text(
-                        text,
-                        textAlign: TextAlign.center,
-                        style: textStyle,
-                      ),
-                    ],
-                  )
-                : SizedBox(
-                    width: double.infinity,
-                    child: Text(
-                      text,
-                      textAlign: TextAlign.center,
-                      style: textStyle,
-                    ),
+            : Row(
+                mainAxisAlignment: showIcon
+                    ? MainAxisAlignment.start
+                    : MainAxisAlignment.center, // Alineación condicional
+                children: [
+                  if (showIcon) ...[
+                    icon,
+                    SizedBox(width: spacing),
+                  ],
+                  Text(
+                    text,
+                    textAlign: TextAlign.center,
+                    style: textStyle,
                   ),
+                ],
+              ),
       ),
     );
   }

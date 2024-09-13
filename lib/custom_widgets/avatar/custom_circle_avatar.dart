@@ -18,6 +18,7 @@ class UserAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Si hay una URL de imagen válida, mostramos la imagen
+    
     if (urlImage != null && urlImage!.isNotEmpty) {
       return CircleAvatar(
         backgroundImage: NetworkImage(urlImage!),

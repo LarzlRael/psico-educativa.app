@@ -9,39 +9,15 @@ class HeaderLoginRegister extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Column(
       children: [
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                appIcon,
-                height: 100,
-              ),
-              /* const SizedBox(width: 10),
-              Text(
-                headerTitle,
-                style: Theme.of(context).textTheme.headlineSmall,
-              ) */
-              /* SimpleText(
-          left: 10,
-          text: title,
-          /* color: Colors.black, */
-          fontSize: fontSize,
-          fontWeight: FontWeight.bold,
-          setUniqueColor: true,
-          lightThemeColor: Colors.black,
-        ), */
-            ],
-          ),
-        ),
+        LogoImageName(),
         SimpleText(
           headerTitle,
-          fontSize: 25,
+          fontSize: 23,
           fontWeight: FontWeight.w700,
-          padding: const EdgeInsets.all(5),
+          padding: const EdgeInsets.only(top: 15),
         ),
       ],
     );
@@ -62,7 +38,7 @@ class LabelLoginRegister extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorSchema = Theme.of(context).colorScheme;
-    
+
     return Column(
       children: [
         const SizedBox(height: 5),
@@ -109,7 +85,6 @@ class LabelLoginRegister extends StatelessWidget {
                   ],
                 ),
               ),
-              
               InkWell(
                 onTap: () {
                   print('go to forgot password');
@@ -128,6 +103,41 @@ class LabelLoginRegister extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+}
+
+class LogoImageName extends StatelessWidget {
+  const LogoImageName({super.key});
+  static const routeName = "";
+  @override
+  Widget build(BuildContext context) {
+    final style = const TextStyle(fontSize: 18, fontWeight: FontWeight.w500);
+    return Container(
+      width: 125,
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Image.asset(
+          appIcon,
+          height: 100,
+        ),
+        /* const SizedBox(width: 5), */
+        Align(
+          alignment: Alignment.centerLeft,
+          child: SimpleText(
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            'Psico',
+            style: style,
+          ),
+        ),
+        Align(
+          alignment: Alignment.centerRight,
+          child: SimpleText(
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            'Educativa',
+            style: style,
+          ),
+        )
+      ]),
     );
   }
 }
