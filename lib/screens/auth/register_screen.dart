@@ -33,24 +33,24 @@ class RegisterScreen extends HookConsumerWidget {
                     children: [
                       const CustomFormBuilderTextField(
                         name: 'username',
-                        icon: Icons.person,
+                        leadingIcon: Icons.person,
                         placeholder: 'Nombre de usuario',
                       ),
                       const CustomFormBuilderTextField(
                         name: 'email',
                         keyboardType: TextInputType.emailAddress,
-                        icon: FontAwesomeIcons.at,
+                        leadingIcon: FontAwesomeIcons.at,
                         placeholder: 'Correo electrónico',
                       ),
                       const CustomFormBuilderTextField(
                         name: 'password',
-                        icon: FontAwesomeIcons.lock,
+                        leadingIcon: FontAwesomeIcons.lock,
                         placeholder: 'Contraseña',
                         passwordField: true,
                       ),
                       const CustomFormBuilderTextField(
                         name: 'password',
-                        icon: FontAwesomeIcons.lock,
+                        leadingIcon: FontAwesomeIcons.lock,
                         placeholder: 'Repetir contraseña',
                         passwordField: true,
                       ),

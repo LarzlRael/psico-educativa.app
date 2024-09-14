@@ -4,9 +4,6 @@ part of 'models.dart';
 // To parse this JSON data, do
 //
 //     final notificationModel = notificationModelFromJson(jsonString);
-
-
-
 List<NotificationModel> notificationsModelFromJson(String str) => List<NotificationModel>.from(json.decode(str).map((x) => NotificationModel.fromJson(x)));
 String notificationsModelToJson(List<NotificationModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
@@ -67,25 +64,25 @@ class NotificationModel {
 }
 
 class Data {
-    final String idCourse;
-    final String notificationType;
-    final String pageDestination;
+  final String? idCourse;
+  final String? notificationType;
+  final String? pageDestination;
 
-    Data({
-        required this.idCourse,
-        required this.notificationType,
-        required this.pageDestination,
-    });
+  Data({
+    this.idCourse,
+    this.notificationType,
+    this.pageDestination,
+  });
 
-    factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
         idCourse: json["idCourse"],
         notificationType: json["notificationType"],
         pageDestination: json["pageDestination"],
-    );
+  );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "idCourse": idCourse,
         "notificationType": notificationType,
         "pageDestination": pageDestination,
-    };
+  };
 }

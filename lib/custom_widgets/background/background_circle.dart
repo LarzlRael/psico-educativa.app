@@ -32,7 +32,10 @@ class BackgroundWithBlurredCircles extends StatelessWidget {
           right: -150,
           child: CircleBlurred(
             radius: 200,
-            colors: [colorScheme.secondary.withOpacity(0.30), Colors.transparent],
+            colors: [
+              colorScheme.secondary.withOpacity(0.30),
+              Colors.transparent
+            ],
             blurAmount: 20,
           ),
         ),
@@ -46,7 +49,12 @@ class BackgroundWithBlurredCircles extends StatelessWidget {
             colors: [Color(0xffB4AAFF).withOpacity(0.25), Colors.transparent],
           ),
         ),
-
+        /*  Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+              padding: EdgeInsets.only(bottom: 20),
+              child: BottomNavigationFLoating()),
+        ), */
         // Child que pasa el contenido encima del fondo
         Positioned.fill(
           child: child,
@@ -85,7 +93,7 @@ class CircleBlurred extends StatelessWidget {
             ),
           ),
         ),
-        
+
         // Aplicación del efecto de blur
         Positioned.fill(
           child: BackdropFilter(
@@ -99,6 +107,128 @@ class CircleBlurred extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class BottomNavigationFLoating extends StatelessWidget {
+  const BottomNavigationFLoating({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final List<MenuCustomButton> items = [
+      MenuCustomButton(
+        icon: Icons.home,
+        appRoute: HomeScreen.routeName,
+      ),
+      MenuCustomButton(
+        icon: Icons.search,
+        appRoute: HomeScreen.routeName,
+      ),
+      MenuCustomButton(
+        icon: Icons.notifications,
+        appRoute: NotificationsScreen.routeName,
+      ),
+      MenuCustomButton(
+        icon: Icons.account_circle,
+        appRoute: UserProfileScreen.routeName,
+      ),
+    ];
+
+    return _FloatingMenuBackground(child: _MenuItems(menuItems: items));
+  }
+}
+
+class _FloatingMenuBackground extends StatelessWidget {
+  final Widget child;
+  const _FloatingMenuBackground({
+    super.key,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 250,
+      margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+      height: 60,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(100),
+        color: const Color(0xff2c2c2c),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.white38,
+            blurRadius: 10,
+            spreadRadius: -5,
+          )
+        ],
+      ),
+      child: child,
+    );
+  }
+}
+
+class MenuCustomButton {
+  final IconData icon;
+  /* final Function onPressed; */
+  final String appRoute;
+  MenuCustomButton({
+    required this.icon,
+    /* required this.onPressed, */
+    required this.appRoute,
+  });
+}
+
+class _MenuItems extends StatelessWidget {
+  const _MenuItems({
+    required this.menuItems,
+  });
+  final List<MenuCustomButton> menuItems;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: List.generate(
+        menuItems.length,
+        (index) => _MenuItemButton(
+          item: menuItems[index],
+          index: index,
+        ),
+      ),
+    );
+  }
+}
+
+class _MenuItemButton extends ConsumerWidget {
+  final int index;
+  final MenuCustomButton item;
+  const _MenuItemButton({
+    required this.item,
+    required this.index,
+  });
+
+  @override
+  Widget build(BuildContext context, ref) {
+    final selectedIndex =
+        ref.watch(menuProvider); // Observamos el índice actual
+
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        ref.read(menuProvider.notifier).selectItem(index);
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        child: Icon(
+          item.icon,
+          size: (selectedIndex == index) ? 35 : 25,
+          color: selectedIndex == index
+              ? Theme.of(context).colorScheme.secondary
+              : Colors.blueGrey,
+        ),
+      ),
     );
   }
 }

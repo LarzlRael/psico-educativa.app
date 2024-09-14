@@ -2,7 +2,8 @@ part of '../custom_widgets.dart';
 
 class CustomFormBuilderTextField extends HookWidget {
   final String name;
-  final IconData icon;
+  final IconData? leadingIcon;
+  final Widget? trailingIcon;
   final String placeholder;
   final bool passwordField;
   final TextInputType keyboardType;
@@ -11,8 +12,9 @@ class CustomFormBuilderTextField extends HookWidget {
   const CustomFormBuilderTextField({
     super.key,
     required this.name,
-    required this.icon,
     required this.placeholder,
+    this.leadingIcon,
+    this.trailingIcon,
     this.validator,
     this.keyboardType = TextInputType.text,
     this.passwordField = false,
@@ -48,8 +50,8 @@ class CustomFormBuilderTextField extends HookWidget {
                         : const Icon(FontAwesomeIcons.eye, size: 15),
                     onPressed: () => obscureText.value = !obscureText.value,
                   )
-                : null,
-            prefixIcon: Icon(icon, size: 15),
+                : trailingIcon,
+            prefixIcon: Icon(leadingIcon, size: 15),
           ),
         ),
       ),

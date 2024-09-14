@@ -1,8 +1,36 @@
 part of '../screens.dart';
 
-class HomeScreen extends HookConsumerWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends ConsumerWidget {
   static const routeName = "/home";
+  HomeScreen({
+    super.key,
+  });
+  final listScreen = [
+    const HomeScreenItem(),
+    const HomeScreenItem(),
+    const NotificationsScreen(),
+    const UserProfileScreen(),
+  ];
+  @override
+  Widget build(BuildContext context, ref) {
+    final selectedIndex =
+        ref.watch(menuProvider); // Observamos el índice actual
+
+    return Scaffold(
+      extendBody: true,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      bottomNavigationBar: const BottomNavigationFLoating(
+          /* currentIcon: viewModel.currentIndex,
+            icons: viewModel.icons, */
+          ),
+      body: listScreen[selectedIndex],
+    );
+  }
+}
+
+class HomeScreenItem extends HookConsumerWidget {
+  const HomeScreenItem({super.key});
+  static const routeName = "/home_screen";
   @override
   Widget build(BuildContext context, ref) {
     final authProviderN = ref.read(authNotifierProvider.notifier);
@@ -18,8 +46,7 @@ class HomeScreen extends HookConsumerWidget {
     }, []); */
     final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-        body: SizedBox.expand(
-      child: BackgroundWithBlurredCircles(
+      body: ScaffoldWithBackground(
         child: SafeArea(
             child: Container(
           padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
@@ -31,9 +58,11 @@ class HomeScreen extends HookConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     InkWell(
-                      onTap: () => context.push(UserProfileScreen.routeName),
+                      onTap: () =>
+                          ref.read(menuProvider.notifier).selectItem(3),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10,vertical:7),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 7),
                         decoration: BoxDecoration(
                             color: colorScheme.primary.withOpacity(0.4),
                             borderRadius: BorderRadius.circular(30)),
@@ -43,12 +72,17 @@ class HomeScreen extends HookConsumerWidget {
                           children: [
                             UserAvatar(
                               username: authProviderS.user!.username,
-                              urlImage: authProviderS.user!.profileImageUrl,
                               firstName: authProviderS.user!.firstName,
                               lastName: authProviderS.user!.lastName,
+                              customWidget: FadeInImage(
+                                placeholder: const AssetImage(appIcon),
+                                image: NetworkImage(
+                                    authProviderS.user!.profileImageUrl!),
+                              ),
                             ),
                             const SizedBox(width: 15),
-                            SimpleText(authProviderS.user!.username.toCapitalize(),
+                            SimpleText(
+                                authProviderS.user!.username.toCapitalize(),
                                 fontSize: 18),
                             const SizedBox(width: 5),
                           ],
@@ -89,7 +123,7 @@ class HomeScreen extends HookConsumerWidget {
               ]),
         )),
       ),
-    ));
+    );
   }
 }
 

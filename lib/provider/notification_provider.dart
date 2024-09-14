@@ -38,7 +38,7 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
             notifications: [],
             isLoading: false)) {
     _onForegroundMessage();
-    /* getNotification(); */
+    getNotification();
     _getAndSaveFCMToken();
   }
 

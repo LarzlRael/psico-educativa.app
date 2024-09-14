@@ -13,10 +13,12 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:psico_educativa_app/constants/app_info.dart';
 import 'package:psico_educativa_app/custom_widgets/custom_widgets.dart';
 import 'package:psico_educativa_app/models/models.dart';
 import 'package:psico_educativa_app/provider/auth_provider.dart';
 import 'package:psico_educativa_app/provider/courses_provider.dart';
+import 'package:psico_educativa_app/provider/menu_provider.dart';
 import 'package:psico_educativa_app/provider/notification_provider.dart';
 import 'package:psico_educativa_app/provider/socket/socket_provider.dart';
 import 'package:psico_educativa_app/router/app_router.dart';
@@ -32,8 +34,10 @@ part 'auth/verification_code_screen.dart';
 part 'auth/forgot_password_screen.dart';
 part 'auth/home_page_screen.dart';
 part 'user/user_profile_screen.dart';
+part 'user/notifications_screen.dart';
 
 part 'auth/check_out_status_screen.dart';
 part 'courses/new_course_promo.dart';
+part 'courses/course_enrollment.dart';
 
 part 'notifications/handle_notification_interaction.dart';

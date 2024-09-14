@@ -37,19 +37,31 @@ final goRouterProvider = Provider((ref) {
         ),
         GoRoute(
           path: HomeScreen.routeName,
-          builder: (context, state) => const HomeScreen(),
+          builder: (context, state) => HomeScreen(),
         ),
         GoRoute(
           path: UserProfileScreen.routeName,
           builder: (context, state) => const UserProfileScreen(),
         ),
         GoRoute(
+          path: NotificationsScreen.routeName,
+          builder: (context, state) => const NotificationsScreen(),
+        ),
+        GoRoute(
           path: '${NewCoursePromoScreen.routeName}/:id_course',
           builder: (context, state) {
-            inspect(state.pathParameters);
             final letter = state.pathParameters['id_course'];
             return NewCoursePromoScreen(
               idCourse: int.parse(letter!),
+            );
+          },
+        ),
+        GoRoute(
+          path: '${CourseEnrollment.routeName}/:id_course',
+          builder: (context, state) {
+            final idCourse = state.pathParameters['id_course'];
+            return CourseEnrollment(
+              idCourse: int.parse(idCourse!),
             );
           },
         ),

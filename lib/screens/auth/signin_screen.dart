@@ -32,7 +32,7 @@ class SignInScreen extends HookConsumerWidget {
                     children: [
                       CustomFormBuilderTextField(
                         name: 'username',
-                        icon: FontAwesomeIcons.at,
+                        leadingIcon: FontAwesomeIcons.at,
                         keyboardType: TextInputType.emailAddress,
                         placeholder: 'Nombre de usuario o email',
                         validator: FormBuilderValidators.compose([
@@ -42,7 +42,7 @@ class SignInScreen extends HookConsumerWidget {
                       /* dont user const, BUG 🐛 */
                        CustomFormBuilderTextField(
                         name: 'password',
-                        icon: FontAwesomeIcons.lock,
+                        leadingIcon: FontAwesomeIcons.lock,
                         placeholder: 'Contraseña',
                         passwordField: true,
                       ),
