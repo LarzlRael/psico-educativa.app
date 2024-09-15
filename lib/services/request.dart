@@ -17,7 +17,16 @@ class Request {
     final headers = {
       'Content-Type': 'application/json',
     };
-    Uri uri = Uri.parse('${Environment.serverApi}/$url');
+
+    Uri uri;
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+        // Si ya tiene http o https, usar la URL tal cual
+      uri = Uri.parse(url);
+    } else {
+      // Si no tiene http o https, concatenar con el servidor API
+      uri = Uri.parse('${Environment.serverApi}/$url');
+    }
+    
     String requestBody = body != null ? jsonEncode(body) : '{}';
     late http.Response res;
     switch (method) {
@@ -74,17 +83,20 @@ class Request {
     Map<String, String>? body,
   }) async {
     late http.Response res;
-    final token = await KeyValueStorageServiceImpl().getValue<String>('token');
+    final token = await KeyValueStorageServiceImpl().getValue<String>(TOKEN);
     final Uri uri = Uri.parse('${Environment.serverApi}/$url');
 
     final mimeType = lookupMimeType(filePath)!.split('/');
 
+    // Configuración de los headers
     final headers = {
       'Authorization': 'Bearer $token',
+      'Content-Type':
+          'multipart/form-data', // Asegúrate de que el Content-Type sea correcto
     };
 
     final uploadFile = await http.MultipartFile.fromPath(
-      'file',
+      'profileImageCourse',
       filePath,
       contentType: MediaType(mimeType[0], mimeType[1]),
     );
@@ -93,9 +105,17 @@ class Request {
       requestType == RequestType.post ? 'POST' : 'PUT',
       uri,
     );
+
+    // Agregar headers a la solicitud
     uploadPostRequest.headers.addAll(headers);
     uploadPostRequest.files.add(uploadFile);
-    if (body != null) uploadPostRequest.fields.addAll(body);
+
+    // Agregar campos adicionales si existen
+    if (body != null) {
+      uploadPostRequest.fields.addAll(body);
+    }
+
+    // Enviar la solicitud
     final streamResponse = await uploadPostRequest.send();
     res = await http.Response.fromStream(streamResponse);
 

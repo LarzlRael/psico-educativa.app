@@ -47,7 +47,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       // Aquí deberías integrar tu lógica de autenticación (API, base de datos, etc.)
 
       final user = await sendGenericRequest(
-        '/auth/register',
+        'auth/register',
         userApiFromJson,
         method: RequestType.post,
         body: body,
@@ -55,6 +55,49 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
       return saveUserAndToken(user,
           errorMessage: 'Hubo un error en el registro');
+    } catch (e) {
+      state = state.copyWith(
+        authenticateStatus: AuthStatus.noAuthenticated,
+        errorMessage: 'Error durante el registro: ${e.toString()}',
+      );
+      return false;
+    }
+  }
+
+  Future<bool> updateProfileInfo(Map<String, dynamic> body) async {
+    state = state.copyWith(errorMessage: null);
+
+    try {
+      final user = await sendGenericAuthRequest(
+        'users/update-profile-information',
+        userApiFromJson,
+        method: RequestType.post,
+        body: body,
+      );
+
+      return saveUserAndToken(user,
+          errorMessage: 'Hubo un error en la actualizacion');
+    } catch (e) {
+      state = state.copyWith(
+        authenticateStatus: AuthStatus.noAuthenticated,
+        errorMessage: 'Error durante el registro: ${e.toString()}',
+      );
+      return false;
+    }
+  }
+
+  Future<bool> updateProfileImage(String imageFilePath) async {
+    state = state.copyWith(errorMessage: null);
+
+    try {
+      final updateProfileRequest = await Request.sendRequestWithFile(
+        RequestType.post,
+        'users/update-profile-image',
+        imageFilePath,
+      );
+      final res = userApiFromJson(updateProfileRequest.body);
+      return saveUserAndToken(res,
+          errorMessage: 'Hubo un error en la actualizacion');
     } catch (e) {
       state = state.copyWith(
         authenticateStatus: AuthStatus.noAuthenticated,

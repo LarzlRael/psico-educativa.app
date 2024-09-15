@@ -1,86 +1,42 @@
 part of '../custom_widgets.dart';
 
 class CustomDropdown extends StatelessWidget {
-  final String title;
-  final String formFieldName;
-  final String placeholder;
-  final List<String> listItems;
   const CustomDropdown({
-    Key? key,
-    required this.title,
-    required this.formFieldName,
-    required this.placeholder,
-    required this.listItems,
-  }) : super(key: key);
-
+    super.key,
+    this.initialValue,
+    this.placeholder,
+    required this.options,
+    required this.nameField,
+  });
+  final List<Map<String, dynamic>> options;
+  final String nameField;
+  final String? initialValue;
+  final String? placeholder;
   @override
   Widget build(BuildContext context) {
-    return DropdownItemsList(
-      title: title,
-      formFieldName: formFieldName,
-      placeholder: placeholder,
-      listItems: listItems,
-    );
-  }
-}
-
-class DropdownItemsList extends StatelessWidget {
-  const DropdownItemsList({
-    Key? key,
-    required this.title,
-    required this.formFieldName,
-    required this.placeholder,
-    required this.listItems,
-  }) : super(key: key);
-
-  final String title;
-  final String formFieldName;
-  final String placeholder;
-  final List<String> listItems;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SimpleText(
-           title,
-          fontSize: 16,
-          fontWeight: FontWeight.w800,
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        Card(
-          elevation: 5,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: FormBuilderDropdown(
-              name: formFieldName,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                labelStyle: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 18,
-                ),
-              ),
-              /* initialValue: category[0], */
-              /* hint: Text(placeholder), */
-              validator: FormBuilderValidators.required(),
-              items: listItems
-                  .map(
-                    (category) => DropdownMenuItem(
-                      value: category,
-                      child: Text(
-                        category,
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
+    if (options.isEmpty ||
+        options[0]['value'] == null ||
+        options[0]['value'] == 'null') {
+      return const SizedBox();
+    }
+    return Container(
+      margin: const EdgeInsets.only(bottom: 15),
+      child: DropdownButtonHideUnderline(
+        child: FormBuilderDropdown(
+          decoration: InputDecoration(
+            /* border: outlineInputBorder, */
           ),
+          name: nameField,
+          initialValue: initialValue,
+          isExpanded: true,
+          items: options.map((option) {
+            return DropdownMenuItem(
+              child: Text(option['label']),
+              value: option['value'],
+            );
+          }).toList(),
         ),
-      ],
+      ),
     );
   }
 }

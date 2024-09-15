@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 extension StringExtensions on String {
   String toCapitalize() =>
       isNotEmpty ? '${this[0].toUpperCase()}${this.substring(1)}' : '';
@@ -13,4 +15,8 @@ String avatarLabel(String username, String? firstName, String? lastName) {
     return username.substring(0, 2).toUpperCase();
   }
   return '${firstName ?? ''} ${lastName ?? ''}'.trim();
+}
+
+Future<void> copyToClipboard(String value) async {
+  await Clipboard.setData(ClipboardData(text: value));
 }

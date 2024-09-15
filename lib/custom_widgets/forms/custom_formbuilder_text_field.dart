@@ -1,23 +1,23 @@
 part of '../custom_widgets.dart';
 
 class CustomFormBuilderTextField extends HookWidget {
-  final String name;
+  final String fieldName;
   final IconData? leadingIcon;
   final Widget? trailingIcon;
   final String placeholder;
-  final bool passwordField;
+  final bool isPassword;
   final TextInputType keyboardType;
   final String? Function(String?)? validator;
   final EdgeInsetsGeometry? margin;
   const CustomFormBuilderTextField({
     super.key,
-    required this.name,
+    required this.fieldName,
     required this.placeholder,
     this.leadingIcon,
     this.trailingIcon,
     this.validator,
     this.keyboardType = TextInputType.text,
-    this.passwordField = false,
+    this.isPassword = false,
     this.margin = const EdgeInsets.symmetric(vertical: 5.0),
   });
 
@@ -33,8 +33,8 @@ class CustomFormBuilderTextField extends HookWidget {
         ),
         child: FormBuilderTextField(
           keyboardType: keyboardType,
-          obscureText: passwordField && obscureText.value,
-          name: name,
+          obscureText: isPassword && obscureText.value,
+          name: fieldName,
           validator: validator,
           decoration: InputDecoration(
             border: InputBorder.none,
@@ -43,7 +43,7 @@ class CustomFormBuilderTextField extends HookWidget {
               color: Colors.grey,
               fontSize: 14,
             ),
-            suffixIcon: passwordField
+            suffixIcon: isPassword
                 ? IconButton(
                     icon: obscureText.value
                         ? const Icon(FontAwesomeIcons.eyeSlash, size: 15)

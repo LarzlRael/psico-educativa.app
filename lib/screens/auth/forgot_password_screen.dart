@@ -56,7 +56,7 @@ class ForgotPasswordScreen extends HookConsumerWidget {
                         Column(
                           children: [
                             CustomFormBuilderTextField(
-                              name: 'email',
+                              fieldName: 'email',
                               leadingIcon: FontAwesomeIcons.at,
                               keyboardType: TextInputType.emailAddress,
                               placeholder: 'Email',

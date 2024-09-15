@@ -31,7 +31,7 @@ class SignInScreen extends HookConsumerWidget {
                   child: Column(
                     children: [
                       CustomFormBuilderTextField(
-                        name: 'username',
+                        fieldName: 'username',
                         leadingIcon: FontAwesomeIcons.at,
                         keyboardType: TextInputType.emailAddress,
                         placeholder: 'Nombre de usuario o email',
@@ -41,10 +41,10 @@ class SignInScreen extends HookConsumerWidget {
                       ),
                       /* dont user const, BUG 🐛 */
                        CustomFormBuilderTextField(
-                        name: 'password',
+                        fieldName: 'password',
                         leadingIcon: FontAwesomeIcons.lock,
                         placeholder: 'Contraseña',
-                        passwordField: true,
+                        isPassword: true,
                       ),
                     ],
                   ),

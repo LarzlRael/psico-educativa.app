@@ -48,6 +48,10 @@ final goRouterProvider = Provider((ref) {
           builder: (context, state) => const NotificationsScreen(),
         ),
         GoRoute(
+          path: MapFindLocationScreen.routeName,
+          builder: (context, state) => const MapFindLocationScreen(),
+        ),
+        GoRoute(
           path: '${NewCoursePromoScreen.routeName}/:id_course',
           builder: (context, state) {
             final letter = state.pathParameters['id_course'];

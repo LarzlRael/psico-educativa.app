@@ -4,11 +4,13 @@ class ProfileImageEdit extends HookWidget {
   final bool editable;
   final UserApi user;
   final double radius;
+  final Function(String filePath) onImageSelected;
   const ProfileImageEdit({
     super.key,
     required this.user,
     this.editable = true,
     this.radius = 40,
+    required this.onImageSelected,
   });
 
   @override
@@ -20,6 +22,7 @@ class ProfileImageEdit extends HookWidget {
           await CameraGalleryServiceImp().selectOneImageFromGallery();
       if (pickedFile == null) return;
       selectedImage.value = File(pickedFile);
+      onImageSelected(pickedFile);
     }
 
     return GestureDetector(

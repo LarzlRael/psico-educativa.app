@@ -17,7 +17,7 @@ class UserApi {
   final String username;
   final String email;
   final String? firstName; // Cambiado a String?
-  final String? lastName; // Cambiado a String?
+  final String? lastName; // Cambeiado a String?
   final String? location; // Cambiado a String?
   final DateTime createdAt;
   final String? phone; // Cambiado a String?
@@ -27,6 +27,7 @@ class UserApi {
   final String? address; // Cambiado a String?
   final List<String> roles;
   final String accessToken;
+  final AddressCoordinates? addressCoordinates;
 
   UserApi({
     required this.id,
@@ -43,6 +44,7 @@ class UserApi {
     required this.address,
     required this.roles,
     required this.accessToken,
+    required this.addressCoordinates,
   });
 
   factory UserApi.fromJson(Map<String, dynamic> json) => UserApi(
@@ -60,6 +62,7 @@ class UserApi {
         address: json["address"] ?? "",
         roles: List<String>.from(json["roles"].map((x) => x)),
         accessToken: json["accessToken"],
+        addressCoordinates: AddressCoordinates.fromJson(json["addressCoordinates"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -75,7 +78,28 @@ class UserApi {
         "profileImageId": profileImageId ?? "",
         "shippingAddress": shippingAddress ?? "",
         "address": address ?? "",
+        "addressCoordinates": addressCoordinates?.toJson() ?? "",
         "roles": List<dynamic>.from(roles.map((x) => x)),
         "accessToken": accessToken,
       };
+}
+
+class AddressCoordinates {
+    final String latitude;
+    final String longitude;
+
+    AddressCoordinates({
+        required this.latitude,
+        required this.longitude,
+    });
+
+    factory AddressCoordinates.fromJson(Map<String, dynamic> json) => AddressCoordinates(
+        latitude: json["latitude"],
+        longitude: json["longitude"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "latitude": latitude,
+        "longitude": longitude,
+    };
 }
