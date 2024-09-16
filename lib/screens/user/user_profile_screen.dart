@@ -17,7 +17,7 @@ class UserProfileScreen extends HookConsumerWidget {
 
     final isLocalLoading = useState(false);
     final formKey = useMemoized(() => GlobalKey<FormBuilderState>());
-    final isEnable = useState(true);
+    final isEnableForm = useState(true);
     final userState = authProviderS.user;
     final initialValues = {
       'firstName': userState?.firstName ?? '',
@@ -52,8 +52,12 @@ class UserProfileScreen extends HookConsumerWidget {
       };
 
       isLocalLoading.value = true;
+      showLoadingDialog(context,message: 'Actualizando perfil...');
       authProviderN.updateProfileInfo(addLatLng).then((value) {
         isLocalLoading.value = false;
+        isEnableForm.value = false;
+        /* TODO add isMounted condition */
+        context.pop();
         if (value) {
           toastification.show(
             title: Text('Perfil actualizado'),
@@ -71,7 +75,6 @@ class UserProfileScreen extends HookConsumerWidget {
           autoCloseDuration: const Duration(seconds: 5),
         );
       });
-      
     }
 
     return ScaffoldWithBackground(
@@ -92,9 +95,9 @@ class UserProfileScreen extends HookConsumerWidget {
                   children: [
                     IconButton(
                       icon: const Icon(FontAwesomeIcons.penToSquare),
-                      onPressed: () => isEnable.value = !isEnable.value,
+                      onPressed: () => isEnableForm.value = !isEnableForm.value,
                     ),
-                    if (isEnable.value)
+                    if (isEnableForm.value)
                       IconButton(
                         icon: const Icon(FontAwesomeIcons.circleCheck,
                             color: Colors.green),
@@ -125,7 +128,7 @@ class UserProfileScreen extends HookConsumerWidget {
                         .toCapitalizeEachWord()),
               FormBuilder(
                 initialValue: initialValues,
-                enabled: isEnable.value && !isLocalLoading.value,
+                enabled: isEnableForm.value && !isLocalLoading.value,
                 key: formKey,
                 child: Column(
                   children: [

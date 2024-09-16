@@ -50,3 +50,6 @@ part 'background/background_circle.dart';
 part 'background/scaffold_with_background.dart';
 
 part 'text/header_login_register.dart';
+
+
+part 'dialogs/loading_dialog.dart';
