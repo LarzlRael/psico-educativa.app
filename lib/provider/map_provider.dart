@@ -3,16 +3,40 @@ import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:psico_educativa_app/models/models.dart';
+import 'package:psico_educativa_app/provider/auth_provider.dart';
 
 final mapFinderNotifierProvider =
-    NotifierProvider<MapFinderNotifier, MapFinderState>(
-  () => MapFinderNotifier(),
+    StateNotifierProvider<MapFinderNotifier, MapFinderState>(
+  (ref) => MapFinderNotifier(ref),
 );
 
-class MapFinderNotifier extends Notifier<MapFinderState> {
-  @override
-  MapFinderState build() {
-    return MapFinderState.initialState(); // Inicializa el estado.
+class MapFinderNotifier extends StateNotifier<MapFinderState> {
+  final Ref ref;
+
+  MapFinderNotifier(this.ref) : super(MapFinderState.initialState()) {
+    // Configura el listener para cambios en el AuthNotifier
+    ref.listen<AuthState>(authNotifierProvider, (previous, next) {
+      if (next.authenticateStatus == AuthStatus.authenticated) {
+        updatePositionFromAuth(next);
+      }
+    });
+  }
+
+  void updatePositionFromAuth(AuthState authState) {
+    final authState = ref.read(authNotifierProvider);
+    if (authState.user != null && authState.user!.addressCoordinates != null) {
+      final candidate = Candidate(
+        name: 'Ubicación actual',
+        formattedAddress: authState.user!.location ?? '',
+        geometry: Geometry(
+          location: Location(
+              lat: authState.user!.addressCoordinates!.latitude,
+              lng: authState.user!.addressCoordinates!.longitude),
+        ),
+      );
+
+      setMarkerSelectedPosition(candidate);
+    }
   }
 
   void setMarkers(Set<Marker> markers) {
@@ -34,7 +58,7 @@ class MapFinderNotifier extends Notifier<MapFinderState> {
             candidate.geometry.location.lng,
           ),
           infoWindow: InfoWindow(
-            title: 'Lugar seleccionado',
+            title: candidate.formattedAddress ?? '',
           ),
           icon: BitmapDescriptor.defaultMarkerWithHue(
             BitmapDescriptor.hueRed,

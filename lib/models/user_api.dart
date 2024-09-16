@@ -85,21 +85,23 @@ class UserApi {
 }
 
 class AddressCoordinates {
-    final String latitude;
-    final String longitude;
+  final double latitude;
+  final double longitude;
 
-    AddressCoordinates({
-        required this.latitude,
-        required this.longitude,
-    });
+  AddressCoordinates({
+    required this.latitude,
+    required this.longitude,
+  });
 
-    factory AddressCoordinates.fromJson(Map<String, dynamic> json) => AddressCoordinates(
-        latitude: json["latitude"],
-        longitude: json["longitude"],
-    );
+  // Factory constructor para crear una instancia desde JSON
+  factory AddressCoordinates.fromJson(Map<String, dynamic> json) => AddressCoordinates(
+        latitude: double.parse(json["latitude"]), // Convertir de String a double
+        longitude: double.parse(json["longitude"]), // Convertir de String a double
+  );
 
-    Map<String, dynamic> toJson() => {
-        "latitude": latitude,
-        "longitude": longitude,
-    };
+  // Método para convertir el objeto en JSON
+  Map<String, dynamic> toJson() => {
+        "latitude": latitude.toString(), // Convertir de double a String para JSON
+        "longitude": longitude.toString(), // Convertir de double a String para JSON
+  };
 }

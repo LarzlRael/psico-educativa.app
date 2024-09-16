@@ -25,11 +25,55 @@ class UserProfileScreen extends HookConsumerWidget {
       'phone': userState?.phone ?? '',
       'location': userState?.location ?? '',
       'shippingAddress': userState?.shippingAddress ?? '',
-      'addressCoordinates':{
+      'addressCoordinates': {
         'latitude': userState?.addressCoordinates?.latitude ?? '',
         'longitude': userState?.addressCoordinates?.latitude ?? '',
       }
     };
+
+    onSubmit() async {
+      final validationSuccess = formKey.currentState?.validate() ?? false;
+
+      if (!validationSuccess) return;
+
+      formKey.currentState?.save();
+
+      isLocalLoading.value = true;
+      final data = formKeyToMap(formKey);
+      final addLatLng = {
+        ...data,
+        'addressCoordinates': {
+          'latitude': mapState!.candidateSelectedPosition!.geometry.location.lat
+              .toString(),
+          'longitude': mapState.candidateSelectedPosition!.geometry.location.lng
+              .toString(),
+        },
+        'shippingAddress': mapState.candidateSelectedPosition!.formattedAddress,
+      };
+
+      isLocalLoading.value = true;
+      authProviderN.updateProfileInfo(addLatLng).then((value) {
+        isLocalLoading.value = false;
+        if (value) {
+          toastification.show(
+            title: Text('Perfil actualizado'),
+            backgroundColor: Colors.green,
+            alignment: Alignment.bottomCenter,
+            autoCloseDuration: const Duration(seconds: 5),
+          );
+          return;
+        }
+        toastification.show(
+          type: ToastificationType.error,
+          title: Text('Error al actualizar el perfil'),
+          backgroundColor: Colors.red,
+          alignment: Alignment.bottomCenter,
+          autoCloseDuration: const Duration(seconds: 5),
+        );
+      });
+      
+    }
+
     return ScaffoldWithBackground(
       /* appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -43,9 +87,20 @@ class UserProfileScreen extends HookConsumerWidget {
             children: [
               Align(
                 alignment: Alignment.topRight,
-                child: IconButton(
-                  icon: const Icon(FontAwesomeIcons.penToSquare),
-                  onPressed: () => isEnable.value = !isEnable.value,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(
+                      icon: const Icon(FontAwesomeIcons.penToSquare),
+                      onPressed: () => isEnable.value = !isEnable.value,
+                    ),
+                    if (isEnable.value)
+                      IconButton(
+                        icon: const Icon(FontAwesomeIcons.circleCheck,
+                            color: Colors.green),
+                        onPressed: onSubmit,
+                      ),
+                  ],
                 ),
               ),
               ProfileImageEdit(
@@ -70,7 +125,7 @@ class UserProfileScreen extends HookConsumerWidget {
                         .toCapitalizeEachWord()),
               FormBuilder(
                 initialValue: initialValues,
-                enabled: isEnable.value,
+                enabled: isEnable.value && !isLocalLoading.value,
                 key: formKey,
                 child: Column(
                   children: [
@@ -105,6 +160,7 @@ class UserProfileScreen extends HookConsumerWidget {
                         size: size,
                       ),
                       placeholder: 'Telefono',
+                      keyboardType: TextInputType.phone,
                     ),
                     CustomFormBuilderTextField(
                       fieldName: 'location',
@@ -129,37 +185,14 @@ class UserProfileScreen extends HookConsumerWidget {
                       ),
                       placeholder: 'Direccion de envio',
                     ),
-                    FilledButton(
+                    /* FilledButton(
                       /* isLoading: isLocalLoading.value, */
                       child: Text("Guardar"),
                       /* textColor: Colors.white, */
                       onPressed: () async {
-                        final validationSuccess =
-                            formKey.currentState?.validate() ?? false;
-
-                        if (!validationSuccess) return;
-
-                        formKey.currentState?.save();
-
-                        isLocalLoading.value = true;
-                        final data = formKeyToMap(formKey);
-                        final addLatLng = {
-                          ...data,
-                          'addressCoordinates': {
-                            'latitude': mapState!.candidateSelectedPosition!.geometry
-                                .location.lat.toString(),
-                            'longitude': mapState.candidateSelectedPosition!.geometry
-                                .location.lng.toString(),
-                          },
-                          'shippingAddress': mapState.candidateSelectedPosition!.formattedAddress,
-                        };
-                        
-                        inspect(addLatLng);
-                        /* -- */
-                        isLocalLoading.value = true;
-                        
+                        await onSubmit();
                       },
-                    ),
+                    ), */
                   ],
                 ),
               ),
