@@ -51,7 +51,8 @@ class CustomFormBuilderTextField extends HookWidget {
                     onPressed: () => obscureText.value = !obscureText.value,
                   )
                 : trailingIcon,
-            prefixIcon: Icon(leadingIcon, size: 15),
+            prefixIcon:
+                leadingIcon == null ? const SizedBox(width: 5,) : Icon(leadingIcon, size: 15),
           ),
         ),
       ),

@@ -4,13 +4,17 @@ class ProfileImageEdit extends HookWidget {
   final bool editable;
   final UserApi user;
   final double radius;
+  final double iconCameraSize;
   final Function(String filePath) onImageSelected;
+  
+
   const ProfileImageEdit({
     super.key,
     required this.user,
-    this.editable = true,
-    this.radius = 40,
     required this.onImageSelected,
+    this.editable = true,
+    this.iconCameraSize = 16.0,
+    this.radius = 40,
   });
 
   @override
@@ -25,27 +29,21 @@ class ProfileImageEdit extends HookWidget {
       onImageSelected(pickedFile);
     }
 
-    return GestureDetector(
-      onTap: () async {
-        if (!editable) return;
-        selectGalleryPhoto();
-
-        /* await showDialog(context: context, builder: (_) => PublicProfilePage()); */
-      },
-      child: SizedBox(
-        width: radius * 2,
-        height: radius * 2,
-        child: Stack(
-          children: [
-            UserAvatar(
-              username: user.username,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              radius: radius,
-              customWidget:
-                  user.profileImageUrl == null && selectedImage.value == null
-                      ? null
-                      : selectedImage.value == null
+    return SizedBox(
+      width: radius * 2,
+      height: radius * 2,
+      child: Stack(
+        children: [
+          UserAvatar(
+            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            radius: radius,
+            customWidget:
+                user.profileImageUrl == null && selectedImage.value == null
+                    ? null
+                    : InstaImageViewer(
+                      child: selectedImage.value == null
                           ? FadeInImage(
                               placeholder: const AssetImage(appIcon),
                               image: NetworkImage(
@@ -56,23 +54,30 @@ class ProfileImageEdit extends HookWidget {
                               selectedImage.value!,
                               fit: BoxFit.cover,
                             ),
-            ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: editable
-                  ? const CircleAvatar(
+                    ),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: editable
+                ? GestureDetector(
+                    onTap: () {
+                      if (!editable) return;
+
+                      selectGalleryPhoto();
+                    },
+                    child: CircleAvatar(
                       backgroundColor: Colors.white,
-                      radius: 14.0,
+                      radius: iconCameraSize-5,
                       child: Icon(
                         Icons.camera_alt,
-                        size: 16.0,
-                        color: Color(0xFF404040),
+                        size: iconCameraSize,
+                        color: const Color(0xFF404040),
                       ),
-                    )
-                  : null,
-            ),
-          ],
-        ),
+                    ),
+                  )
+                : null,
+          ),
+        ],
       ),
     );
   }

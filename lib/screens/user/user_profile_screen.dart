@@ -84,7 +84,11 @@ class UserProfileScreen extends HookConsumerWidget {
       ), */
 
       child: Container(
-        margin: const EdgeInsets.only(top: kToolbarHeight),
+        margin: const EdgeInsets.only(
+          top: kToolbarHeight,
+          right: 10,
+          left: 10,
+        ),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -102,12 +106,12 @@ class UserProfileScreen extends HookConsumerWidget {
                           content:
                               '¿Estás seguro de que quieres cerrar sesión?',
                           acceptText: 'Ok',
-                          onAccept: ()  {
-                             authProviderN.logout().then((value){
-                                if(value){
-                                  context.go(SignInScreen.routeName);
-                                }
-                             });
+                          onAccept: () {
+                            authProviderN.logout().then((value) {
+                              if (value) {
+                                context.go(SignInScreen.routeName);
+                              }
+                            });
                           },
                         );
                       },
@@ -127,6 +131,8 @@ class UserProfileScreen extends HookConsumerWidget {
                 ),
               ),
               ProfileImageEdit(
+                radius: 55,
+                iconCameraSize: 25,
                 onImageSelected: (filePath) async {
                   final resp = await authProviderN.updateProfileImage(filePath);
                 },
@@ -155,7 +161,7 @@ class UserProfileScreen extends HookConsumerWidget {
                     CustomFormBuilderTextField(
                       fieldName: 'firstName',
                       trailingIcon: const Icon(
-                        FontAwesomeIcons.lock,
+                        Icons.person,
                         color: colorIcon,
                         size: size,
                       ),
@@ -169,7 +175,7 @@ class UserProfileScreen extends HookConsumerWidget {
                     CustomFormBuilderTextField(
                       fieldName: 'lastName',
                       trailingIcon: Icon(
-                        FontAwesomeIcons.lock,
+                        Icons.person_outline,
                         color: colorIcon,
                         size: size,
                       ),
@@ -201,9 +207,9 @@ class UserProfileScreen extends HookConsumerWidget {
                           context.push(MapFindLocationScreen.routeName);
                         },
                         icon: Icon(
-                          FontAwesomeIcons.locationArrow,
-                          color: colorIcon,
-                          size: size,
+                          FontAwesomeIcons.locationPin,
+                          color: Colors.blue,
+                          size: size + 5,
                         ),
                       ),
                       placeholder: 'Direccion de envio',

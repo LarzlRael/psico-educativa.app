@@ -11,6 +11,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_builder_file_picker/form_builder_file_picker.dart';
 import 'package:go_router/go_router.dart';
+import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:psico_educativa_app/config/environment.dart';
 import 'package:psico_educativa_app/constants/app_info.dart';
 import 'package:psico_educativa_app/models/models.dart';
