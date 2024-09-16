@@ -223,7 +223,7 @@ class _MenuItemButton extends ConsumerWidget {
         duration: const Duration(milliseconds: 300),
         child: Icon(
           item.icon,
-          size: (selectedIndex == index) ? 35 : 25,
+          size: (selectedIndex == index) ? 30 : 25,
           color: selectedIndex == index
               ? Theme.of(context).colorScheme.secondary
               : Colors.blueGrey,

@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:psico_educativa_app/constants/key_constants.dart';
 import 'package:psico_educativa_app/firebase_options.dart';
 import 'package:psico_educativa_app/models/models.dart';
+import 'package:psico_educativa_app/provider/auth_provider.dart';
 import 'package:psico_educativa_app/provider/loca_notification_provider.dart';
 import 'package:psico_educativa_app/services/notification_services.dart';
 import 'package:psico_educativa_app/services/services.dart';
@@ -31,6 +33,7 @@ final notificationNotifierProvider =
 class NotificationNotifier extends StateNotifier<NotificationState> {
   final Ref ref; // Añade `Ref`
   final keyValueStorageService = KeyValueStorageServiceImpl();
+  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   NotificationNotifier(this.ref)
       : super(NotificationState(
             message: '',
@@ -40,6 +43,12 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
     _onForegroundMessage();
     getNotification();
     _getAndSaveFCMToken();
+
+    ref.listen<AuthState>(authNotifierProvider, (previous, next) {
+      if (next.authenticateStatus == AuthStatus.authenticated) {
+        _getAndSaveFCMToken();
+      }
+    });
   }
 
   void getNotification() async {
@@ -82,6 +91,17 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
       return;
     }
     print('FCM Token: $token');
+
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    final data = {
+      'fcmToken': token,
+      'deviceName': androidInfo.model,
+    };
+
+    final resp = await Request.sendAuthRequest(
+        RequestType.post, 'devices/new-device',
+        body: data);
+
     state = state.copyWith(tokenDevice: token!);
 
     await keyValueStorageService.setKeyValue<String>(FCM_TOKEN, token!);

@@ -62,7 +62,8 @@ class UserApi {
         address: json["address"] ?? "",
         roles: List<String>.from(json["roles"].map((x) => x)),
         accessToken: json["accessToken"],
-        addressCoordinates: AddressCoordinates.fromJson(json["addressCoordinates"]),
+        addressCoordinates:
+            AddressCoordinates.fromJson(json["addressCoordinates"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -94,14 +95,20 @@ class AddressCoordinates {
   });
 
   // Factory constructor para crear una instancia desde JSON
-  factory AddressCoordinates.fromJson(Map<String, dynamic> json) => AddressCoordinates(
-        latitude: double.parse(json["latitude"]), // Convertir de String a double
-        longitude: double.parse(json["longitude"]), // Convertir de String a double
-  );
+  factory AddressCoordinates.fromJson(Map<String, dynamic> json) {
+    // Reemplazar comas con puntos en las coordenadas
+    String latitudeStr = json["latitude"].replaceAll(',', '.');
+    String longitudeStr = json["longitude"].replaceAll(',', '.');
+
+    return AddressCoordinates(
+      latitude: double.parse(latitudeStr), // Convertir de String a double
+      longitude: double.parse(longitudeStr), // Convertir de String a double
+    );
+  }
 
   // Método para convertir el objeto en JSON
   Map<String, dynamic> toJson() => {
         "latitude": latitude.toString(), // Convertir de double a String para JSON
         "longitude": longitude.toString(), // Convertir de double a String para JSON
-  };
+      };
 }

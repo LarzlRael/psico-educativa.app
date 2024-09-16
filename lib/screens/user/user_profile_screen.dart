@@ -52,7 +52,7 @@ class UserProfileScreen extends HookConsumerWidget {
       };
 
       isLocalLoading.value = true;
-      showLoadingDialog(context,message: 'Actualizando perfil...');
+      showLoadingDialog(context, message: 'Actualizando perfil...');
       authProviderN.updateProfileInfo(addLatLng).then((value) {
         isLocalLoading.value = false;
         isEnableForm.value = false;
@@ -91,8 +91,28 @@ class UserProfileScreen extends HookConsumerWidget {
               Align(
                 alignment: Alignment.topRight,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  /* mainAxisAlignment: MainAxisAlignment.end, */
                   children: [
+                    IconButton(
+                      icon: const Icon(FontAwesomeIcons.powerOff),
+                      onPressed: () async {
+                        await showCustomConfirmDialog(
+                          context,
+                          title: 'Cerrar sesión',
+                          content:
+                              '¿Estás seguro de que quieres cerrar sesión?',
+                          acceptText: 'Ok',
+                          onAccept: ()  {
+                             authProviderN.logout().then((value){
+                                if(value){
+                                  context.go(SignInScreen.routeName);
+                                }
+                             });
+                          },
+                        );
+                      },
+                    ),
+                    const Spacer(),
                     IconButton(
                       icon: const Icon(FontAwesomeIcons.penToSquare),
                       onPressed: () => isEnableForm.value = !isEnableForm.value,

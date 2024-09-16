@@ -53,3 +53,4 @@ part 'text/header_login_register.dart';
 
 
 part 'dialogs/loading_dialog.dart';
+part 'dialogs/confirmation_dialog.dart';

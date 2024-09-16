@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:psico_educativa_app/constants/key_constants.dart';
 import 'package:psico_educativa_app/models/models.dart';
@@ -22,15 +24,7 @@ Future<UserApi?> signIn(String email, String password) async {
 
   final resp =
       await Request.sendRequest(RequestType.post, 'auth/signin', body: data);
-
-  await saveFMCToken();
-
-  /* if (validateStatus(resp!.statusCode)) {
-    final user = userApiFromJson(resp.body);
-    return user;
-  }
-  return null; */
-
+  inspect(resp);
   return validateStatus(resp!.statusCode) ? userApiFromJson(resp.body) : null;
 }
 
@@ -50,7 +44,7 @@ Future<UserApi?> signInWithGoogle() async {
   final resp = await Request.sendAuthRequest(
       RequestType.post, 'auth/google-signIn', body: {
     'googleToken': googleKey.idToken,
-    'fmcToken': await getFCMToken() 
+    'fmcToken': await getFCMToken()
   });
 
   return validateStatus(resp!.statusCode) ? userApiFromJson(resp.body) : null;
@@ -67,21 +61,4 @@ Future<void> signOutFromGoogle() async {
     }
   }
   return;
-}
-
-Future<void> saveFMCToken() async {
-  final data = {
-    'fcmToken': await getFCMToken(),
-    'deviceName': "psdf",
-  };
-
-  final resp = await Request.sendAuthRequest(
-      RequestType.post, 'devices/new-device',
-      body: data);
-
-  /* if (validateStatus(resp!.statusCode)) {
-    final user = userApiFromJson(resp.body);
-    return user;
-  }
-  return null; */
 }

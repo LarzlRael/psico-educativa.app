@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:psico_educativa_app/constants/key_constants.dart';
 import 'package:psico_educativa_app/models/models.dart';
@@ -26,12 +28,14 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(errorMessage: null);
 
     try {
-      // Aquí deberías integrar tu lógica de autenticación (API, base de datos, etc.)
-
       final user = await AuthServices.signIn(username.trim(), password.trim());
+      print("inspecting user");
+      inspect(user);
       return saveUserAndToken(user,
           errorMessage: 'Nombre de usuario o contraseña incorrectos');
     } catch (e) {
+      print("inspecting error");
+      inspect(e);
       state = state.copyWith(
         authenticateStatus: AuthStatus.noAuthenticated,
         errorMessage: 'Error de autenticación: ${e.toString()}',
