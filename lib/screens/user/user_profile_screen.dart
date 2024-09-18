@@ -1,6 +1,6 @@
 part of '../screens.dart';
 
-const size = 15.0;
+const size = 18.0;
 const colorIcon = Colors.grey;
 
 class UserProfileScreen extends HookConsumerWidget {
@@ -17,7 +17,7 @@ class UserProfileScreen extends HookConsumerWidget {
 
     final isLocalLoading = useState(false);
     final formKey = useMemoized(() => GlobalKey<FormBuilderState>());
-    final isEnableForm = useState(true);
+    final isEnableForm = useState(false);
     final userState = authProviderS.user;
     final initialValues = {
       'firstName': userState?.firstName ?? '',
@@ -86,8 +86,8 @@ class UserProfileScreen extends HookConsumerWidget {
       child: Container(
         margin: const EdgeInsets.only(
           top: kToolbarHeight,
-          right: 10,
-          left: 10,
+          right: 15,
+          left: 15,
         ),
         child: SingleChildScrollView(
           child: Column(
@@ -161,7 +161,7 @@ class UserProfileScreen extends HookConsumerWidget {
                     CustomFormBuilderTextField(
                       fieldName: 'firstName',
                       trailingIcon: const Icon(
-                        Icons.person,
+                        FontAwesomeIcons.user,
                         color: colorIcon,
                         size: size,
                       ),
@@ -175,7 +175,7 @@ class UserProfileScreen extends HookConsumerWidget {
                     CustomFormBuilderTextField(
                       fieldName: 'lastName',
                       trailingIcon: Icon(
-                        Icons.person_outline,
+                        FontAwesomeIcons.userAstronaut,
                         color: colorIcon,
                         size: size,
                       ),
@@ -214,6 +214,7 @@ class UserProfileScreen extends HookConsumerWidget {
                       ),
                       placeholder: 'Direccion de envio',
                     ),
+                    const SizedBox(height: 40),
                     /* FilledButton(
                       /* isLoading: isLocalLoading.value, */
                       child: Text("Guardar"),

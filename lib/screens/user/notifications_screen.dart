@@ -9,58 +9,62 @@ class NotificationsScreen extends ConsumerWidget {
     final notificationsProvider = ref.read(notificationNotifierProvider);
     final notificationsState = ref.watch(notificationNotifierProvider);
     return ScaffoldWithBackground(
-      child: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.only(top: kToolbarHeight),
-            child: Row(
-              /* mainAxisAlignment: MainAxisAlignment.spaceBetween, */
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(left: 20),
-                  decoration: BoxDecoration(
-                    color: colorScheme.secondary,
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    onPressed: () {
-                      /* notificationsProvider.getNotifications(); */
-                    },
-                    icon: const Icon(Icons.chevron_left,
-                        color: Colors.white, size: 25),
-                  ),
-                ),
-                SizedBox(width: 15),
-                const SimpleText('Notificaciones',
-                    fontSize: 20, fontWeight: FontWeight.bold),
-              ],
+      child: Container(
+        margin: const EdgeInsets.only(top: kToolbarHeight),
+        child: Column(
+          children: [
+            Container(
+              child: Row(
+                /* mainAxisAlignment: MainAxisAlignment.spaceBetween, */
+                children: [
+                  /* Container(
+                    margin: const EdgeInsets.only(left: 20),
+                    decoration: BoxDecoration(
+                      color: colorScheme.secondary,
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        /* notificationsProvider.getNotifications(); */
+                      },
+                      icon: const Icon(Icons.chevron_left,
+                          color: Colors.white, size: 25),
+                    ),
+                  ), */
+                  SizedBox(width: 15),
+                  const SimpleText('Notificaciones',
+                      fontSize: 20, fontWeight: FontWeight.bold),
+                ],
+              ),
             ),
-          ),
-          notificationsState.isLoading
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Expanded(
-                  child: ListView.builder(
-                    itemCount: notificationsState.notifications.length,
-                    itemBuilder: (context, index) {
-                      final notification =
-                          notificationsState.notifications[index];
+            notificationsState.isLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Expanded(
+                    child: ListView.builder(
+                      itemCount: notificationsState.notifications.length,
+                      itemBuilder: (context, index) {
+                        final notification =
+                            notificationsState.notifications[index];
 
-                      return _ListTileNotification(notification: notification);
-                    },
+                        return _ListTileNotification(
+                          notification,
+                        );
+                      },
+                    ),
                   ),
-                ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
 
 class _ListTileNotification extends StatelessWidget {
-  const _ListTileNotification({
+  const _ListTileNotification(
+    this.notification, {
     super.key,
-    required this.notification,
   });
 
   final NotificationModel notification;
@@ -72,7 +76,7 @@ class _ListTileNotification extends StatelessWidget {
       onTap: () {
         if (notification.data?.idCourse == null) return;
         context.push(
-          "${CourseEnrollment.routeName}/${notification.data?.idCourse}",
+          "${NewCoursePromoScreen.routeName}/${notification.data?.idCourse}",
         );
       },
       leading: Container(
@@ -97,12 +101,12 @@ class _ListTileNotification extends StatelessWidget {
       title: SimpleText(
         notification.title.toCapitalize(),
         fontSize: 15,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w700,
       ),
       subtitle: SimpleText(
         notification.body.toCapitalize(),
         fontSize: 13,
-        fontWeight: FontWeight.w400,
+        fontWeight: FontWeight.w300,
       ),
     );
   }

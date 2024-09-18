@@ -31,28 +31,31 @@ class CustomFormBuilderTextField extends HookWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
-        child: FormBuilderTextField(
-          keyboardType: keyboardType,
-          obscureText: isPassword && obscureText.value,
-          name: fieldName,
-          validator: validator,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            labelText: placeholder,
-            labelStyle: const TextStyle(
-              color: Colors.grey,
-              fontSize: 14,
+        child: Padding(
+          padding: EdgeInsets.only(left: leadingIcon == null ? 20 : 0),
+          child: FormBuilderTextField(
+            keyboardType: keyboardType,
+            obscureText: isPassword && obscureText.value,
+            name: fieldName,
+            validator: validator,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              labelText: placeholder,
+              labelStyle: const TextStyle(
+                color: Colors.grey,
+                fontSize: 14,
+              ),
+              suffixIcon: isPassword
+                  ? IconButton(
+                      icon: obscureText.value
+                          ? const Icon(FontAwesomeIcons.eyeSlash, size: 15)
+                          : const Icon(FontAwesomeIcons.eye, size: 15),
+                      onPressed: () => obscureText.value = !obscureText.value,
+                    )
+                  : trailingIcon,
+              prefixIcon:
+                  leadingIcon == null ? null : Icon(leadingIcon, size: 15),
             ),
-            suffixIcon: isPassword
-                ? IconButton(
-                    icon: obscureText.value
-                        ? const Icon(FontAwesomeIcons.eyeSlash, size: 15)
-                        : const Icon(FontAwesomeIcons.eye, size: 15),
-                    onPressed: () => obscureText.value = !obscureText.value,
-                  )
-                : trailingIcon,
-            prefixIcon:
-                leadingIcon == null ? const SizedBox(width: 5,) : Icon(leadingIcon, size: 15),
           ),
         ),
       ),

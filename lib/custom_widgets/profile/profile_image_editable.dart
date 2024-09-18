@@ -40,7 +40,7 @@ class ProfileImageEdit extends HookWidget {
             lastName: user.lastName,
             radius: radius,
             customWidget:
-                user.profileImageUrl == null && selectedImage.value == null
+                !isValidateString(user.profileImageUrl)  && selectedImage.value == null
                     ? null
                     : InstaImageViewer(
                       child: selectedImage.value == null

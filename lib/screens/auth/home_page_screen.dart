@@ -48,7 +48,8 @@ class HomeScreenItem extends HookConsumerWidget {
     return Scaffold(
       body: ScaffoldWithBackground(
         child: Container(
-          padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
+          padding:
+              const EdgeInsets.only(top: kToolbarHeight, left: 15, right: 15),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,39 +57,12 @@ class HomeScreenItem extends HookConsumerWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    InkWell(
+                    UserNameAvatar(
+                      user: authProviderS.user,
                       onTap: () =>
                           ref.read(menuProvider.notifier).selectItem(3),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 7),
-                        decoration: BoxDecoration(
-                            color: colorScheme.primary.withOpacity(0.4),
-                            borderRadius: BorderRadius.circular(30)),
-                        child: Wrap(
-                          /* alignment: WrapAlignment.center, */
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            UserAvatar(
-                              username: authProviderS.user!.username,
-                              firstName: authProviderS.user!.firstName,
-                              lastName: authProviderS.user!.lastName,
-                              customWidget: FadeInImage(
-                                placeholder: const AssetImage(appIcon),
-                                image: NetworkImage(
-                                    authProviderS.user!.profileImageUrl!),
-                              ),
-                            ),
-                            const SizedBox(width: 15),
-                            SimpleText(
-                                authProviderS.user!.username.toCapitalize(),
-                                fontSize: 18),
-                            const SizedBox(width: 5),
-                          ],
-                        ),
-                      ),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Container(
                       height: 55,
                       width: 55,
@@ -140,8 +114,49 @@ class HomeScreenItem extends HookConsumerWidget {
   }
 }
 
-Future<List<NotificationModel>> getNotification() async {
-  final resp = await Request.sendRequest(
-      RequestType.get, 'notifications/get-notification');
-  return notificationsModelFromJson(resp!.body);
+class UserNameAvatar extends StatelessWidget {
+  const UserNameAvatar({
+    super.key,
+    required this.user,
+    required this.onTap,
+  });
+
+  final UserApi? user;
+  final void Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+        decoration: BoxDecoration(
+            color: colorScheme.primary.withOpacity(0.4),
+            borderRadius: BorderRadius.circular(30)),
+        child: Wrap(
+          /* alignment: WrapAlignment.center, */
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            UserAvatar(
+              username: user!.username,
+              firstName: user!.firstName,
+              lastName: user!.lastName,
+              customWidget: 
+              !isValidateString(user!.profileImageUrl)
+                  ? null
+                  :
+              FadeInImage(
+                placeholder: const AssetImage(appIcon),
+                image: NetworkImage(user!.profileImageUrl!),
+              ),
+            ),
+            const SizedBox(width: 15),
+            SimpleText(user!.username.toCapitalize(), fontSize: 18),
+            const SizedBox(width: 5),
+          ],
+        ),
+      ),
+    );
+  }
 }

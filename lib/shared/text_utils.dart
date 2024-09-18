@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:psico_educativa_app/shared/validations.dart';
 
 extension StringExtensions on String {
   String toCapitalize() =>
@@ -9,12 +10,13 @@ extension StringExtensions on String {
   }
 }
 
+/* Enhance this code to handle additional cases */
+
 String avatarLabel(String username, String? firstName, String? lastName) {
-  if ((firstName == null || firstName.isEmpty) &&
-      (lastName == null || lastName.isEmpty)) {
-    return username.substring(0, 2).toUpperCase();
+  if ((isValidateString(firstName)) && isValidateString(lastName)) {
+    return '${firstName![0]}${lastName![0]}'.toUpperCase();
   }
-  return '${firstName ?? ''} ${lastName ?? ''}'.trim();
+  return username.substring(0, 2).toUpperCase();
 }
 
 Future<void> copyToClipboard(String value) async {

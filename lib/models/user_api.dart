@@ -62,8 +62,9 @@ class UserApi {
         address: json["address"] ?? "",
         roles: List<String>.from(json["roles"].map((x) => x)),
         accessToken: json["accessToken"],
-        addressCoordinates:
-            AddressCoordinates.fromJson(json["addressCoordinates"]),
+        addressCoordinates: json["addressCoordinates"] != null
+            ? AddressCoordinates.fromJson(json["addressCoordinates"])
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -108,7 +109,9 @@ class AddressCoordinates {
 
   // Método para convertir el objeto en JSON
   Map<String, dynamic> toJson() => {
-        "latitude": latitude.toString(), // Convertir de double a String para JSON
-        "longitude": longitude.toString(), // Convertir de double a String para JSON
+        "latitude":
+            latitude.toString(), // Convertir de double a String para JSON
+        "longitude":
+            longitude.toString(), // Convertir de double a String para JSON
       };
 }
