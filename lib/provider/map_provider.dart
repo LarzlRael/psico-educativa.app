@@ -15,6 +15,7 @@ class MapFinderNotifier extends StateNotifier<MapFinderState> {
 
   MapFinderNotifier(this.ref) : super(MapFinderState.initialState()) {
     // Configura el listener para cambios en el AuthNotifier
+    print('MapFinderNotifier chechin auth status');
     ref.listen<AuthState>(authNotifierProvider, (previous, next) {
       if (next.authenticateStatus == AuthStatus.authenticated) {
         updatePositionFromAuth(next);

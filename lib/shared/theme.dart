@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-/* import 'package:google_fonts/google_fonts.dart'; */
+import 'package:google_fonts/google_fonts.dart';
 
 const colorList = <Color>[
   Colors.purple,
@@ -30,6 +30,9 @@ class AppTheme {
             /* titleSmall: GoogleFonts.montserratAlternates().copyWith(
             fontSize: 20,
           ), */
+          titleSmall: GoogleFonts.calligraffitti().copyWith(
+            fontSize: 20,
+          ),
             ),
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xfff2e205),

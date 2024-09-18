@@ -20,13 +20,13 @@ class Request {
 
     Uri uri;
     if (url.startsWith('http://') || url.startsWith('https://')) {
-        // Si ya tiene http o https, usar la URL tal cual
+      // Si ya tiene http o https, usar la URL tal cual
       uri = Uri.parse(url);
     } else {
       // Si no tiene http o https, concatenar con el servidor API
       uri = Uri.parse('${Environment.serverApi}/$url');
     }
-    
+
     String requestBody = body != null ? jsonEncode(body) : '{}';
     late http.Response res;
     switch (method) {
@@ -42,6 +42,7 @@ class Request {
       case RequestType.delete:
         res = await http.delete(uri);
     }
+    inspect(res);
     return res;
   }
 
@@ -130,7 +131,8 @@ Future<T?> sendGenericRequest<T>(
   Map<String, dynamic>? body,
 } // Opcional: agregar el método HTTP con un valor por defecto
     ) async {
-  try {
+      /* Remove the try catch if you have issues to debbuing */
+  
     // Realiza la solicitud HTTP usando el método y URL proporcionados
     final resp = await Request.sendRequest(method, url, body: body);
 
@@ -139,10 +141,7 @@ Future<T?> sendGenericRequest<T>(
       // Usa la función proporcionada para convertir la respuesta
       return functionToConvert(resp.body);
     }
-  } catch (e) {
-    // Maneja cualquier error que ocurra durante la solicitud
-    print("Error during request: $e");
-  }
+  
 
   // Retorna null si la solicitud falla o si no es válida
   return null;

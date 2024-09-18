@@ -35,10 +35,10 @@ class HomeScreenItem extends HookConsumerWidget {
   Widget build(BuildContext context, ref) {
     final authProviderN = ref.read(authNotifierProvider.notifier);
     final authProviderS = ref.watch(authNotifierProvider);
-
+    final courserS = ref.watch(courseNotifierProvider);
     /*
     final courserN = ref.read(courseNotifierProvider.notifier);
-    final courserS = ref.watch(courseNotifierProvider); */
+     */
 
     /* useEffect(() {
       /* courseNotifierProviderN.getCourseDetails(idCourse).then((value) {}); */
@@ -47,8 +47,7 @@ class HomeScreenItem extends HookConsumerWidget {
     final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       body: ScaffoldWithBackground(
-        child: SafeArea(
-            child: Container(
+        child: Container(
           padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -111,17 +110,31 @@ class HomeScreenItem extends HookConsumerWidget {
                   ],
                 ),
                 const SizedBox(height: 30),
-                SimpleText('Legal help, Your Way', fontSize: 18),
-                const SizedBox(height: 10),
-                SimpleText(
-                  'Find Top class',
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold,
-                ),
-                SimpleText('Lawyers',
-                    fontSize: 35, fontWeight: FontWeight.bold),
+                courserS.isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : Expanded(
+                        child: MasonryGridView.count(
+                          physics: const BouncingScrollPhysics(),
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                          itemCount: courserS.courses.length,
+                          itemBuilder: (context, index) {
+                            final course = courserS.courses[index];
+
+                            return OneCourseCard(
+                              course,
+                              onSelected: (idCourse) {
+                                context.push(
+                                  '${NewCoursePromoScreen.routeName}/$idCourse',
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      )
               ]),
-        )),
+        ),
       ),
     );
   }

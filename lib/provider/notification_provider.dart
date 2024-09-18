@@ -42,9 +42,11 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
             isLoading: false)) {
     _onForegroundMessage();
     getNotification();
-    _getAndSaveFCMToken();
+    /* _getAndSaveFCMToken(); */
 
     ref.listen<AuthState>(authNotifierProvider, (previous, next) {
+        print('Authenticated from notificationlstener');
+        print(next.authenticateStatus);
       if (next.authenticateStatus == AuthStatus.authenticated) {
         _getAndSaveFCMToken();
       }
@@ -87,9 +89,9 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
 
   void _getAndSaveFCMToken() async {
     token = (await messaging.getToken())!;
-    if (token == await keyValueStorageService.getValue<String>(FCM_TOKEN)) {
+    /* if (token == await keyValueStorageService.getValue<String>(FCM_TOKEN)) {
       return;
-    }
+    } */
     print('FCM Token: $token');
 
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;

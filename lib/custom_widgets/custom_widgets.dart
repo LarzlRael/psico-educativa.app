@@ -20,6 +20,7 @@ import 'package:psico_educativa_app/provider/menu_provider.dart';
 import 'package:psico_educativa_app/screens/screens.dart';
 import 'package:psico_educativa_app/services/services.dart';
 import 'package:psico_educativa_app/shared/text_utils.dart';
+import 'package:psico_educativa_app/shared/validations.dart';
 
 part 'text/simple_text.dart';
 part 'text/app_bar_with_back_icon.dart';
@@ -41,7 +42,11 @@ part 'forms/custom_row_formbuilder_text_field.dart';
 part 'forms/input_styles.dart';
 part 'forms/global_form.dart';
 part 'forms/custom_switch.dart';
+
+
 part 'avatar/custom_circle_avatar.dart';
+
+part 'cards/one_course_card.dart';
 
 part 'delegates/search_location_delegate.dart';
 
@@ -51,6 +56,7 @@ part 'background/background_circle.dart';
 part 'background/scaffold_with_background.dart';
 
 part 'text/header_login_register.dart';
+part 'tables/custom_data_row.dart';
 
 
 part 'dialogs/loading_dialog.dart';

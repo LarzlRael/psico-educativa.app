@@ -124,7 +124,7 @@ class ListViewSuggestResult extends StatelessWidget {
               ),
             ),
           ), */
-          title: Text(candidate.name.toCapitalizeEachWord()),
+          title: Text(candidate.name.toTitleCase()),
           onTap: () => selectStore(candidate),
         );
       },

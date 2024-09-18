@@ -151,7 +151,7 @@ class UserProfileScreen extends HookConsumerWidget {
                 SimpleText(
                     fontSize: 16,
                     '${authProviderS.user!.firstName!} ${authProviderS.user!.lastName!}'
-                        .toCapitalizeEachWord()),
+                        .toTitleCase()),
               FormBuilder(
                 initialValue: initialValues,
                 enabled: isEnableForm.value && !isLocalLoading.value,

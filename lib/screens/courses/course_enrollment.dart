@@ -27,10 +27,6 @@ class CourseEnrollment extends HookConsumerWidget {
                   Text('${courseState.courseSelected?.courseName}'),
                   TextButton(
                       onPressed: () {
-                        ref
-                            .read(courseNotifierProvider.notifier)
-                            .addCounterPLus1();
-
                         print(
                             "Estado después de limpiar: ${courseState.courseSelected}");
                       },

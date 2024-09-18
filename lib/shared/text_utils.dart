@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 extension StringExtensions on String {
   String toCapitalize() =>
       isNotEmpty ? '${this[0].toUpperCase()}${this.substring(1)}' : '';
-  String toCapitalizeEachWord() {
+  String toTitleCase() {
     if (isEmpty) return '';
     return split(' ').map((word) => word.toCapitalize()).join(' ');
   }

@@ -12,5 +12,6 @@ part 'payload_notification_models.dart';
 part 'course_models.dart';
 part 'course_enrollment_model.dart';
 
+
 part 'location_model.dart';
 part 'traffic_response_model.dart';
