@@ -1,38 +1,46 @@
 part of '../custom_widgets.dart';
 
-Widget buildSkeletonItem() {
-  return Shimmer.fromColors(
-    baseColor: Colors.grey[600]!,
-    highlightColor: Colors.grey,
-    child: Container(
-      height: 100,
-      color: Colors.grey[600],
-      child: Row(
-        children: [
-          Container(
-            width: 80,
-            height: 80,
-            color: Colors.grey[600],
-          ),
-          SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  height: 20,
-                  color: Colors.grey[600],
-                ),
-                SizedBox(height: 10),
-                Container(
-                  height: 20,
-                  color: Colors.grey[600],
-                ),
-              ],
-            ),
-          ),
-        ],
+enum ShimmerShape { rectangle, circle, rounded }
+
+class ShimmerWidget extends StatelessWidget {
+  const ShimmerWidget({
+    super.key,
+    this.baseColor,
+    this.highlightColor,
+    this.height = 50,
+    this.width,
+    this.shape = ShimmerShape.rectangle,
+    this.borderRadius = 8.0,
+    this.margin,
+  });
+
+  final double height;
+  final double? width;
+  final Color? baseColor;
+  final Color? highlightColor;
+  final ShimmerShape shape;
+  final double borderRadius;
+  final EdgeInsetsGeometry? margin;
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: baseColor ?? Color(0xffB0B0B0),
+      highlightColor: highlightColor ?? Colors.grey,
+      child: Container(
+        margin: margin,
+        height: height,
+        width: width,
+        decoration: BoxDecoration(
+          color: highlightColor ?? Colors.grey,
+          borderRadius: shape == ShimmerShape.rounded
+              ? BorderRadius.circular(borderRadius)
+              : null,
+          shape: shape == ShimmerShape.circle
+              ? BoxShape.circle
+              : BoxShape.rectangle,
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

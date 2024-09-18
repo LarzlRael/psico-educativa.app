@@ -91,3 +91,59 @@ class OneCourseCard extends StatelessWidget {
     );
   }
 }
+
+class OneCourseCardShimmer extends StatelessWidget {
+  const OneCourseCardShimmer({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 200,
+      height: 300,
+      decoration: BoxDecoration(
+        /* color: Colors.white, */
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          /* BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: const Offset(0, 3), // changes position of shadow
+          ), */
+        ],
+      ),
+      child: const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ShimmerWidget(
+            margin: EdgeInsets.symmetric(vertical: 5),
+            shape: ShimmerShape.rounded,
+            height: 100,
+            borderRadius: 20,
+          ),
+          ShimmerWidget(
+            height: 17,
+            margin: EdgeInsets.symmetric(vertical: 5),
+            shape: ShimmerShape.rounded,
+            borderRadius: 15,
+          ),
+          ShimmerWidget(
+            height: 14,
+            borderRadius: 15,
+            margin: EdgeInsets.symmetric(vertical: 5),
+            shape: ShimmerShape.rounded,
+          ),
+          ShimmerWidget(
+            height: 20,
+            width: 50,
+            borderRadius: 20,
+            margin: EdgeInsets.symmetric(vertical: 5),
+            shape: ShimmerShape.rounded,
+          ),
+        ],
+      ),
+    );
+  }
+}

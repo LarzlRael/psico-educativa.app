@@ -33,22 +33,20 @@ class CourseEnrollmentScreen extends HookConsumerWidget {
           courseState.isLoading
               ? ListView(
                   children: [
-                    buildSkeletonItem(),
-                    ShimmerLoading(
-                      child: Container(
-                        width: 200,
-                        height: 50,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                          color: Color(0xFFEBEBF4),
-                        ),
-                        child: const UnconstrainedBox(
-                            child: CircularProgressIndicator.adaptive()),
-                      ),
+                    const ShimmerWidget(
+                      height: 200,
                     ),
-                    SizedBox(height: 10),
-                    buildSkeletonItem(),
-                    buildSkeletonItem(),
+                    const ShimmerWidget(
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        height: 25,
+                        shape: ShimmerShape.rounded),
+                    ...List.generate(5, (index) {
+                      return ShimmerWidget(
+                        margin: const EdgeInsets.symmetric(vertical: 5),
+                        height: 15,
+                        shape: ShimmerShape.rounded,
+                      );
+                    }),
                   ],
                 )
               : SingleChildScrollView(
@@ -90,18 +88,10 @@ class CourseEnrollmentScreen extends HookConsumerWidget {
                               child: GestureDetector(
                                 onTap: () =>
                                     context.push(UserProfileScreen.routeName),
-                                child: Card(
-                                  child: SimpleText(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 20,
-                                      vertical: 15,
-                                    ),
-                                    '${userInfoState.user?.firstName} ${userInfoState.user?.lastName}'
-                                        .toTitleCase(),
-                                    style: textTheme.titleSmall!.copyWith(
-                                        color: colorScheme.secondary,
-                                        fontSize: 22),
-                                  ),
+                                child: LetterNameLikeSignature(
+                                  userInfoState.user?.username ?? '',
+                                  firstName: userInfoState.user?.firstName,
+                                  lastName: userInfoState.user?.lastName,
                                 ),
                               ),
                             ),
@@ -110,7 +100,7 @@ class CourseEnrollmentScreen extends HookConsumerWidget {
                               fontSize: 11,
                               fontWeight: FontWeight.w300,
                             ),
-                            SizedBox(height: 15),
+                            const SizedBox(height: 15),
                             SimpleText(
                               '${courseState.courseSelected?.courseDescription}'
                                   .toCapitalize(),
@@ -151,11 +141,12 @@ class CourseEnrollmentScreen extends HookConsumerWidget {
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
                                     ),
-                                    trailing: isValidateString(e.user!.profileImageUrl)
+                                    trailing: isValidateString(
+                                            e.user!.profileImageUrl)
                                         ? CircleAvatar(
                                             radius: 25,
-                                            backgroundImage:
-                                                NetworkImage(e.user!.profileImageUrl!),
+                                            backgroundImage: NetworkImage(
+                                                e.user!.profileImageUrl!),
                                           )
                                         : null,
                                   );
@@ -216,17 +207,55 @@ class CourseEnrollmentScreen extends HookConsumerWidget {
                 ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: LoginButton(
-              showIcon: false,
-              text: ('Registrarse'),
-              onPressed: () async {
-                await showLoadingDialog(context, message: 'Registrando...');
-              },
-            ),
+            child: courseState.isLoading
+                ? const ShimmerWidget(
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    height: 50,
+                    shape: ShimmerShape.rounded)
+                : LoginButton(
+                    showIcon: false,
+                    text: ('Registrarse'),
+                    onPressed: () async {
+                      await showLoadingDialog(context,
+                          message: 'Registrando...');
+                    },
+                  ),
           )
         ],
       ),
     ));
+  }
+}
+
+class LetterNameLikeSignature extends StatelessWidget {
+  final String username;
+  final String? firstName;
+  final String? lastName;
+  const LetterNameLikeSignature(
+    this.username, {
+    super.key,
+    this.firstName,
+    this.lastName,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final signature = firstName != null && lastName != null
+        ? '$firstName $lastName'
+        : username;
+    return Card(
+      child: SimpleText(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 15,
+        ),
+        signature.toCapitalize().toTitleCase(),
+        style: textTheme.titleSmall!
+            .copyWith(color: colorScheme.secondary, fontSize: 22),
+      ),
+    );
   }
 }
 

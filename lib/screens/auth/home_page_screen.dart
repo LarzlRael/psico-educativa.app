@@ -85,7 +85,16 @@ class HomeScreenItem extends HookConsumerWidget {
                 ),
                 const SizedBox(height: 30),
                 courserS.isLoading
-                    ? const Center(child: CircularProgressIndicator())
+                    ? Expanded(
+                        child: MasonryGridView.count(
+                          physics: const BouncingScrollPhysics(),
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                          itemCount: 6,
+                          itemBuilder: (_, __) => const OneCourseCardShimmer(),
+                        ),
+                      )
                     : Expanded(
                         child: MasonryGridView.count(
                           physics: const BouncingScrollPhysics(),
@@ -142,14 +151,12 @@ class UserNameAvatar extends StatelessWidget {
               username: user!.username,
               firstName: user!.firstName,
               lastName: user!.lastName,
-              customWidget: 
-              !isValidateString(user!.profileImageUrl)
+              customWidget: !isValidateString(user!.profileImageUrl)
                   ? null
-                  :
-              FadeInImage(
-                placeholder: const AssetImage(appIcon),
-                image: NetworkImage(user!.profileImageUrl!),
-              ),
+                  : FadeInImage(
+                      placeholder: const AssetImage(appIcon),
+                      image: NetworkImage(user!.profileImageUrl!),
+                    ),
             ),
             const SizedBox(width: 15),
             SimpleText(user!.username.toCapitalize(), fontSize: 18),
