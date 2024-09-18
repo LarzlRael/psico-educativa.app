@@ -29,9 +29,16 @@ class NewCoursePromoScreen extends HookConsumerWidget {
         child: SizedBox.expand(
       child: Stack(
         children: [
+          /* TODO Improve this part of the code */
           courseState.isLoading
-              ? SizedBox.expand(
-                  child: Center(child: CircularProgressIndicator()))
+              ? ListView(
+                  children: [
+                    buildSkeletonItem(),
+                    SizedBox(height: 10),
+                    buildSkeletonItem(),
+                    buildSkeletonItem(),
+                  ],
+                )
               : SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -132,12 +139,13 @@ class NewCoursePromoScreen extends HookConsumerWidget {
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
                                     ),
-                                    trailing: isValidateString(e.user!.urlImage) ?  CircleAvatar(
-                                      radius: 25,
-                                      backgroundImage: NetworkImage(
-                                         e.user!.urlImage!
-                                      ),
-                                    ) : const SizedBox(),
+                                    trailing: isValidateString(e.user!.urlImage)
+                                        ? CircleAvatar(
+                                            radius: 25,
+                                            backgroundImage:
+                                                NetworkImage(e.user!.urlImage!),
+                                          )
+                                        : const SizedBox(),
                                   );
                                 }).toList(),
                               ),
@@ -173,9 +181,8 @@ class NewCoursePromoScreen extends HookConsumerWidget {
             child: LoginButton(
               showIcon: false,
               text: ('Registrarse'),
-              onPressed: () {
-                print(
-                    "Estado después de limpiar: ${courseState.courseSelected}");
+              onPressed: () async {
+                await showLoadingDialog(context, message: 'Registrando...');
               },
             ),
           )

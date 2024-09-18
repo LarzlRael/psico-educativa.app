@@ -33,6 +33,7 @@ import 'package:psico_educativa_app/shared/permission_util.dart';
 import 'package:psico_educativa_app/shared/router_utils.dart';
 import 'package:psico_educativa_app/shared/text_utils.dart';
 import 'package:psico_educativa_app/shared/validations.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:toastification/toastification.dart';
 
 part 'splash_screen_page.dart';

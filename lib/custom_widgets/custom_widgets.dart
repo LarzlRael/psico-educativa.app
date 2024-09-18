@@ -21,6 +21,7 @@ import 'package:psico_educativa_app/screens/screens.dart';
 import 'package:psico_educativa_app/services/services.dart';
 import 'package:psico_educativa_app/shared/text_utils.dart';
 import 'package:psico_educativa_app/shared/validations.dart';
+import 'package:shimmer/shimmer.dart';
 
 part 'text/simple_text.dart';
 part 'text/app_bar_with_back_icon.dart';
@@ -57,6 +58,7 @@ part 'background/scaffold_with_background.dart';
 
 part 'text/header_login_register.dart';
 part 'tables/custom_data_row.dart';
+part 'loadings/shimer_loading.dart';
 
 
 part 'dialogs/loading_dialog.dart';

@@ -2,7 +2,6 @@ part of '../custom_widgets.dart';
 
 Future<void> showLoadingDialog(BuildContext context, {String? message}) {
   return showDialog(
-
     context: context,
     barrierDismissible:
         false, // No permite cerrar el diálogo al tocar fuera de él
