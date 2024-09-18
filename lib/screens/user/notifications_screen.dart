@@ -76,7 +76,7 @@ class _ListTileNotification extends StatelessWidget {
       onTap: () {
         if (notification.data?.idCourse == null) return;
         context.push(
-          "${NewCoursePromoScreen.routeName}/${notification.data?.idCourse}",
+          "${CourseEnrollmentScreen.routeName}/${notification.data?.idCourse}",
         );
       },
       leading: Container(

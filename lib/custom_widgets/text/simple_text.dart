@@ -11,6 +11,7 @@ class SimpleText extends StatelessWidget {
 
   final TextAlign? textAlign;
   final double? lineHeight;
+  final TextDecoration? textDecoration;
 
   const SimpleText(
     this.text, {
@@ -22,6 +23,7 @@ class SimpleText extends StatelessWidget {
     this.textAlign,
     this.lineHeight,
     this.color,
+    this.textDecoration,
   });
 
   @override
@@ -37,6 +39,7 @@ class SimpleText extends StatelessWidget {
               fontWeight: fontWeight ?? FontWeight.normal,
               fontSize: fontSize ?? 14,
               color: color,
+              decoration: textDecoration,
             ),
       ),
     );

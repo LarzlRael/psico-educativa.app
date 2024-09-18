@@ -52,15 +52,15 @@ final goRouterProvider = Provider((ref) {
           builder: (context, state) => const MapFindLocationScreen(),
         ),
         GoRoute(
-          path: '${NewCoursePromoScreen.routeName}/:id_course',
+          path: '${CourseEnrollmentScreen.routeName}/:id_course',
           builder: (context, state) {
-            final letter = state.pathParameters['id_course'];
-            return NewCoursePromoScreen(
-              idCourse: int.parse(letter!),
+            final idCourse = state.pathParameters['id_course'];
+            return CourseEnrollmentScreen(
+              idCourse: int.parse(idCourse!),
             );
           },
         ),
-        GoRoute(
+        /* GoRoute(
           path: '${CourseEnrollment.routeName}/:id_course',
           builder: (context, state) {
             final idCourse = state.pathParameters['id_course'];
@@ -68,7 +68,7 @@ final goRouterProvider = Provider((ref) {
               idCourse: int.parse(idCourse!),
             );
           },
-        ),
+        ), */
       ],
       redirect: (context, state) {
         final login = SignInScreen.routeName;

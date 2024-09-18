@@ -1,6 +1,6 @@
 part of '../screens.dart';
 
-class CourseEnrollment extends HookConsumerWidget {
+/* class CourseEnrollment extends HookConsumerWidget {
   final int idCourse;
   static const routeName = "/course_enrollment";
 
@@ -35,3 +35,4 @@ class CourseEnrollment extends HookConsumerWidget {
               ));
   }
 }
+ */

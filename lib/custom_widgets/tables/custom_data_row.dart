@@ -2,8 +2,9 @@ part of '../custom_widgets.dart';
 
 DataRow customDataRow(
   String title,
-  String content,
-) {
+  String content, {
+  Widget? widgetInfo,
+}) {
   final isArray = content.contains(',');
 
   final arrayInfo = isArray ? content.split(',') : [content];
@@ -19,38 +20,38 @@ DataRow customDataRow(
       ),
       // Content Cell
       DataCell(
-        arrayInfo.length > 1
-            ? ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight:
-                      300, // Ajusta la altura máxima a un valor razonable
-                ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: arrayInfo
-                        .map(
-                          (e) => Row(
-                            children: [
-                              Flexible(
-                                child: SimpleText(
-                                  e,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400,
-                                ),
+        widgetInfo ?? (arrayInfo.length > 1
+                ? ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight:
+                          300, // Ajusta la altura máxima a un valor razonable
+                    ),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: arrayInfo
+                            .map(
+                              (e) => Row(
+                                children: [
+                                  Flexible(
+                                    child: SimpleText(
+                                      e,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ),
-              )
-            : SimpleText(
-                content,
-                fontSize: 15,
-                fontWeight: FontWeight.w400,
-              ),
+                            )
+                            .toList(),
+                      ),
+                    ),
+                  )
+                : SimpleText(
+                    content,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                  )),
       ),
     ],
   );

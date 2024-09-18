@@ -1,10 +1,10 @@
 part of '../screens.dart';
 
-class NewCoursePromoScreen extends HookConsumerWidget {
+class CourseEnrollmentScreen extends HookConsumerWidget {
   final int idCourse;
-  static const routeName = "/new-course-promo";
+  static const routeName = "/course_enrollment";
 
-  const NewCoursePromoScreen({super.key, required this.idCourse});
+  const CourseEnrollmentScreen({super.key, required this.idCourse});
 
   @override
   Widget build(BuildContext context, ref) {
@@ -34,6 +34,18 @@ class NewCoursePromoScreen extends HookConsumerWidget {
               ? ListView(
                   children: [
                     buildSkeletonItem(),
+                    ShimmerLoading(
+                      child: Container(
+                        width: 200,
+                        height: 50,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          color: Color(0xFFEBEBF4),
+                        ),
+                        child: const UnconstrainedBox(
+                            child: CircularProgressIndicator.adaptive()),
+                      ),
+                    ),
                     SizedBox(height: 10),
                     buildSkeletonItem(),
                     buildSkeletonItem(),
@@ -139,13 +151,13 @@ class NewCoursePromoScreen extends HookConsumerWidget {
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
                                     ),
-                                    trailing: isValidateString(e.user!.urlImage)
+                                    trailing: isValidateString(e.user!.profileImageUrl)
                                         ? CircleAvatar(
                                             radius: 25,
                                             backgroundImage:
-                                                NetworkImage(e.user!.urlImage!),
+                                                NetworkImage(e.user!.profileImageUrl!),
                                           )
-                                        : const SizedBox(),
+                                        : null,
                                   );
                                 }).toList(),
                               ),
@@ -157,8 +169,34 @@ class NewCoursePromoScreen extends HookConsumerWidget {
                                     '${courseState.courseSelected?.coursePrice}'),
                                 customDataRow('Material',
                                     '${courseState.courseSelected?.material}'),
-                                customDataRow('Más información',
-                                    '${courseState.courseSelected?.informationContact}'),
+                                customDataRow(
+                                  'Más información',
+                                  '',
+                                  widgetInfo: InkWell(
+                                    onTap: () => startWhatsapp(
+                                      context,
+                                      courseState.courseSelected
+                                              ?.informationContact ??
+                                          '',
+                                      'Hola, me gustaría obtener más información sobre el curso ${courseState.courseSelected?.courseName}',
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        const Icon(
+                                          FontAwesomeIcons.whatsapp,
+                                          color: Color(0xFF25D366),
+                                        ),
+                                        SizedBox(width: 10),
+                                        SimpleText(
+                                          '${courseState.courseSelected?.informationContact}',
+                                          color: colorScheme.secondary,
+                                          textDecoration:
+                                              TextDecoration.underline,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                                 customDataRow('Notas',
                                     '${courseState.courseSelected?.notes}'),
                               ],

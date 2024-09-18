@@ -100,7 +100,7 @@ class HomeScreenItem extends HookConsumerWidget {
                               course,
                               onSelected: (idCourse) {
                                 context.push(
-                                  '${NewCoursePromoScreen.routeName}/$idCourse',
+                                  '${CourseEnrollmentScreen.routeName}/$idCourse',
                                 );
                               },
                             );

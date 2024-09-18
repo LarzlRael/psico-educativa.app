@@ -32,6 +32,7 @@ import 'package:psico_educativa_app/services/services.dart';
 import 'package:psico_educativa_app/shared/permission_util.dart';
 import 'package:psico_educativa_app/shared/router_utils.dart';
 import 'package:psico_educativa_app/shared/text_utils.dart';
+import 'package:psico_educativa_app/shared/utils.dart';
 import 'package:psico_educativa_app/shared/validations.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:toastification/toastification.dart';
@@ -50,7 +51,7 @@ part 'user/user_profile_screen.dart';
 part 'user/notifications_screen.dart';
 
 part 'auth/check_out_status_screen.dart';
-part 'courses/new_course_promo.dart';
-part 'courses/course_enrollment.dart';
+part 'courses/course_enrollment_screen.dart';
+part 'courses/course_stuff.dart';
 
 part 'notifications/handle_notification_interaction.dart';

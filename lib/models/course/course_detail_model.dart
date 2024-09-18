@@ -108,23 +108,23 @@ class ProfessorsCourseDetail {
 class UserCourseDetail {
   final String? firstName;
   final String? lastName;
-  final String? urlImage;
+  final String? profileImageUrl;
 
   UserCourseDetail({
     required this.firstName,
     required this.lastName,
-    required this.urlImage,
+    required this.profileImageUrl,
   });
 
   factory UserCourseDetail.fromJson(Map<String, dynamic> json) => UserCourseDetail(
         firstName: json["firstName"],
         lastName: json["lastName"],
-        urlImage: json["urlImage"],
+        profileImageUrl: json["profileImageUrl"],
       );
 
   Map<String, dynamic> toJson() => {
         "firstName": firstName,
         "lastName": lastName,
-        "urlImage": urlImage,
+        "profileImageUrl": profileImageUrl,
       };
 }
