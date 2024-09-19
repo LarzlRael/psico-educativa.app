@@ -113,7 +113,7 @@ class MapFindLocationScreen extends HookConsumerWidget {
           );
         },
       ),
-      appBar: AppBar(
+      /* appBar: AppBar(
         title: const Text('Selecciona una ubicación'),
         actions: [
           IconButton(
@@ -140,62 +140,108 @@ class MapFindLocationScreen extends HookConsumerWidget {
             icon: const Icon(Icons.location_on, color: Colors.green),
           ), */
         ],
-      ),
-      body: isLoading.value
-          ? Center(
-              child: Container(
-                  width: 250,
-                  height: 250,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    /* color: Colors.white, */
-                  ),
-                  child: ClipRRect(
+      ), */
+      body: SafeArea(
+        child: isLoading.value
+            ? Center(
+                child: Container(
+                    width: 250,
+                    height: 250,
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      child: Image.asset(appIcon))),
-            )
-          : Stack(
-              children: [
-                GoogleMap(
-                  mapType: MapType.normal,
-                  markers: mapState.markers,
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(
-                      mapState.candidateCurrentPosition!.geometry.location.lat,
-                      mapState.candidateCurrentPosition!.geometry.location.lng,
+                      /* color: Colors.white, */
                     ),
-                    zoom: 16,
-                  ),
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller.complete(controller);
-                    mapController.value = controller;
-                  },
-                  onTap: (LatLng position) {
-                    inspect(position);
-                    mapNotifier.setMarkerSelectedPosition(
-                      Candidate(
-                        name: 'Ubicación seleccionada',
-                        geometry: Geometry(
-                          location: Location(
-                            lat: position.latitude,
-                            lng: position.longitude,
-                          ),
-                        ),
-                        formattedAddress: 'Ubicación seleccionada',
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.asset(appIcon))),
+              )
+            : Stack(
+                children: [
+                  GoogleMap(
+                    mapType: MapType.normal,
+                    markers: mapState.markers,
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(
+                        mapState
+                            .candidateCurrentPosition!.geometry.location.lat,
+                        mapState
+                            .candidateCurrentPosition!.geometry.location.lng,
                       ),
-                    );
-                  },
-                ),
-                mapState.isFetching
-                    ? Opacity(
-                        opacity: 0.6, // Valor de opacidad (0.0 a 1.0)
-                        child: Container(
-                          color: Colors.black, // Color oscuro
+                      zoom: 16,
+                    ),
+                    onMapCreated: (GoogleMapController controller) {
+                      _controller.complete(controller);
+                      mapController.value = controller;
+                    },
+                    onTap: (LatLng position) {
+                      inspect(position);
+                      mapNotifier.setMarkerSelectedPosition(
+                        Candidate(
+                          name: 'Ubicación seleccionada',
+                          geometry: Geometry(
+                            location: Location(
+                              lat: position.latitude,
+                              lng: position.longitude,
+                            ),
+                          ),
+                          formattedAddress: 'Ubicación seleccionada',
                         ),
-                      )
-                    : const SizedBox(),
-              ],
-            ),
+                      );
+                    },
+                  ),
+                  mapState.isFetching
+                      ? Opacity(
+                          opacity: 0.6, // Valor de opacidad (0.0 a 1.0)
+                          child: Container(
+                            color: Colors.black, // Color oscuro
+                          ),
+                        )
+                      : const SizedBox(),
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      /* color: Colors.red, */
+                      width: double.infinity,
+                      height: kToolbarHeight,
+                      child: Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              context.pop();
+                            },
+                            icon: BackIcon(
+                              size: 40,
+                            ),
+                          ),
+                          SimpleText(
+                            padding: const EdgeInsets.only(left: 10),
+                            'Ubicación de envio',
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          const Spacer(),
+                          IconButton(
+                            onPressed: () {
+                              showSearch(
+                                context: context,
+                                delegate: SearchLocationDelegate(
+                                  mapNotifier,
+                                ),
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.search,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+      ),
     );
   }
 }

@@ -13,70 +13,6 @@ class UserProfileScreen extends HookConsumerWidget {
     final authProviderN = ref.read(authNotifierProvider.notifier);
     final authProviderS = ref.watch(authNotifierProvider);
 
-    final mapState = ref.watch(mapFinderNotifierProvider);
-
-    final isLocalLoading = useState(false);
-    final formKey = useMemoized(() => GlobalKey<FormBuilderState>());
-    final isEnableForm = useState(false);
-    final userState = authProviderS.user;
-    final initialValues = {
-      'firstName': userState?.firstName ?? '',
-      'lastName': userState?.lastName ?? '',
-      'phone': userState?.phone ?? '',
-      'location': userState?.location ?? '',
-      'shippingAddress': userState?.shippingAddress ?? '',
-      'addressCoordinates': {
-        'latitude': userState?.addressCoordinates?.latitude ?? '',
-        'longitude': userState?.addressCoordinates?.latitude ?? '',
-      }
-    };
-
-    onSubmit() async {
-      final validationSuccess = formKey.currentState?.validate() ?? false;
-
-      if (!validationSuccess) return;
-
-      formKey.currentState?.save();
-
-      isLocalLoading.value = true;
-      final data = formKeyToMap(formKey);
-      final addLatLng = {
-        ...data,
-        'addressCoordinates': {
-          'latitude': mapState!.candidateSelectedPosition!.geometry.location.lat
-              .toString(),
-          'longitude': mapState.candidateSelectedPosition!.geometry.location.lng
-              .toString(),
-        },
-        'shippingAddress': mapState.candidateSelectedPosition!.formattedAddress,
-      };
-
-      isLocalLoading.value = true;
-      showLoadingDialog(context, message: 'Actualizando perfil...');
-      authProviderN.updateProfileInfo(addLatLng).then((value) {
-        isLocalLoading.value = false;
-        isEnableForm.value = false;
-        /* TODO add isMounted condition */
-        context.pop();
-        if (value) {
-          toastification.show(
-            title: Text('Perfil actualizado'),
-            backgroundColor: Colors.green,
-            alignment: Alignment.bottomCenter,
-            autoCloseDuration: const Duration(seconds: 5),
-          );
-          return;
-        }
-        toastification.show(
-          type: ToastificationType.error,
-          title: Text('Error al actualizar el perfil'),
-          backgroundColor: Colors.red,
-          alignment: Alignment.bottomCenter,
-          autoCloseDuration: const Duration(seconds: 5),
-        );
-      });
-    }
-
     return ScaffoldWithBackground(
       /* appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -86,13 +22,13 @@ class UserProfileScreen extends HookConsumerWidget {
       child: Container(
         margin: const EdgeInsets.only(
           top: kToolbarHeight,
-          right: 15,
-          left: 15,
+          right: 10,
+          left: 10,
         ),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Align(
+              /*  Align(
                 alignment: Alignment.topRight,
                 child: Row(
                   /* mainAxisAlignment: MainAxisAlignment.end, */
@@ -129,14 +65,21 @@ class UserProfileScreen extends HookConsumerWidget {
                       ),
                   ],
                 ),
-              ),
-              ProfileImageEdit(
+              ), */
+              UserAvatar(
                 radius: 55,
-                iconCameraSize: 25,
-                onImageSelected: (filePath) async {
-                  final resp = await authProviderN.updateProfileImage(filePath);
-                },
-                user: authProviderS.user!,
+                username: authProviderS.user!.username,
+                firstName: authProviderS.user!.firstName,
+                lastName: authProviderS.user!.lastName,
+                customWidget: isValidateString(
+                        authProviderS.user!.profileImageUrl)
+                    ? FadeInImage(
+                        placeholder: const AssetImage(appIcon),
+                        image:
+                            NetworkImage(authProviderS.user!.profileImageUrl!),
+                        fit: BoxFit.cover,
+                      )
+                    : null,
               ),
               SimpleText(
                 authProviderS.user!.username.toCapitalize(),
@@ -146,85 +89,51 @@ class UserProfileScreen extends HookConsumerWidget {
                 padding: const EdgeInsets.only(top: 10, bottom: 5),
               ),
               if (authProviderS.user!.email != null)
-                SimpleText(authProviderS.user!.email, fontSize: 16),
+                SimpleText(authProviderS.user!.email, fontSize: 14),
               if (authProviderS.user!.firstName != null)
                 SimpleText(
-                    fontSize: 16,
+                    fontSize: 14,
                     '${authProviderS.user!.firstName!} ${authProviderS.user!.lastName!}'
                         .toTitleCase()),
-              FormBuilder(
-                initialValue: initialValues,
-                enabled: isEnableForm.value && !isLocalLoading.value,
-                key: formKey,
-                child: Column(
-                  children: [
-                    CustomFormBuilderTextField(
-                      fieldName: 'firstName',
-                      trailingIcon: const Icon(
-                        FontAwesomeIcons.user,
-                        color: colorIcon,
-                        size: size,
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-                      placeholder: 'Nombre/s',
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(),
-                      ]),
-                    ),
-                    /* dont user const, BUG 🐛 */
-                    CustomFormBuilderTextField(
-                      fieldName: 'lastName',
-                      trailingIcon: Icon(
-                        FontAwesomeIcons.userAstronaut,
-                        color: colorIcon,
-                        size: size,
-                      ),
-                      placeholder: 'Apellido/s',
-                    ),
-                    CustomFormBuilderTextField(
-                      fieldName: 'phone',
-                      trailingIcon: Icon(
-                        FontAwesomeIcons.phone,
-                        color: colorIcon,
-                        size: size,
-                      ),
-                      placeholder: 'Telefono',
-                      keyboardType: TextInputType.phone,
-                    ),
-                    CustomFormBuilderTextField(
-                      fieldName: 'location',
-                      trailingIcon: Icon(
-                        FontAwesomeIcons.locationDot,
-                        color: colorIcon,
-                        size: size,
-                      ),
-                      placeholder: 'Direccion',
-                    ),
-                    CustomFormBuilderTextField(
-                      fieldName: 'shippingAddress',
-                      trailingIcon: IconButton(
-                        onPressed: () {
-                          context.push(MapFindLocationScreen.routeName);
-                        },
-                        icon: Icon(
-                          FontAwesomeIcons.locationPin,
-                          color: Colors.blue,
-                          size: size + 5,
-                        ),
-                      ),
-                      placeholder: 'Direccion de envio',
-                    ),
-                    const SizedBox(height: 40),
-                    /* FilledButton(
-                      /* isLoading: isLocalLoading.value, */
-                      child: Text("Guardar"),
-                      /* textColor: Colors.white, */
-                      onPressed: () async {
-                        await onSubmit();
-                      },
-                    ), */
-                  ],
-                ),
+              const SizedBox(height: 10),
+              const MenuProfileOption(
+                title: "Cursos",
+                leadingWidget: const Icon(FontAwesomeIcons.book),
+              ),
+              const MenuProfileOption(
+                title: "Certificados",
+                leadingWidget: Icon(FontAwesomeIcons.certificate),
+              ),
+              MenuProfileOption(
+                leadingWidget: Icon(Icons.person),
+                title: "Perfil",
+                onTap: () =>
+                    context.push(UserUpdateProfileInfoScreen.routeName),
+              ),
+              const MenuProfileOption(
+                leadingWidget: Icon(Icons.settings),
+                title: "Configuraciones",
+              ),
+              MenuProfileOption(
+                trailingWidget: const SizedBox(),
+                textColor: Colors.red,
+                leadingWidget: Icon(Icons.logout, color: Colors.red),
+                title: "Cerrar sesión",
+                onTap: () async {
+                  await showCustomConfirmDialog(
+                    context,
+                    title: 'Cerrar sesión',
+                    content: '¿Estás seguro de que quieres cerrar sesión?',
+                    acceptText: 'Ok',
+                    onAccept: () {
+                      authProviderN.logout().then((value) {
+                        if (value) {
+                          context.go(SignInScreen.routeName);
+                        }
+                      });
+                    },
+                  );
+                },
               ),
             ],
           ),

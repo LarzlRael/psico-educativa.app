@@ -28,10 +28,8 @@ import 'package:shimmer/shimmer.dart';
 part 'text/simple_text.dart';
 part 'text/app_bar_with_back_icon.dart';
 
-
 part 'buttons/login_button.dart';
 part 'buttons/button_icon.dart';
-
 
 part 'forms/chip_choice.dart';
 part 'forms/custom_dropdown.dart';
@@ -45,7 +43,6 @@ part 'forms/custom_row_formbuilder_text_field.dart';
 part 'forms/input_styles.dart';
 part 'forms/global_form.dart';
 part 'forms/custom_switch.dart';
-
 
 part 'avatar/custom_circle_avatar.dart';
 
@@ -62,7 +59,8 @@ part 'text/header_login_register.dart';
 part 'tables/custom_data_row.dart';
 part 'loadings/shimer_loading.dart';
 part 'loadings/skeleton_loading.dart';
-
+part 'menus/menu_profile_option.dart';
+part 'ui/back_icon.dart';
 
 part 'dialogs/loading_dialog.dart';
 part 'dialogs/confirmation_dialog.dart';

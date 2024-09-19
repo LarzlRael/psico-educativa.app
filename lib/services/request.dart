@@ -8,7 +8,6 @@ enum RequestType {
 }
 
 class Request {
-  String uri = '${Environment.serverApi}/';
   static Future<http.Response?> sendRequest(
     RequestType method,
     String url, {
@@ -19,12 +18,13 @@ class Request {
     };
 
     Uri uri;
+    Environment environment = Environment();
     if (url.startsWith('http://') || url.startsWith('https://')) {
       // Si ya tiene http o https, usar la URL tal cual
       uri = Uri.parse(url);
     } else {
       // Si no tiene http o https, concatenar con el servidor API
-      uri = Uri.parse('${Environment.serverApi}/$url');
+      uri = Uri.parse('${environment.serverApi}/$url');
     }
 
     String requestBody = body != null ? jsonEncode(body) : '{}';
@@ -51,13 +51,14 @@ class Request {
     String url, {
     Map<String, dynamic>? body,
   }) async {
+    Environment environment = Environment();
     final token = await KeyValueStorageServiceImpl().getValue<String>(TOKEN);
     final headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
     };
 
-    final Uri uri = Uri.parse('${Environment.serverApi}/$url');
+    final Uri uri = Uri.parse('${environment.serverApi}/$url');
 
     String requestBody = body != null ? jsonEncode(body) : '{}';
     late http.Response res;
@@ -85,7 +86,8 @@ class Request {
   }) async {
     late http.Response res;
     final token = await KeyValueStorageServiceImpl().getValue<String>(TOKEN);
-    final Uri uri = Uri.parse('${Environment.serverApi}/$url');
+    ;
+    final Uri uri = Uri.parse('${Environment().remoteConfig}/$url');
 
     final mimeType = lookupMimeType(filePath)!.split('/');
 
@@ -131,17 +133,16 @@ Future<T?> sendGenericRequest<T>(
   Map<String, dynamic>? body,
 } // Opcional: agregar el método HTTP con un valor por defecto
     ) async {
-      /* Remove the try catch if you have issues to debbuing */
-  
-    // Realiza la solicitud HTTP usando el método y URL proporcionados
-    final resp = await Request.sendRequest(method, url, body: body);
+  /* Remove the try catch if you have issues to debbuing */
 
-    // Verifica si la respuesta es válida
-    if (resp != null && validateStatus(resp.statusCode)) {
-      // Usa la función proporcionada para convertir la respuesta
-      return functionToConvert(resp.body);
-    }
-  
+  // Realiza la solicitud HTTP usando el método y URL proporcionados
+  final resp = await Request.sendRequest(method, url, body: body);
+
+  // Verifica si la respuesta es válida
+  if (resp != null && validateStatus(resp.statusCode)) {
+    // Usa la función proporcionada para convertir la respuesta
+    return functionToConvert(resp.body);
+  }
 
   // Retorna null si la solicitud falla o si no es válida
   return null;

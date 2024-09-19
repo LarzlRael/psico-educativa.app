@@ -28,7 +28,7 @@ class SocketNotifier extends StateNotifier<SocketState> {
     /* final token = await _storage.read(key: 'token'); */
 
     _socket = IO.io(
-      Environment.serverApi, // Reemplaza con tu URL de servidor
+      Environment().serverApi, // Reemplaza con tu URL de servidor
       IO.OptionBuilder()
           .setTransports(['websocket'])
           .enableAutoConnect()

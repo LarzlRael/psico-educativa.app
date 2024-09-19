@@ -52,6 +52,10 @@ final goRouterProvider = Provider((ref) {
           builder: (context, state) => const MapFindLocationScreen(),
         ),
         GoRoute(
+          path: UserUpdateProfileInfoScreen.routeName,
+          builder: (context, state) => const UserUpdateProfileInfoScreen(),
+        ),
+        GoRoute(
           path: '${CourseEnrollmentScreen.routeName}/:id_course',
           builder: (context, state) {
             final idCourse = state.pathParameters['id_course'];
@@ -79,6 +83,7 @@ final goRouterProvider = Provider((ref) {
 
         final publicRoutes = [
           login,
+          checkOutStatus,
           register,
           forgotPassword,
           verificationCodeScreen

@@ -48,6 +48,7 @@ part 'maps/map_find_location_screen.dart';
 
 
 part 'user/user_profile_screen.dart';
+part 'user/user_update_profile_info_screen.dart';
 part 'user/notifications_screen.dart';
 
 part 'auth/check_out_status_screen.dart';

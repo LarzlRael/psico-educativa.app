@@ -49,9 +49,9 @@ class OneCourseCard extends StatelessWidget {
               ),
             ),
             SimpleText(
-              courserName.length > 30
+              (courserName.length > 30
                   ? '${courserName.substring(0, 30)}...'
-                  : courserName,
+                  : courserName).toCapitalize(),
               fontSize: 16,
               padding: const EdgeInsets.only(bottom: 5, top: 5),
               fontWeight: FontWeight.w700,
@@ -72,9 +72,9 @@ class OneCourseCard extends StatelessWidget {
                   );
                 }).toList()),
             SimpleText(
-              courserDescription.length > 40
+              (courserDescription.length > 40
                   ? '${courserDescription.substring(0, 40)}...'
-                  : courserDescription,
+                  : courserDescription).toCapitalize(),
               padding: const EdgeInsets.only(top: 5),
               fontSize: 14,
               fontWeight: FontWeight.w400,

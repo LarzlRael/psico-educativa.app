@@ -14,6 +14,7 @@ class LoginButton extends StatelessWidget {
   final double spacing;
   final FontWeight fontWeight;
   final bool disabled;
+  final double borderRadius;
 
   const LoginButton({
     super.key,
@@ -23,10 +24,11 @@ class LoginButton extends StatelessWidget {
     this.isLoading = false,
     this.textColor = Colors.black,
     this.icon = const Icon(Icons.person),
-    this.showIcon = true,
+    this.showIcon = false,
     this.marginVertical = 5,
     this.marginHorizontal = 0,
     this.fontSize = 17,
+    this.borderRadius = 15,
     this.spacing = 5,
     this.disabled = false,
     this.fontWeight = FontWeight.bold,
@@ -53,7 +55,7 @@ class LoginButton extends StatelessWidget {
             horizontal: 40.0,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
+            borderRadius: BorderRadius.circular(borderRadius),
           ),
         ),
         onPressed: (isLoading || disabled) ? null : onPressed, // Aquí se desactiva el botón

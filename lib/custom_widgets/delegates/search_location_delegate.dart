@@ -87,9 +87,9 @@ class SearchLocationDelegate extends SearchDelegate {
         return;
       }
       final result = await getLocationQuery(query);
-      mapNotifier.setCurrentPosition(
+      /* mapNotifier.setCurrentPosition(
         result.candidates.first,
-      );
+      ); */
     });
   }
 }

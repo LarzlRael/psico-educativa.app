@@ -19,6 +19,7 @@ class CoursesDetailModel {
   final String? imageUrl;
   final String? material;
   final String? notes;
+  final String? virtualPlatform;
   final String? informationContact;
   final List<ProfessorsCourseDetail> professors;
 
@@ -35,6 +36,7 @@ class CoursesDetailModel {
     required this.notes,
     required this.imageUrl,
     required this.material,
+    required this.virtualPlatform,
     required this.informationContact,
     required this.professors,
   });
@@ -53,6 +55,7 @@ class CoursesDetailModel {
         modality: json["modality"],
         imageUrl: json["imageUrl"],
         material: json["material"],
+        virtualPlatform: json["virtualPlatform"],
         informationContact: json["informationContact"],
         professors: List<ProfessorsCourseDetail>.from(
             json["professors"].map((x) => ProfessorsCourseDetail.fromJson(x))),
@@ -69,6 +72,7 @@ class CoursesDetailModel {
         "durationUnit": durationUnit,
         "modality": modality,
         "imageUrl": imageUrl,
+        "virtualPlatform": virtualPlatform,
         "material": material,
         "notes": notes,
         "informationContact": informationContact,

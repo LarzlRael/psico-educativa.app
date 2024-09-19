@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:psico_educativa_app/config/environment.dart';
+import 'package:psico_educativa_app/config/firebase_remote_config.dart';
 import 'package:psico_educativa_app/config/local_notifications.dart';
 import 'package:psico_educativa_app/provider/auth_provider.dart';
 import 'package:psico_educativa_app/provider/loca_notification_provider.dart';
@@ -24,6 +25,7 @@ void main() async {
 
   /* await FirebaseUtils().initializeRemoteConfig(); */
   /* await LocalNotification.initializeLocalNotification(); */
+  await FirebaseRemoteConfigService().initialize();
   return runApp(
     const ProviderScope(
       child: MyApp(),
