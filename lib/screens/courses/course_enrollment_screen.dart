@@ -95,31 +95,9 @@ class CourseEnrollmentScreen extends HookConsumerWidget {
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 10),
                                   ),
-                                  SizedBox(height: 15),
-                                  SimpleText(
-                                    'SU NOMBRE COMPLETO TAL COMO SALDRÁ EN SU CERTIFICADO:',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: GestureDetector(
-                                      onTap: () => context.push(
-                                          UserUpdateProfileInfoScreen
-                                              .routeName),
-                                      child: LetterNameLikeSignature(
-                                        userInfoState.user?.username ?? '',
-                                        firstName:
-                                            userInfoState.user?.firstName,
-                                        lastName: userInfoState.user?.lastName,
-                                      ),
-                                    ),
-                                  ),
-                                  const SimpleText(
-                                    'Si desea que su nombre aparezca de otra forma, por favor ve a tu perfil y modifícalo*',
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w300,
-                                  ),
+                                  /* SignatureChangeName(
+                                    userInfoState: userInfoState,
+                                  ), */
                                   const SizedBox(height: 15),
                                   SimpleText(
                                     '${courseState.courseSelected?.courseDescription}'
@@ -205,68 +183,81 @@ class CourseEnrollmentScreen extends HookConsumerWidget {
                                   ),
                                   InfoRow(
                                       title: 'Material',
-                                      content: courseState.courseSelected?.material == null ? null: SimpleText(
-                                          '${courseState.courseSelected?.material}')),
+                                      content: courseState
+                                                  .courseSelected?.material ==
+                                              null
+                                          ? null
+                                          : SimpleText(
+                                              '${courseState.courseSelected?.material}')),
                                   InfoRow(
                                       title: 'Más informacion',
-
-                                      content: courseState.courseSelected?.informationContact == null ? null: InkWell(
-                                        onTap: () => startWhatsapp(
-                                          context,
-                                          courseState.courseSelected
-                                                  ?.informationContact ??
-                                              '',
-                                          'Hola, me gustaría obtener más información sobre el curso ${courseState.courseSelected?.courseName}',
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            const Icon(
-                                              FontAwesomeIcons.whatsapp,
-                                              color: Color(0xFF25D366),
-                                            ),
-                                            SizedBox(width: 10),
-                                            SimpleText(
-                                              '${courseState.courseSelected?.informationContact}',
-                                              color: colorScheme.secondary,
-                                              textDecoration:
-                                                  TextDecoration.underline,
-                                            ),
-                                          ],
-                                        ),
-                                      )),
+                                      content: courseState.courseSelected
+                                                  ?.informationContact ==
+                                              null
+                                          ? null
+                                          : InkWell(
+                                              onTap: () => startWhatsapp(
+                                                context,
+                                                courseState.courseSelected
+                                                        ?.informationContact ??
+                                                    '',
+                                                'Hola, me gustaría obtener más información sobre el curso ${courseState.courseSelected?.courseName}',
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  const Icon(
+                                                    FontAwesomeIcons.whatsapp,
+                                                    color: Color(0xFF25D366),
+                                                  ),
+                                                  SizedBox(width: 10),
+                                                  SimpleText(
+                                                    '${courseState.courseSelected?.informationContact}',
+                                                    color:
+                                                        colorScheme.secondary,
+                                                    textDecoration:
+                                                        TextDecoration
+                                                            .underline,
+                                                  ),
+                                                ],
+                                              ),
+                                            )),
                                   InfoRow(
                                       title: 'Notas',
-                                      content: 
-                                      courseState.courseSelected?.notes == null ? null:
-                                      Column(
-                                        children: courseState
-                                                .courseSelected?.notes
-                                                ?.split(',')
-                                                .map((e) {
-                                              return Container(
-                                                margin: const EdgeInsets.only(
-                                                  bottom: 10,
-                                                ),
-                                                child: Row(
-                                                  children: [
-                                                    Container(
-                                                      width: 5,
-                                                      height: 5,
-                                                      decoration: BoxDecoration(
-                                                          color: colorScheme
-                                                              .secondary,
-                                                          shape:
-                                                              BoxShape.circle),
-                                                    ),
-                                                    SizedBox(width: 5),
-                                                    Expanded(
-                                                        child: SimpleText(e)),
-                                                  ],
-                                                ),
-                                              );
-                                            }).toList() ??
-                                            [],
-                                      )),
+                                      content: courseState
+                                                  .courseSelected?.notes ==
+                                              null
+                                          ? null
+                                          : Column(
+                                              children: courseState
+                                                      .courseSelected?.notes
+                                                      ?.split(',')
+                                                      .map((e) {
+                                                    return Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                        bottom: 10,
+                                                      ),
+                                                      child: Row(
+                                                        children: [
+                                                          Container(
+                                                            width: 5,
+                                                            height: 5,
+                                                            decoration: BoxDecoration(
+                                                                color: colorScheme
+                                                                    .secondary,
+                                                                shape: BoxShape
+                                                                    .circle),
+                                                          ),
+                                                          SizedBox(width: 5),
+                                                          Expanded(
+                                                              child: SimpleText(
+                                                                  e)),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  }).toList() ??
+                                                  [],
+                                            )),
                                   SizedBox(height: 100),
                                 ],
                               ),
@@ -276,55 +267,68 @@ class CourseEnrollmentScreen extends HookConsumerWidget {
                       ),
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: courseState.isLoading
-                      ? const ShimmerWidget(
-                          margin: EdgeInsets.symmetric(vertical: 10),
-                          height: 50,
-                          shape: ShimmerShape.rounded)
-                      : Container(
-                          decoration: BoxDecoration(
-                            color: colorScheme.surface,
-                            boxShadow: [
-                              BoxShadow(
-                                color: colorScheme.onSurface.withOpacity(0.1),
-                                blurRadius: 10,
-                                offset: const Offset(0, -5),
-                              ),
-                            ],
+                  child: EnrollButton(
+                    isLoading: courseState.isLoading,
+                    priceAndCurrency:
+                        'Bs. ${courseState.courseSelected?.coursePrice}',
+                    onPressed: () {
+                      /* if (userInfoState.user?.isAuthenticated == true) {
+                        context.push(
+                          PaymentScreen.routeName,
+                          arguments: PaymentScreenArguments(
+                            course: courseState.courseSelected!,
                           ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 15,
-                          ),
-                          child: Row(
-                            children: [
-                              SimpleText(
-                                'Bs. ${courseState.courseSelected?.coursePrice}',
-                                fontSize: 35,
-                                fontWeight: FontWeight.w800,
-                              ),
-                              const SizedBox(width: 15),
-                              Expanded(
-                                child: LoginButton(
-                                  showIcon: false,
-                                  text: 'Inscribirme',
-                                  borderRadius: 5,
-                                  fontSize: 18,
-                                  /* textColor: Colors.white, */
-                                  onPressed: () async {
-                                    await showLoadingDialog(context,
-                                        message: 'Registrando...');
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        );
+                      } else {
+                        context.push(LoginScreen.routeName);
+                      } */
+                    },
+                  
+                  ),
                 )
               ],
             ),
           ),
         ));
+  }
+}
+
+class SignatureChangeName extends StatelessWidget {
+  const SignatureChangeName({
+    super.key,
+    required this.userInfoState,
+  });
+
+  final AuthState userInfoState;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(height: 15),
+        SimpleText(
+          'SU NOMBRE COMPLETO TAL COMO SALDRÁ EN SU CERTIFICADO:',
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: GestureDetector(
+            onTap: () => context.push(UserUpdateProfileInfoScreen.routeName),
+            child: LetterNameLikeSignature(
+              userInfoState.user?.username ?? '',
+              firstName: userInfoState.user?.firstName,
+              lastName: userInfoState.user?.lastName,
+            ),
+          ),
+        ),
+        const SimpleText(
+          'Si desea que su nombre aparezca de otra forma, por favor ve a tu perfil y modifícalo*',
+          fontSize: 11,
+          fontWeight: FontWeight.w300,
+        ),
+      ],
+    );
   }
 }
 
@@ -431,5 +435,71 @@ class InfoRow extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class EnrollButton extends StatelessWidget {
+  const EnrollButton({
+    super.key,
+    required this.isLoading,
+    required this.priceAndCurrency,
+    this.onPressed,
+    this.height = 100,
+  });
+  final bool isLoading;
+  final String priceAndCurrency;
+  final double height;
+  final void Function()? onPressed;
+
+  static const routeName = "";
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return isLoading
+        ? const ShimmerWidget(
+            margin: EdgeInsets.symmetric(vertical: 10),
+            height: 50,
+            shape: ShimmerShape.rounded)
+        : Container(
+            width: double.infinity,
+            height: height,
+            decoration: BoxDecoration(
+              color: colorScheme.surface,
+              boxShadow: [
+                BoxShadow(
+                  color: colorScheme.onSurface.withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: const Offset(0, -5),
+                ),
+              ],
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 15,
+            ),
+            child: Row(
+              children: [
+                SimpleText(
+                  priceAndCurrency,
+                  fontSize: 35,
+                  fontWeight: FontWeight.w800,
+                ),
+                const SizedBox(width: 15),
+                Expanded(
+                  child: LoginButton(
+                    child: SimpleText(
+                      'Inscribirme',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20,
+                      color: Colors.black,
+                    ),
+                    borderRadius: 5,
+                    onPressed: onPressed,
+                  ),
+                ),
+              ],
+            ),
+          );
   }
 }

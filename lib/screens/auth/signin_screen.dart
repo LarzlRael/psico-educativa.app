@@ -40,7 +40,7 @@ class SignInScreen extends HookConsumerWidget {
                         ]),
                       ),
                       /* dont user const, BUG 🐛 */
-                       CustomFormBuilderTextField(
+                      CustomFormBuilderTextField(
                         fieldName: 'password',
                         leadingIcon: FontAwesomeIcons.lock,
                         placeholder: 'Contraseña',
@@ -51,9 +51,10 @@ class SignInScreen extends HookConsumerWidget {
                 ),
                 LoginButton(
                   isLoading: isLocalLoading.value,
-                  text: "Iniciar sesión",
-                  textColor: Colors.white,
-                  showIcon: false,
+                  child: SimpleText("Iniciar sesión",
+                      color: Colors.white,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w800),
                   onPressed: () async {
                     final validationSuccess =
                         formKey.currentState?.validate() ?? false;
@@ -99,22 +100,24 @@ class SignInScreen extends HookConsumerWidget {
                 ),
                 LoginButton(
                   spacing: 20,
-                  fontSize: 14,
                   /* TODO disable google button while is loading */
                   disabled: isLocalLoading.value,
-                  fontWeight: FontWeight.normal,
                   onPressed: () async {
                     await authProviderN.loginWithGoogle();
                     isLocalLoading.value = false;
                   },
-                  text: "Iniciar sesión con google",
+                  child: SimpleText(
+                    "Iniciar sesión con google",
+                    fontSize: 14,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.black87,
+                  ),
                   backGroundColor: Colors.white,
-                  icon: Image.asset(
+                  iconWidget: Image.asset(
                     'assets/icons/google_icon.png',
                     width: 30,
                     height: 30,
                   ),
-                  textColor: Colors.black87,
                 ),
                 LabelLoginRegister(
                   title: '¿No tienes cuenta?',

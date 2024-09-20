@@ -14,7 +14,7 @@ class UserUpdateProfileInfoScreen extends HookConsumerWidget {
     final isLocalLoading = useState(false);
 
     final formKey = useMemoized(() => GlobalKey<FormBuilderState>());
-    
+
     final mapState = ref.watch(mapFinderNotifierProvider);
 
     final initialValues = {
@@ -53,7 +53,7 @@ class UserUpdateProfileInfoScreen extends HookConsumerWidget {
       showLoadingDialog(context, message: 'Actualizando perfil...');
       authProviderN.updateProfileInfo(addLatLng).then((value) {
         isLocalLoading.value = false;
-        
+
         /* TODO add isMounted condition */
         context.pop();
         if (value) {
@@ -78,8 +78,8 @@ class UserUpdateProfileInfoScreen extends HookConsumerWidget {
     return ScaffoldWithBackground(
       child: SizedBox.expand(
         child: Container(
-          margin:
-              const EdgeInsets.only(left: 15, right: 15, top: kToolbarHeight),
+          margin: EdgeInsets.only(
+              left: 15, right: 15, top: MediaQuery.of(context).padding.top),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -195,8 +195,10 @@ class UserUpdateProfileInfoScreen extends HookConsumerWidget {
                         child: LoginButton(
                           borderRadius: 50,
                           /* isLoading: isLocalLoading.value, */
-                          text: "Actualizar Perfil",
-                          textColor: Colors.white,
+                          child: SimpleText(
+                            "Actualizar Perfil",
+                            color: Colors.white,
+                          ),
                           onPressed: () async {
                             /* await onSubmit(); */
                           },

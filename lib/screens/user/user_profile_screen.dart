@@ -20,8 +20,8 @@ class UserProfileScreen extends HookConsumerWidget {
       ), */
 
       child: Container(
-        margin: const EdgeInsets.only(
-          top: kToolbarHeight,
+        margin: EdgeInsets.only(
+          top: MediaQuery.of(context).padding.top,
           right: 10,
           left: 10,
         ),

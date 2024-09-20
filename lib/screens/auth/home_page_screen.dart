@@ -49,7 +49,7 @@ class HomeScreenItem extends HookConsumerWidget {
       body: ScaffoldWithBackground(
         child: Container(
           padding:
-              const EdgeInsets.only(top: kToolbarHeight, left: 15, right: 15),
+               EdgeInsets.only(top:MediaQuery.of(context).padding.top, left: 15, right: 15),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,

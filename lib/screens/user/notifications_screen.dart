@@ -10,7 +10,7 @@ class NotificationsScreen extends ConsumerWidget {
     final notificationsState = ref.watch(notificationNotifierProvider);
     return ScaffoldWithBackground(
       child: Container(
-        margin: const EdgeInsets.only(top: kToolbarHeight),
+        margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
         child: Column(
           children: [
             Container(

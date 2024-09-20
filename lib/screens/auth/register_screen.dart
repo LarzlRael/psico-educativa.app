@@ -58,9 +58,11 @@ class RegisterScreen extends HookConsumerWidget {
                   ),
                 ),
                 LoginButton(
-                  text: "Registrarse",
-                  showIcon: false,
-                  textColor: Colors.white,
+                  child: SimpleText(
+                    "Registrarse",
+                    color: Colors.white,
+                  ),
+
                   /* borderRadius: 50, */
                   onPressed: () {
                     final validationSuccess = _formKey.currentState!.validate();
@@ -91,21 +93,23 @@ class RegisterScreen extends HookConsumerWidget {
                 ),
                 LoginButton(
                   spacing: 20,
-                  fontSize: 14,
-                  fontWeight: FontWeight.normal,
                   onPressed: () {
                     /* authProviderN.loginWithGoogle().then((value) {
                         isLocalLoading.value = false;
                       }); */
                   },
-                  text: "Registrarse con google",
+                  child: SimpleText(
+                    "Registrarse con google",
+                    fontSize: 14,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.black87,
+                  ),
                   backGroundColor: Colors.white,
-                  icon: Image.asset(
+                  iconWidget: Image.asset(
                     'assets/icons/google_icon.png',
                     width: 30,
                     height: 30,
                   ),
-                  textColor: Colors.black87,
                 ),
                 LabelLoginRegister(
                   title: '¿Ya tienes cuenta?',

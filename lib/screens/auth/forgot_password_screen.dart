@@ -60,9 +60,9 @@ class ForgotPasswordScreen extends HookConsumerWidget {
                     ),
                     LoginButton(
                       isLoading: isLocalLoading.value,
-                      text: "Enviar email de recuperación",
+                      child: SimpleText("Enviar email de recuperación"),
                       /* textColor: Colors.white, */
-                      showIcon: false,
+
                       onPressed: () async {
                         final validationSuccess =
                             formKey.currentState!.validate();
