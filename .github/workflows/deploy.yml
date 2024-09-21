@@ -14,6 +14,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+    # Paso 1.5: Configurar Java (Java 11 en este caso)
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin' # Distribución de Java OpenJDK
+          java-version: '11' # Cambia a '17' si prefieres Java 17
+
       # Paso 2: Configurar Flutter en GitHub Actions
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
