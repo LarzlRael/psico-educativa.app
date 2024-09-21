@@ -1,0 +1,51 @@
+name: Deploy APK on Push
+
+on:
+  push:
+    branches:
+      - deploy
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Paso 1: Checkout del repositorio
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Paso 2: Configurar Flutter en GitHub Actions
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'
+
+      # Paso 3: Cachear dependencias de Flutter
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.pub-cache
+            build/
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
+
+      # Paso 4: Instalar dependencias
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Paso 5: Compilar el APK de Android
+      - name: Build APK
+        run: flutter build apk --release
+
+      # Paso 6: Mover el APK a la raíz del repositorio
+      - name: Move APK to root
+        run: mv build/app/outputs/flutter-apk/app-release.apk ./app-release.apk
+
+      # Paso 7: Subir el APK como un artefacto de GitHub Actions
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-release.apk
+          path: ./app-release.apk
