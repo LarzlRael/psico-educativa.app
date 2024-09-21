@@ -18,7 +18,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.10.5'
+          flutter-version: 'stable'  # Cambia a la versión estable
 
       # Paso 3: Cachear dependencias de Flutter
       - name: Cache Flutter dependencies
@@ -35,15 +35,23 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      # Paso 5: Compilar el APK de Android
+      # Paso 5: Verificar la versión de Flutter instalada (debug)
+      - name: Check Flutter version
+        run: flutter --version
+
+      # Paso 6: Compilar el APK de Android
       - name: Build APK
         run: flutter build apk --release
 
-      # Paso 6: Mover el APK a la raíz del repositorio
+      # Paso 7: Verificar el contenido del directorio de salida (debug)
+      - name: List APK directory
+        run: ls -R build/app/outputs/flutter-apk/
+
+      # Paso 8: Mover el APK a la raíz del repositorio
       - name: Move APK to root
         run: mv build/app/outputs/flutter-apk/app-release.apk ./app-release.apk
 
-      # Paso 7: Subir el APK como un artefacto de GitHub Actions
+      # Paso 9: Subir el APK como un artefacto de GitHub Actions
       - name: Upload APK artifact
         uses: actions/upload-artifact@v3
         with:
