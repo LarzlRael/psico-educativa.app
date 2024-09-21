@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin' # Distribución de Java OpenJDK
-          java-version: '11' # Cambia a '17' si prefieres Java 17
+          java-version: '17.0.12' # Cambia a '17' si prefieres Java 17
 
       # Paso 2: Configurar Flutter en GitHub Actions
       - name: Set up Flutter
