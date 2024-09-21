@@ -10,6 +10,7 @@ class CustomFormBuilderTextField extends HookWidget {
   final String? Function(String?)? validator;
   final EdgeInsetsGeometry? margin;
   final String? label;
+  final double borderRadius;
   const CustomFormBuilderTextField({
     super.key,
     required this.fieldName,
@@ -17,6 +18,7 @@ class CustomFormBuilderTextField extends HookWidget {
     this.leadingIcon,
     this.trailingIcon,
     this.label,
+    this.borderRadius = 15,
     this.validator,
     this.keyboardType = TextInputType.text,
     this.isPassword = false,
@@ -46,7 +48,7 @@ class CustomFormBuilderTextField extends HookWidget {
             ),
           Card(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(borderRadius),
             ),
             child: Padding(
               padding: EdgeInsets.only(left: leadingIcon == null ? 20 : 0),
@@ -55,7 +57,7 @@ class CustomFormBuilderTextField extends HookWidget {
                 obscureText: isPassword && obscureText.value,
                 name: fieldName,
                 validator: validator,
-                decoration:  InputDecoration(
+                decoration: InputDecoration(
                   border: InputBorder.none,
                   labelText: placeholder,
                   labelStyle: const TextStyle(
@@ -71,8 +73,13 @@ class CustomFormBuilderTextField extends HookWidget {
                               obscureText.value = !obscureText.value,
                         )
                       : trailingIcon,
-                  prefixIcon:
-                      leadingIcon == null ? null : Icon(leadingIcon, size: 15),
+                  prefixIcon: leadingIcon == null
+                      ? null
+                      : Icon(
+                          leadingIcon,
+                          size: 15,
+                          color: Colors.grey,
+                        ),
                 ),
               ),
             ),

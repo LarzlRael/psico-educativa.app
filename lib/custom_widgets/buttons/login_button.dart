@@ -3,7 +3,7 @@ part of '../custom_widgets.dart';
 class LoginButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget child;
-  final Color? backGroundColor;
+  final Color? backgroundColor;
 
   final Widget? iconWidget;
 
@@ -19,7 +19,7 @@ class LoginButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.child,
-    this.backGroundColor,
+    this.backgroundColor,
     this.isLoading = false,
     this.iconWidget,
     this.marginVertical = 5,
@@ -31,7 +31,7 @@ class LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = backGroundColor ?? Theme.of(context).colorScheme.secondary;
+    final color = backgroundColor ?? Theme.of(context).colorScheme.secondary;
 
     return Container(
       width: double.infinity,

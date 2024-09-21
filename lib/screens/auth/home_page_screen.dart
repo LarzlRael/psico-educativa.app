@@ -48,8 +48,8 @@ class HomeScreenItem extends HookConsumerWidget {
     return Scaffold(
       body: ScaffoldWithBackground(
         child: Container(
-          padding:
-               EdgeInsets.only(top:MediaQuery.of(context).padding.top, left: 15, right: 15),
+          padding: EdgeInsets.only(
+              top: MediaQuery.of(context).padding.top, left: 15, right: 15),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,33 +57,43 @@ class HomeScreenItem extends HookConsumerWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    UserNameAvatar(
+                    SimpleText(
+                      'Hello,\n ${authProviderS.user!.username.toCapitalize()}',
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    Spacer(),
+                    SquareAvatar(
+                      size: 60,
                       user: authProviderS.user,
                       onTap: () =>
                           ref.read(menuProvider.notifier).selectItem(3),
                     ),
-                    const Spacer(),
-                    Container(
-                      height: 55,
-                      width: 55,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white, width: 1),
-                          borderRadius: BorderRadius.circular(30)),
-                      child: IconButton(
-                        onPressed: () {
-                          authProviderN.logout().then((value) {
-                            if (value) {
-                              if (!context.mounted) return;
-                              context.go(SignInScreen.routeName);
-                            }
-                          });
-                        },
-                        icon: Icon(Ionicons.search),
-                      ),
-                    ),
                   ],
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                      children: [
+                        Icon(Icons.search, color: colorScheme.secondary, size: 30),
+                        SizedBox(width: 10),
+                        SimpleText(
+                          'Search for courses',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 courserS.isLoading
                     ? Expanded(
                         child: MasonryGridView.count(
@@ -162,6 +172,53 @@ class UserNameAvatar extends StatelessWidget {
             SimpleText(user!.username.toCapitalize(), fontSize: 18),
             const SizedBox(width: 5),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class SquareAvatar extends StatelessWidget {
+  const SquareAvatar({
+    super.key,
+    required this.user,
+    required this.onTap,
+    this.size = 40,
+  });
+
+  final UserApi? user;
+  final double size;
+  final void Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+        decoration: BoxDecoration(
+          color: colorScheme.secondary,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: isValidateString(user!.profileImageUrl)
+              ? FadeInImage(
+                  placeholder: const AssetImage(appIcon),
+                  image: NetworkImage(user!.profileImageUrl!),
+                  width: size,
+                  height: size,
+                )
+              : SimpleText(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                  avatarLabel(
+                    user!.username,
+                    user!.firstName,
+                    user!.lastName,
+                  ),
+                ),
         ),
       ),
     );

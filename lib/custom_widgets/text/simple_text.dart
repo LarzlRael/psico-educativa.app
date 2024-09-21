@@ -12,6 +12,7 @@ class SimpleText extends StatelessWidget {
   final TextAlign? textAlign;
   final double? lineHeight;
   final TextDecoration? textDecoration;
+  final void Function()? onTap;
 
   const SimpleText(
     this.text, {
@@ -24,11 +25,12 @@ class SimpleText extends StatelessWidget {
     this.lineHeight,
     this.color,
     this.textDecoration,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    final textContext = Padding(
       padding: padding ?? const EdgeInsets.all(0),
       child: Text(
         text,
@@ -43,5 +45,12 @@ class SimpleText extends StatelessWidget {
             ),
       ),
     );
+
+    return onTap == null
+        ? textContext
+        : InkWell(
+            onTap: onTap,
+            child: textContext,
+          );
   }
 }

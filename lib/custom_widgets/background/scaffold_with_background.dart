@@ -10,7 +10,10 @@ final PreferredSizeWidget? appBar;
     extendBodyBehindAppBar: true,
     appBar: appBar,
       body: SizedBox.expand(
-        child: BackgroundWithBlurredCircles(
+        /* child: BackgroundWithBlurredCircles(
+          child: child,
+        ), */
+        child: BackgroundOneCircle(
           child: child,
         ),
       ),

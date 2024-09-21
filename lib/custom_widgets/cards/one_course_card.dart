@@ -16,9 +16,9 @@ class OneCourseCard extends StatelessWidget {
     final courserPrice = course.coursePrice;
     return Container(
       width: 200,
-      height: 300,
+      height: 260,
       decoration: BoxDecoration(
-        /* color: Colors.white, */
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           /* BoxShadow(
@@ -48,15 +48,22 @@ class OneCourseCard extends StatelessWidget {
                     : course.imageUrl!),
               ),
             ),
-            SimpleText(
-              (courserName.length > 30
-                  ? '${courserName.substring(0, 30)}...'
-                  : courserName).toCapitalize(),
-              fontSize: 16,
-              padding: const EdgeInsets.only(bottom: 5, top: 5),
-              fontWeight: FontWeight.w700,
-            ),
-            Column(
+            Container(
+              margin:
+                  const EdgeInsets.only(top: 5, left: 5, right: 5, bottom: 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SimpleText(
+                    (courserName.length > 30
+                            ? '${courserName.substring(0, 30)}...'
+                            : courserName)
+                        .toCapitalize(),
+                    fontSize: 16,
+                    padding: const EdgeInsets.only(bottom: 5, top: 5),
+                    fontWeight: FontWeight.w700,
+                  ),
+                  /*  Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: course.professors.map((professor) {
                   // Verificamos si hay un user en professor
@@ -70,20 +77,25 @@ class OneCourseCard extends StatelessWidget {
                     fontWeight: FontWeight.w300,
                     color: Colors.green,
                   );
-                }).toList()),
-            SimpleText(
-              (courserDescription.length > 40
-                  ? '${courserDescription.substring(0, 40)}...'
-                  : courserDescription).toCapitalize(),
-              padding: const EdgeInsets.only(top: 5),
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-            ),
-            SimpleText(
-              '$courserPrice Bs.',
-              padding: const EdgeInsets.only(top: 5),
-              fontSize: 18,
-              fontWeight: FontWeight.w800,
+                }).toList()), */
+                  SimpleText(
+                    (courserDescription.length > 40
+                            ? '${courserDescription.substring(0, 40)}...'
+                            : courserDescription)
+                        .toCapitalize(),
+                    padding: const EdgeInsets.only(top: 2.5),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  
+                  SimpleText(
+                    '$courserPrice Bs.',
+                    padding: const EdgeInsets.only(top: 5),
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                  )
+                ],
+              ),
             )
           ],
         ),

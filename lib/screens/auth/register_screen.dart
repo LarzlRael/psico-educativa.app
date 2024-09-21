@@ -9,7 +9,9 @@ class RegisterScreen extends HookConsumerWidget {
     /* final authService = Provider.of<AuthServices>(context); */
     final authServiceNotifier = ref.read(authNotifierProvider.notifier);
     final isLocalLoading = useState<bool>(false);
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
+      backgroundColor: Color(0xff2e7c78),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -23,32 +25,45 @@ class RegisterScreen extends HookConsumerWidget {
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const HeaderLoginRegister(
                   headerTitle: 'Registro',
+                ),
+                Center(
+                  child: SimpleText(
+                    'Crea una cuenta',
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
                 FormBuilder(
                   key: _formKey,
                   child: Column(
                     children: [
                       const CustomFormBuilderTextField(
+                        borderRadius: 50,
                         fieldName: 'username',
                         leadingIcon: Icons.person,
                         placeholder: 'Nombre de usuario',
                       ),
                       const CustomFormBuilderTextField(
+                        borderRadius: 50,
                         fieldName: 'email',
                         keyboardType: TextInputType.emailAddress,
                         leadingIcon: FontAwesomeIcons.at,
                         placeholder: 'Correo electrónico',
                       ),
                       const CustomFormBuilderTextField(
+                        borderRadius: 50,
                         fieldName: 'password',
                         leadingIcon: FontAwesomeIcons.lock,
                         placeholder: 'Contraseña',
                         isPassword: true,
                       ),
                       const CustomFormBuilderTextField(
+                        borderRadius: 50,
                         fieldName: 'password',
                         leadingIcon: FontAwesomeIcons.lock,
                         placeholder: 'Repetir contraseña',
@@ -58,8 +73,12 @@ class RegisterScreen extends HookConsumerWidget {
                   ),
                 ),
                 LoginButton(
+                  backgroundColor: colorScheme.primary,
+                  borderRadius: 50,
                   child: SimpleText(
                     "Registrarse",
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
                     color: Colors.white,
                   ),
 
@@ -91,30 +110,35 @@ class RegisterScreen extends HookConsumerWidget {
                       } */
                   },
                 ),
-                LoginButton(
-                  spacing: 20,
-                  onPressed: () {
-                    /* authProviderN.loginWithGoogle().then((value) {
-                        isLocalLoading.value = false;
-                      }); */
-                  },
-                  child: SimpleText(
-                    "Registrarse con google",
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.black87,
-                  ),
-                  backGroundColor: Colors.white,
-                  iconWidget: Image.asset(
-                    'assets/icons/google_icon.png',
-                    width: 30,
-                    height: 30,
+                Align(
+                  alignment: Alignment.center,
+                  child: LoginButton(
+                    spacing: 20,
+                    onPressed: () {
+                      /* authProviderN.loginWithGoogle().then((value) {
+                          isLocalLoading.value = false;
+                        }); */
+                    },
+                    child: SimpleText(
+                      "Registrarse con google",
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.black87,
+                    ),
+                    backgroundColor: Colors.white,
+                    iconWidget: Image.asset(
+                      'assets/icons/google_icon.png',
+                      width: 30,
+                      height: 30,
+                    ),
                   ),
                 ),
-                LabelLoginRegister(
-                  title: '¿Ya tienes cuenta?',
-                  subtitle: 'Iniciar sesión',
-                  route: SignInScreen.routeName,
+                Center(
+                  child: LabelLoginRegister(
+                    title: '¿Ya tienes cuenta?',
+                    subtitle: 'Iniciar sesión',
+                    route: SignInScreen.routeName,
+                  ),
                 ),
               ],
             ),

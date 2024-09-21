@@ -12,7 +12,7 @@ class UserProfileScreen extends HookConsumerWidget {
 
     final authProviderN = ref.read(authNotifierProvider.notifier);
     final authProviderS = ref.watch(authNotifierProvider);
-
+    final changeMenuIndex = ref.read(menuProvider.notifier);
     return ScaffoldWithBackground(
       /* appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -66,40 +66,57 @@ class UserProfileScreen extends HookConsumerWidget {
                   ],
                 ),
               ), */
-              UserAvatar(
-                radius: 55,
-                username: authProviderS.user!.username,
-                firstName: authProviderS.user!.firstName,
-                lastName: authProviderS.user!.lastName,
-                customWidget: isValidateString(
-                        authProviderS.user!.profileImageUrl)
-                    ? FadeInImage(
-                        placeholder: const AssetImage(appIcon),
-                        image:
-                            NetworkImage(authProviderS.user!.profileImageUrl!),
-                        fit: BoxFit.cover,
-                      )
-                    : null,
+              SizedBox(height: 20),
+              Row(
+                children: [
+                  UserAvatar(
+                    radius: 40,
+                    username: authProviderS.user!.username,
+                    firstName: authProviderS.user!.firstName,
+                    lastName: authProviderS.user!.lastName,
+                    customWidget:
+                        isValidateString(authProviderS.user!.profileImageUrl)
+                            ? FadeInImage(
+                                placeholder: const AssetImage(appIcon),
+                                image: NetworkImage(
+                                    authProviderS.user!.profileImageUrl!),
+                                fit: BoxFit.cover,
+                              )
+                            : null,
+                  ),
+                  SizedBox(width: 10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SimpleText(
+                        authProviderS.user!.username.toCapitalize(),
+                        fontSize: 27,
+                        fontWeight: FontWeight.w500,
+                        /* color: colorScheme.secondary, */
+                        /* padding: const EdgeInsets.only(top: 10, bottom: 5), */
+                      ),
+                      if (authProviderS.user!.email != null)
+                        SimpleText(authProviderS.user!.email, fontSize: 14),
+                      if (authProviderS.user!.firstName != null)
+                        SimpleText(
+                            fontSize: 14,
+                            '${authProviderS.user!.firstName!} ${authProviderS.user!.lastName!}'
+                                .toTitleCase()),
+                    ],
+                  ),
+                  Spacer(),
+                  IconButton(
+                    icon: const Icon(FontAwesomeIcons.penToSquare),
+                    onPressed: () => context.push(UserUpdateProfileInfoScreen.routeName),
+                  ),
+                ],
               ),
-              SimpleText(
-                authProviderS.user!.username.toCapitalize(),
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: colorScheme.secondary,
-                padding: const EdgeInsets.only(top: 10, bottom: 5),
-              ),
-              if (authProviderS.user!.email != null)
-                SimpleText(authProviderS.user!.email, fontSize: 14),
-              if (authProviderS.user!.firstName != null)
-                SimpleText(
-                    fontSize: 14,
-                    '${authProviderS.user!.firstName!} ${authProviderS.user!.lastName!}'
-                        .toTitleCase()),
               const SizedBox(height: 10),
               const MenuProfileOption(
                 title: "Cursos",
                 leadingWidget: const Icon(FontAwesomeIcons.book),
               ),
+              Divider(color: Colors.grey[100]),
               const MenuProfileOption(
                 title: "Certificados",
                 leadingWidget: Icon(FontAwesomeIcons.certificate),
@@ -128,6 +145,7 @@ class UserProfileScreen extends HookConsumerWidget {
                     onAccept: () {
                       authProviderN.logout().then((value) {
                         if (value) {
+                          changeMenuIndex.selectItem(0);
                           context.go(SignInScreen.routeName);
                         }
                       });

@@ -152,16 +152,17 @@ class _FloatingMenuBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 250,
-      margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
       height: 60,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(100),
-        color: const Color(0xff2c2c2c),
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
         boxShadow: const [
           BoxShadow(
-            color: Colors.white38,
+            color: Colors.black26,
             blurRadius: 10,
-            spreadRadius: -5,
+            offset: Offset(0, 5),
           )
         ],
       ),
@@ -213,7 +214,7 @@ class _MenuItemButton extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final selectedIndex =
         ref.watch(menuProvider); // Observamos el índice actual
-
+    final colorScheme = Theme.of(context).colorScheme;
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
@@ -221,14 +222,72 @@ class _MenuItemButton extends ConsumerWidget {
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        child: Icon(
-          item.icon,
-          size: (selectedIndex == index) ? 30 : 25,
-          color: selectedIndex == index
-              ? Theme.of(context).colorScheme.secondary
-              : Colors.blueGrey,
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: (selectedIndex == index)
+                ? colorScheme.primary
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                item.icon,
+                size: (selectedIndex == index) ? 30 : 25,
+                color: selectedIndex == index ? Colors.white : Colors.black45,
+              ),
+              const SizedBox(width: 5),
+              if (selectedIndex == index)
+                SimpleText(
+                  item.appRoute,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
+                    color:
+                        selectedIndex == index ? Colors.white : Colors.black45,
+                  
+                ),
+            ],
+          ),
         ),
       ),
+    );
+  }
+}
+
+class BackgroundOneCircle extends StatelessWidget {
+  final Widget child;
+
+  const BackgroundOneCircle({
+    super.key,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Stack(
+      children: [
+        // Fondo negro
+        /* Container(color: Colors.black), */
+
+        // Círculo difuminado en la esquina superior izquierda
+        Positioned(
+          top: -175,
+          left: -175,
+          child: CircleBlurred(
+            blurAmount: 0,
+            radius: 275,
+            colors: [colorScheme.primary, colorScheme.primary],
+          ),
+        ),
+
+        // Círculo difuminado en el centro-derecha
+
+        Positioned.fill(
+          child: child,
+        ),
+      ],
     );
   }
 }

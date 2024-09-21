@@ -19,7 +19,7 @@ class AppTheme {
         brightness: isDarkMode ? Brightness.dark : Brightness.light,
         /* Text */
         textTheme: TextTheme(
-            /*     titleLarge: GoogleFonts.montserratAlternates().copyWith(
+          /*     titleLarge: GoogleFonts.montserratAlternates().copyWith(
           fontSize: 40,
           fontWeight: FontWeight.bold,
         ),
@@ -27,20 +27,22 @@ class AppTheme {
           fontSize: 30,
           fontWeight: FontWeight.bold,
         ), */
-            /* titleSmall: GoogleFonts.montserratAlternates().copyWith(
+          /* titleSmall: GoogleFonts.montserratAlternates().copyWith(
             fontSize: 20,
           ), */
           titleSmall: GoogleFonts.calligraffitti().copyWith(
             fontSize: 20,
           ),
-            ),
+        ),
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xfff2e205),
+          seedColor: const Color(0xfff3af4a),
           primary:
-              const Color(0xfff2e205), // Asigna el color primario directamente
+              const Color(0xfff3af4a), // Asigna el color primario directamente
           secondary: const Color(0xff85d14b),
           brightness: isDarkMode ? Brightness.dark : Brightness.light,
         ),
+        scaffoldBackgroundColor: isDarkMode ? Colors.black : Color(0xffeaebed),
+
         /* appBarTheme: AppBarTheme(
           centerTitle: true,
           titleTextStyle: GoogleFonts.montserratAlternates().copyWith(

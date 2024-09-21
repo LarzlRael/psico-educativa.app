@@ -15,91 +15,114 @@ class ForgotPasswordScreen extends HookConsumerWidget {
     final authProviderN = ref.read(authNotifierProvider.notifier);
     final formKey = useMemoized(() => GlobalKey<FormBuilderState>());
     return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(
+              Icons.chevron_left,
+              color: Colors.white,
+            ),
+            onPressed: context.pop,
+          ),
+          backgroundColor: Color(0xff2e7c78),
+          title: const SimpleText(
+            'Olvide mi contraseña',
+            color: Colors.white,
+            fontSize: 16,
+          ),
+        ),
+        backgroundColor: Color(0xff2e7c78),
         body: SizedBox.expand(
             child: SingleChildScrollView(
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                Ionicons.mail_open_outline,
-                size: 150,
-                color: colorScheme.secondary,
-              ),
-              const SimpleText(
-                'Recuperación de contraseña',
-                fontSize: 23,
-                fontWeight: FontWeight.w700,
-                /* lightThemeColor: Colors.black87, */
-              ),
-              const SimpleText(
-                'Vamos a enviar un correo electronico para recuperar su contraseña, por favor siga los pasos.',
-                padding: EdgeInsets.symmetric(vertical: 15),
-                fontSize: 15,
-                textAlign: TextAlign.center,
-              ),
-              FormBuilder(
-                enabled: !isLocalLoading.value,
-                key: formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    CustomFormBuilderTextField(
-                      fieldName: 'email',
-                      leadingIcon: FontAwesomeIcons.at,
-                      keyboardType: TextInputType.emailAddress,
-                      placeholder: 'Email',
-                      validator: FormBuilderValidators.compose(
-                        [
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.email(),
-                        ],
-                      ),
-                    ),
-                    LoginButton(
-                      isLoading: isLocalLoading.value,
-                      child: SimpleText("Enviar email de recuperación"),
-                      /* textColor: Colors.white, */
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    Ionicons.mail_open_outline,
+                    size: 150,
+                    color: colorScheme.secondary,
+                  ),
+                  const SimpleText('Recuperación de contraseña',
+                      fontSize: 22,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white),
+                  const SimpleText(
+                    'Por favor ingrese su correo electronico. Recibiras un enlace para crear una nueva contraseña',
+                    padding: EdgeInsets.symmetric(vertical: 15),
+                    color: Colors.white,
+                    fontSize: 15,
+                  ),
+                  FormBuilder(
+                    enabled: !isLocalLoading.value,
+                    key: formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        CustomFormBuilderTextField(
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          borderRadius: 50,
+                          fieldName: 'email',
+                          leadingIcon: FontAwesomeIcons.at,
+                          keyboardType: TextInputType.emailAddress,
+                          placeholder: 'Correo electronico',
+                          validator: FormBuilderValidators.compose(
+                            [
+                              FormBuilderValidators.required(),
+                              FormBuilderValidators.email(),
+                            ],
+                          ),
+                        ),
+                        LoginButton(
+                          isLoading: isLocalLoading.value,
+                          backgroundColor: colorScheme.primary,
+                          child: SimpleText(
+                            "Enviar",
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                          borderRadius: 50,
+                          /* textColor: Colors.white, */
 
-                      onPressed: () async {
-                        final validationSuccess =
-                            formKey.currentState!.validate();
+                          onPressed: () async {
+                            final validationSuccess =
+                                formKey.currentState!.validate();
 
-                        if (!validationSuccess) return;
+                            if (!validationSuccess) return;
 
-                        formKey.currentState!.save();
+                            formKey.currentState!.save();
 
-                        isLocalLoading.value = true;
-                        final resp = await authProviderN.forgotPasswordRequest(
-                          {
-                            'email': formKey.currentState!.value['email'],
-                          },
-                        );
-                        isLocalLoading.value = false;
-                        if (resp) {
-                          await KeyValueStorageServiceImpl()
-                              .setKeyValue<String>('email',
-                                  formKey.currentState!.value['email']);
-                          isLocalLoading.value = false;
-                          if (!context.mounted) return;
-                          context.push(VerificationCodeScreen.routeName);
-                          /* TODO show some snackbar or something */
-                          /* if (value) {
+                            isLocalLoading.value = true;
+                            final resp =
+                                await authProviderN.forgotPasswordRequest(
+                              {
+                                'email': formKey.currentState!.value['email'],
+                              },
+                            );
+                            isLocalLoading.value = false;
+                            if (resp) {
+                              await KeyValueStorageServiceImpl()
+                                  .setKeyValue<String>('email',
+                                      formKey.currentState!.value['email']);
+                              isLocalLoading.value = false;
+                              if (!context.mounted) return;
+                              context.push(VerificationCodeScreen.routeName);
+                              /* TODO show some snackbar or something */
+                              /* if (value) {
                                   context.push('/home_screen');
                                 } else {
                                   isLocalLoading.value = false;
                                 } */
-                        }
-                      },
+                            }
+                          },
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              )
-            ]),
-      ),
-    )));
+                  )
+                ]),
+          ),
+        )));
   }
 
   /* void _submit() async {

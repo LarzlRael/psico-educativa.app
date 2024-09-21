@@ -47,7 +47,7 @@ class MyApp extends ConsumerWidget {
       title: 'Material App',
       routerConfig: appRouter,
       debugShowCheckedModeBanner: false,
-      theme: AppTheme(isDarkMode: true).getTheme(),
+      theme: AppTheme().getTheme(),
       builder: (context, child) => HandleNotificationInteractions(
         child: child!,
       ),

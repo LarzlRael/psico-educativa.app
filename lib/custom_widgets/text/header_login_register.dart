@@ -13,12 +13,12 @@ class HeaderLoginRegister extends StatelessWidget {
     return Column(
       children: [
         LogoImageName(),
-        SimpleText(
+        /* SimpleText(
           headerTitle,
           fontSize: 23,
           fontWeight: FontWeight.w700,
           padding: const EdgeInsets.only(top: 15),
-        ),
+        ), */
       ],
     );
   }
@@ -58,34 +58,23 @@ class LabelLoginRegister extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 fontSize: 15,
               ), */
-              RichText(
-                text: TextSpan(
-                  // Texto y estilo general
-                  style: DefaultTextStyle.of(context)
-                      .style, // Estilo predeterminado
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: title,
-                      style: TextStyle(color: Colors.grey),
+              Column(
+                children: [
+                  SimpleText(
+                    title,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  SimpleText(
+                    subtitle,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                      color: colorSchema.primary,
                     ),
-                    const TextSpan(
-                      text: "--",
-                      style: TextStyle(
-                        color: Colors.transparent,
-                      ),
-                    ),
-                    TextSpan(
-                      text: subtitle,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 15,
-                        color: colorSchema.secondary,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              InkWell(
+              /* InkWell(
                 onTap: () {
                   print('go to forgot password');
                   context.push(ForgotPasswordScreen.routeName);
@@ -98,7 +87,7 @@ class LabelLoginRegister extends StatelessWidget {
                   fontWeight: FontWeight.w400,
                   fontSize: 15,
                 ),
-              ),
+              ), */
             ],
           ),
         )
@@ -114,14 +103,16 @@ class LogoImageName extends StatelessWidget {
   Widget build(BuildContext context) {
     final style = const TextStyle(fontSize: 18, fontWeight: FontWeight.w500);
     return Container(
-      width: 125,
+      width: 300,
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Image.asset(
           appIcon,
-          height: 100,
+          width: 150,
+          height: 120,
+          fit: BoxFit.fill,
         ),
         /* const SizedBox(width: 5), */
-        Align(
+        /* Align(
           alignment: Alignment.centerLeft,
           child: SimpleText(
             padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -136,7 +127,7 @@ class LogoImageName extends StatelessWidget {
             'Educativa',
             style: style,
           ),
-        )
+        ) */
       ]),
     );
   }

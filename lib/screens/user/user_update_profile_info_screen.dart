@@ -192,9 +192,11 @@ class UserUpdateProfileInfoScreen extends HookConsumerWidget {
                       const SizedBox(height: 20),
                       SizedBox(
                         width: double.infinity,
+                        
                         child: LoginButton(
                           borderRadius: 50,
                           /* isLoading: isLocalLoading.value, */
+                          backgroundColor: colorScheme.primary,
                           child: SimpleText(
                             "Actualizar Perfil",
                             color: Colors.white,

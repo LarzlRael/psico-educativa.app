@@ -13,6 +13,7 @@ class SignInScreen extends HookConsumerWidget {
     final isLocalLoading = useState(false);
 
     return Scaffold(
+      backgroundColor: Color(0xff2e7c78),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -20,10 +21,28 @@ class SignInScreen extends HookConsumerWidget {
             height: MediaQuery.of(context).size.height,
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const HeaderLoginRegister(
                   headerTitle: 'Iniciar sesión',
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SimpleText(
+                      'Bienvenido de nuevo!',
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    SimpleText(
+                      'Inicio de sesión con tu cuenta para continuar',
+                      color: Colors.white,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ],
                 ),
                 FormBuilder(
                   enabled: !isLocalLoading.value,
@@ -46,15 +65,32 @@ class SignInScreen extends HookConsumerWidget {
                         placeholder: 'Contraseña',
                         isPassword: true,
                       ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: SimpleText(
+                          textAlign: TextAlign.end,
+                          'Olvide mi contraseña',
+                          padding: const EdgeInsets.all(2),
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 13,
+                          onTap: () {
+                            context.push(ForgotPasswordScreen.routeName);
+                          },
+                        ),
+                      ),
                     ],
                   ),
                 ),
                 LoginButton(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                   isLoading: isLocalLoading.value,
-                  child: SimpleText("Iniciar sesión",
-                      color: Colors.white,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w800),
+                  child: SimpleText(
+                    "Iniciar sesión",
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
                   onPressed: () async {
                     final validationSuccess =
                         formKey.currentState?.validate() ?? false;
@@ -112,17 +148,19 @@ class SignInScreen extends HookConsumerWidget {
                     fontWeight: FontWeight.normal,
                     color: Colors.black87,
                   ),
-                  backGroundColor: Colors.white,
+                  backgroundColor: Colors.white,
                   iconWidget: Image.asset(
                     'assets/icons/google_icon.png',
                     width: 30,
                     height: 30,
                   ),
                 ),
-                LabelLoginRegister(
-                  title: '¿No tienes cuenta?',
-                  subtitle: 'Registrate',
-                  route: RegisterScreen.routeName,
+                Center(
+                  child: LabelLoginRegister(
+                    title: '¿No tienes cuenta?',
+                    subtitle: 'Registrate',
+                    route: RegisterScreen.routeName,
+                  ),
                 ),
               ],
             ),
