@@ -2,24 +2,28 @@ part of '../custom_widgets.dart';
 
 class HeaderLoginRegister extends StatelessWidget {
   final String headerTitle;
-
+  final EdgeInsets? margin;
   const HeaderLoginRegister({
     super.key,
     required this.headerTitle,
+    this.margin,
   });
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return Column(
-      children: [
-        LogoImageName(),
-        /* SimpleText(
-          headerTitle,
-          fontSize: 23,
-          fontWeight: FontWeight.w700,
-          padding: const EdgeInsets.only(top: 15),
-        ), */
-      ],
+    return Container(
+      margin: margin,
+      child: Column(
+        children: [
+          LogoImageName(),
+          /* SimpleText(
+            headerTitle,
+            fontSize: 23,
+            fontWeight: FontWeight.w700,
+            padding: const EdgeInsets.only(top: 15),
+          ), */
+        ],
+      ),
     );
   }
 }
@@ -27,71 +31,58 @@ class HeaderLoginRegister extends StatelessWidget {
 class LabelLoginRegister extends StatelessWidget {
   final String title;
   final String subtitle;
-  final String route;
+  final void Function()? onTap;
+  final bool isRow;
+  final double spaceBetween;
+  final EdgeInsets? margin;
   const LabelLoginRegister({
     super.key,
     required this.title,
     required this.subtitle,
-    required this.route,
+    this.onTap,
+    this.isRow = false,
+    this.spaceBetween = 0,
+    this.margin
   });
 
   @override
   Widget build(BuildContext context) {
     final colorSchema = Theme.of(context).colorScheme;
-
-    return Column(
-      children: [
-        const SizedBox(height: 5),
-        GestureDetector(
-          onTap: () => context.push(route),
-          child: Column(
-            children: [
-              /* SimpleText(
-                title,
-                /* lightThemeColor: Colors.indigo, */
-                fontWeight: FontWeight.w500,
-                fontSize: 15,
-              ),
-              SimpleText(
-                subtitle,
-                /* lightThemeColor: Colors.indigo, */
-                fontWeight: FontWeight.w500,
-                fontSize: 15,
-              ), */
-              Column(
-                children: [
-                  SimpleText(
-                    title,
-                    style: TextStyle(color: Colors.white),
+    final content = [
+      SimpleText(
+        title,
+        style: TextStyle(color: Colors.white),
+      ),
+      SizedBox(
+        width: isRow ? spaceBetween : 0,
+        height: isRow ? 0 : spaceBetween,
+      ),
+      SimpleText(
+        subtitle,
+        style: TextStyle(
+          fontWeight: FontWeight.w400,
+          fontSize: 15,
+          color: colorSchema.primary,
+        ),
+      ),
+    ];
+    return Container(
+      margin: margin,
+      child: Column(
+        children: [
+          InkWell(
+            onTap: onTap,
+            child: isRow
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: content,
+                  )
+                : Column(
+                    children: content,
                   ),
-                  SimpleText(
-                    subtitle,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 15,
-                      color: colorSchema.primary,
-                    ),
-                  ),
-                ],
-              ),
-              /* InkWell(
-                onTap: () {
-                  print('go to forgot password');
-                  context.push(ForgotPasswordScreen.routeName);
-                },
-                child: const SimpleText(
-                  'Olvide mi contraseña ',
-                  padding: EdgeInsets.all(5),
-                  /* lightThemeColor: Colors.indigo, */
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 15,
-                ),
-              ), */
-            ],
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 }

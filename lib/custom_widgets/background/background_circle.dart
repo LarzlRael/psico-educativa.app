@@ -120,20 +120,24 @@ class BottomNavigationFLoating extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<MenuCustomButton> items = [
       MenuCustomButton(
-        icon: Icons.home,
+        icon: Icons.home_outlined,
+        label: 'Inicio',
         appRoute: HomeScreen.routeName,
       ),
       MenuCustomButton(
         icon: Icons.search,
+        label: 'Buscar',
         appRoute: HomeScreen.routeName,
       ),
       MenuCustomButton(
         icon: Icons.notifications,
         appRoute: NotificationsScreen.routeName,
+        label: 'Notificaciones',
       ),
       MenuCustomButton(
-        icon: Icons.account_circle,
+        icon: Ionicons.person_outline,
         appRoute: UserProfileScreen.routeName,
+        label: 'Perfil',
       ),
     ];
 
@@ -173,11 +177,11 @@ class _FloatingMenuBackground extends StatelessWidget {
 
 class MenuCustomButton {
   final IconData icon;
-  /* final Function onPressed; */
+  final String label;
   final String appRoute;
   MenuCustomButton({
     required this.icon,
-    /* required this.onPressed, */
+    required this.label,
     required this.appRoute,
   });
 }
@@ -223,7 +227,7 @@ class _MenuItemButton extends ConsumerWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         child: Container(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           decoration: BoxDecoration(
             color: (selectedIndex == index)
                 ? colorScheme.primary
@@ -240,12 +244,10 @@ class _MenuItemButton extends ConsumerWidget {
               const SizedBox(width: 5),
               if (selectedIndex == index)
                 SimpleText(
-                  item.appRoute,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w500,
-                    color:
-                        selectedIndex == index ? Colors.white : Colors.black45,
-                  
+                  item.label,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                  color: selectedIndex == index ? Colors.white : Colors.black45,
                 ),
             ],
           ),
@@ -257,10 +259,11 @@ class _MenuItemButton extends ConsumerWidget {
 
 class BackgroundOneCircle extends StatelessWidget {
   final Widget child;
-
+  final Widget? customShapeBackground;
   const BackgroundOneCircle({
     super.key,
     required this.child,
+    this.customShapeBackground,
   });
 
   @override
@@ -270,17 +273,19 @@ class BackgroundOneCircle extends StatelessWidget {
       children: [
         // Fondo negro
         /* Container(color: Colors.black), */
-
-        // Círculo difuminado en la esquina superior izquierda
-        Positioned(
-          top: -175,
-          left: -175,
-          child: CircleBlurred(
-            blurAmount: 0,
-            radius: 275,
-            colors: [colorScheme.primary, colorScheme.primary],
-          ),
-        ),
+        customShapeBackground != null
+            ? customShapeBackground!
+            :
+            // Círculo difuminado en la esquina superior izquierda
+            Positioned(
+                top: -175,
+                left: -175,
+                child: CircleBlurred(
+                  blurAmount: 0,
+                  radius: 275,
+                  colors: [colorScheme.primary, colorScheme.primary],
+                ),
+              ),
 
         // Círculo difuminado en el centro-derecha
 

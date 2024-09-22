@@ -12,22 +12,23 @@ class SignInScreen extends HookConsumerWidget {
 
     final isLocalLoading = useState(false);
 
-    return Scaffold(
-      backgroundColor: Color(0xff2e7c78),
+    return ScaffoldWithCustomBackground(
+      color: Color(0xff2e7c78),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Container(
             height: MediaQuery.of(context).size.height,
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              /* mainAxisAlignment: MainAxisAlignment.spaceEvenly, */
               children: [
                 const HeaderLoginRegister(
+                  margin: EdgeInsets.symmetric(vertical: 40),
                   headerTitle: 'Iniciar sesión',
                 ),
-                Column(
+                const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SimpleText(
@@ -44,12 +45,14 @@ class SignInScreen extends HookConsumerWidget {
                     ),
                   ],
                 ),
+                const SizedBox(height: 25),
                 FormBuilder(
                   enabled: !isLocalLoading.value,
                   key: formKey,
                   child: Column(
                     children: [
                       CustomFormBuilderTextField(
+                        borderRadius: 50,
                         fieldName: 'username',
                         leadingIcon: FontAwesomeIcons.at,
                         keyboardType: TextInputType.emailAddress,
@@ -60,6 +63,7 @@ class SignInScreen extends HookConsumerWidget {
                       ),
                       /* dont user const, BUG 🐛 */
                       CustomFormBuilderTextField(
+                        borderRadius: 50,
                         fieldName: 'password',
                         leadingIcon: FontAwesomeIcons.lock,
                         placeholder: 'Contraseña',
@@ -69,13 +73,15 @@ class SignInScreen extends HookConsumerWidget {
                         alignment: Alignment.centerRight,
                         child: SimpleText(
                           textAlign: TextAlign.end,
-                          'Olvide mi contraseña',
-                          padding: const EdgeInsets.all(2),
+                          '¿Olvidaste tu contraseña?',
+                          padding: const EdgeInsets.only(top: 5, bottom: 15),
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
-                          fontSize: 13,
+                          fontSize: 12,
                           onTap: () {
-                            context.push(ForgotPasswordScreen.routeName);
+                            context.push(
+                              ForgotPasswordScreen.routeName,
+                            );
                           },
                         ),
                       ),
@@ -84,6 +90,7 @@ class SignInScreen extends HookConsumerWidget {
                 ),
                 LoginButton(
                   backgroundColor: Theme.of(context).colorScheme.primary,
+                  borderRadius: 50,
                   isLoading: isLocalLoading.value,
                   child: SimpleText(
                     "Iniciar sesión",
@@ -129,11 +136,7 @@ class SignInScreen extends HookConsumerWidget {
                     }
                   },
                 ),
-                const SimpleText(
-                  'O',
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  color: Colors.grey,
-                ),
+                SizedBox(height: 20),
                 LoginButton(
                   spacing: 20,
                   /* TODO disable google button while is loading */
@@ -157,9 +160,10 @@ class SignInScreen extends HookConsumerWidget {
                 ),
                 Center(
                   child: LabelLoginRegister(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
                     title: '¿No tienes cuenta?',
                     subtitle: 'Registrate',
-                    route: RegisterScreen.routeName,
+                    onTap: ()=> context.push(RegisterScreen.routeName),
                   ),
                 ),
               ],

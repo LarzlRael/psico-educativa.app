@@ -76,29 +76,40 @@ class UserUpdateProfileInfoScreen extends HookConsumerWidget {
     }
 
     return ScaffoldWithBackground(
+      customShapeBackground: HeaderBorderRounded(
+        color: Color(0xffF3AF4A),
+        height: 175,
+        contentWidget: ProfileImageEdit(
+          radius: 50,
+          iconCameraSize: 20,
+          onImageSelected: (filePath) async {
+            final resp = await authProviderN.updateProfileImage(filePath);
+          },
+          user: userState!,
+        ),
+      ),
       child: SizedBox.expand(
         child: Container(
           margin: EdgeInsets.only(
-              left: 15, right: 15, top: MediaQuery.of(context).padding.top),
+            left: 15,
+            right: 15,
+            top: MediaQuery.of(context).padding.top,
+          ),
           child: SingleChildScrollView(
             child: Column(
               children: [
+                SizedBox(height: 15),
                 Row(
                   /* mainAxisAlignment: MainAxisAlignment.end, */
                   children: [
-                    CircleAvatar(
-                      radius: 25,
-                      backgroundColor: colorScheme.secondary,
-                      child: IconButton(
-                        icon: const Icon(FontAwesomeIcons.chevronLeft),
-                        onPressed: context.pop,
-                      ),
+                    BackSquareIcon(
+                      size: 35,
                     ),
                     SizedBox(width: 10),
                     SimpleText(
                       'Perfil',
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
                     ),
                     const Spacer(),
                     /* IconButton(
@@ -117,15 +128,7 @@ class UserUpdateProfileInfoScreen extends HookConsumerWidget {
                       ), */
                   ],
                 ),
-                ProfileImageEdit(
-                  radius: 50,
-                  iconCameraSize: 20,
-                  onImageSelected: (filePath) async {
-                    final resp =
-                        await authProviderN.updateProfileImage(filePath);
-                  },
-                  user: userState!,
-                ),
+                SizedBox(height: 125),
                 FormBuilder(
                   initialValue: initialValues,
                   enabled: !isLocalLoading.value,
@@ -133,6 +136,8 @@ class UserUpdateProfileInfoScreen extends HookConsumerWidget {
                   child: Column(
                     children: [
                       CustomFormBuilderTextField(
+                        backgroundColor: Colors.white,
+                        borderRadius: 50,
                         label: 'Nombre/s',
                         fieldName: 'firstName',
                         trailingIcon: const Icon(
@@ -147,6 +152,8 @@ class UserUpdateProfileInfoScreen extends HookConsumerWidget {
                       ),
                       /* dont user const, BUG 🐛 */
                       CustomFormBuilderTextField(
+                        backgroundColor: Colors.white,
+                        borderRadius: 50,
                         label: 'Apellido/s',
                         fieldName: 'lastName',
                         trailingIcon: Icon(
@@ -164,6 +171,8 @@ class UserUpdateProfileInfoScreen extends HookConsumerWidget {
                         ),
                         label: 'Telefono',
                         keyboardType: TextInputType.phone,
+                        backgroundColor: Colors.white,
+                        borderRadius: 50,
                       ),
                       CustomFormBuilderTextField(
                         fieldName: 'location',
@@ -173,6 +182,8 @@ class UserUpdateProfileInfoScreen extends HookConsumerWidget {
                           size: size,
                         ),
                         label: 'Direccion',
+                        backgroundColor: Colors.white,
+                        borderRadius: 50,
                       ),
                       CustomFormBuilderTextField(
                         fieldName: 'shippingAddress',
@@ -188,11 +199,12 @@ class UserUpdateProfileInfoScreen extends HookConsumerWidget {
                           ),
                         ),
                         label: 'Direccion de envio',
+                        backgroundColor: Colors.white,
+                        borderRadius: 50,
                       ),
                       const SizedBox(height: 20),
                       SizedBox(
                         width: double.infinity,
-                        
                         child: LoginButton(
                           borderRadius: 50,
                           /* isLoading: isLocalLoading.value, */
@@ -203,6 +215,7 @@ class UserUpdateProfileInfoScreen extends HookConsumerWidget {
                           ),
                           onPressed: () async {
                             /* await onSubmit(); */
+                            await confirmatedDialog(context);
                           },
                         ),
                       ),

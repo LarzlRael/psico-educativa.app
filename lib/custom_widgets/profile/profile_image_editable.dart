@@ -6,7 +6,6 @@ class ProfileImageEdit extends HookWidget {
   final double radius;
   final double iconCameraSize;
   final Function(String filePath) onImageSelected;
-  
 
   const ProfileImageEdit({
     super.key,
@@ -29,9 +28,23 @@ class ProfileImageEdit extends HookWidget {
       onImageSelected(pickedFile);
     }
 
-    return SizedBox(
+    return Container(
       width: radius * 2,
       height: radius * 2,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: Colors.white,
+          width: 3,
+        ),
+        /* boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            offset: const Offset(0, 2),
+            blurRadius: 6,
+          ),
+        ], */
+      ),
       child: Stack(
         children: [
           UserAvatar(
@@ -39,22 +52,23 @@ class ProfileImageEdit extends HookWidget {
             firstName: user.firstName,
             lastName: user.lastName,
             radius: radius,
-            customWidget:
-                !isValidateString(user.profileImageUrl)  && selectedImage.value == null
-                    ? null
-                    : InstaImageViewer(
-                      child: selectedImage.value == null
-                          ? FadeInImage(
-                              placeholder: const AssetImage(appIcon),
-                              image: NetworkImage(
-                                user.profileImageUrl!,
-                              ),
-                            )
-                          : Image.file(
-                              selectedImage.value!,
-                              fit: BoxFit.cover,
+            customWidget: !isValidateString(user.profileImageUrl) &&
+                    selectedImage.value == null
+                ? null
+                : InstaImageViewer(
+                    child: selectedImage.value == null
+                        ? FadeInImage(
+                            fit: BoxFit.cover,
+                            placeholder: const AssetImage(appIcon),
+                            image: NetworkImage(
+                              user.profileImageUrl!,
                             ),
-                    ),
+                          )
+                        : Image.file(
+                            selectedImage.value!,
+                            fit: BoxFit.cover,
+                          ),
+                  ),
           ),
           Align(
             alignment: Alignment.bottomRight,
@@ -67,7 +81,7 @@ class ProfileImageEdit extends HookWidget {
                     },
                     child: CircleAvatar(
                       backgroundColor: Colors.white,
-                      radius: iconCameraSize-5,
+                      radius: iconCameraSize - 5,
                       child: Icon(
                         Icons.camera_alt,
                         size: iconCameraSize,

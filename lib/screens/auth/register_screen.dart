@@ -10,8 +10,8 @@ class RegisterScreen extends HookConsumerWidget {
     final authServiceNotifier = ref.read(authNotifierProvider.notifier);
     final isLocalLoading = useState<bool>(false);
     final colorScheme = Theme.of(context).colorScheme;
-    return Scaffold(
-      backgroundColor: Color(0xff2e7c78),
+    return ScaffoldWithCustomBackground(
+      color: Color(0xff2e7c78),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -20,23 +20,22 @@ class RegisterScreen extends HookConsumerWidget {
             padding: const EdgeInsets.only(
               bottom: 15,
               top: 15,
-              left: 15.0,
-              right: 15.0,
+              left: 30,
+              right: 30,
             ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const HeaderLoginRegister(
+                  margin: EdgeInsets.symmetric(vertical: 30),
                   headerTitle: 'Registro',
                 ),
-                Center(
-                  child: SimpleText(
-                    'Crea una cuenta',
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
+                SimpleText(
+                  'Crea una cuenta',
+                  color: Colors.white,
+                  fontSize: 18,
+                  padding: const EdgeInsets.only(top: 10),
+                  fontWeight: FontWeight.w500,
                 ),
                 FormBuilder(
                   key: _formKey,
@@ -112,7 +111,9 @@ class RegisterScreen extends HookConsumerWidget {
                 ),
                 Align(
                   alignment: Alignment.center,
+                  
                   child: LoginButton(
+                    margin: const EdgeInsets.symmetric(vertical: 15),
                     spacing: 20,
                     onPressed: () {
                       /* authProviderN.loginWithGoogle().then((value) {
@@ -137,7 +138,7 @@ class RegisterScreen extends HookConsumerWidget {
                   child: LabelLoginRegister(
                     title: '¿Ya tienes cuenta?',
                     subtitle: 'Iniciar sesión',
-                    route: SignInScreen.routeName,
+                    onTap: ()=> context.push(SignInScreen.routeName),
                   ),
                 ),
               ],

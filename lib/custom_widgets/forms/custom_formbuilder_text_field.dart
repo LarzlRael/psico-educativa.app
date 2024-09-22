@@ -11,9 +11,11 @@ class CustomFormBuilderTextField extends HookWidget {
   final EdgeInsetsGeometry? margin;
   final String? label;
   final double borderRadius;
+  final Color? backgroundColor;
   const CustomFormBuilderTextField({
     super.key,
     required this.fieldName,
+    this.backgroundColor,
     this.placeholder,
     this.leadingIcon,
     this.trailingIcon,
@@ -40,13 +42,14 @@ class CustomFormBuilderTextField extends HookWidget {
                 alignment: Alignment.centerLeft,
                 child: SimpleText(
                   label!,
-                  color: Colors.grey,
+                  /* color: Colors.grey, */
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
                 ),
               ),
             ),
           Card(
+            color: backgroundColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(borderRadius),
             ),

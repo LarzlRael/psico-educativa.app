@@ -39,36 +39,65 @@ class VerificationCodeScreen extends HookConsumerWidget {
     }
 
     return Scaffold(
+      backgroundColor: Color(0xff2e7c78),
       appBar: AppBar(
-        title: const Text('Verification Code'),
+        title: const SimpleText('Codigo de verificación',
+            color: Colors.white, fontSize: 20),
+        backgroundColor: Color(0xff2e7c78),
       ),
-      body: Center(
-        child: VerificationCode(
-          textStyle: TextStyle(fontSize: 20.0, color: Colors.red[900]),
-          keyboardType: TextInputType.number,
-          underlineColor: Colors
-              .amber, // If this is null it will use primaryColor: Colors.red from Theme
-          length: 4,
-          cursorColor:
-              Colors.blue, // If this is null it will default to the ambient
-          // clearAll is NOT required, you can delete it
-          // takes any widget, so you can implement your design
-          clearAll: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'clear all',
-              style: TextStyle(
-                  fontSize: 14.0,
-                  decoration: TextDecoration.underline,
-                  color: Colors.blue[700]),
-            ),
-          ),
-          onCompleted: handleCodeVerification,
-          onEditing: (bool value) {
-            onEditing.value = value;
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SimpleText(
+                'Ingresa el código de verificación que se le envio a su correo electronico',
+                color: Colors.white,
+                fontSize: 17,
+                fontWeight: FontWeight.w400),
+            const SizedBox(height: 50),
+            VerificationCode(
+              fullBorder: true,
+              fillColor: Colors.white,
+              itemSize: 65,
+              textStyle: const TextStyle(fontSize: 25.0, color: Colors.black),
+              keyboardType: TextInputType.number,
+              underlineColor: Colors
+                  .amber, // If this is null it will use primaryColor: Colors.red from Theme
+              length: 4,
 
-            if (!onEditing.value) FocusScope.of(context).unfocus();
-          },
+              // clearAll is NOT required, you can delete it
+              // takes any widget, so you can implement your design
+              /* clearAll: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'clear all',
+                  style: TextStyle(
+                      fontSize: 14.0,
+                      decoration: TextDecoration.underline,
+                      color: Colors.blue[700]),
+                ),
+              ), */
+              onCompleted: handleCodeVerification,
+              onEditing: (bool value) {
+                onEditing.value = value;
+
+                if (!onEditing.value) FocusScope.of(context).unfocus();
+              },
+            ),
+            const SizedBox(height: 20),
+            Align(
+              alignment: Alignment.center,
+              child: LabelLoginRegister(
+                  title: '¿No recibiste el codigo aun?',
+                  subtitle: 'Reenviar',
+                  isRow: true,
+                  spaceBetween: 5,
+                  onTap: () {
+                    print('Reenviar codigo');
+                  }),
+            ),
+          ],
         ),
       ),
     );

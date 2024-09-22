@@ -14,6 +14,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_builder_file_picker/form_builder_file_picker.dart';
 import 'package:go_router/go_router.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:psico_educativa_app/config/environment.dart';
 import 'package:psico_educativa_app/constants/app_info.dart';
 import 'package:psico_educativa_app/models/models.dart';
@@ -54,6 +55,7 @@ part 'profile/profile_image_editable.dart';
 
 part 'background/background_circle.dart';
 part 'background/scaffold_with_background.dart';
+part 'background/scaffold_with_custom_background.dart';
 
 part 'text/header_login_register.dart';
 part 'tables/custom_data_row.dart';
@@ -61,6 +63,9 @@ part 'loadings/shimer_loading.dart';
 part 'loadings/skeleton_loading.dart';
 part 'menus/menu_profile_option.dart';
 part 'ui/back_icon.dart';
+part 'ui/loadings/loading_bar_animation_widget.dart';
+part 'ui/loadings/loading_bar_with_label.dart';
 
 part 'dialogs/loading_dialog.dart';
 part 'dialogs/confirmation_dialog.dart';
+part 'dialogs/confirmated_dialog.dart';

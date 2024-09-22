@@ -143,19 +143,8 @@ class MapFindLocationScreen extends HookConsumerWidget {
       ), */
       body: SafeArea(
         child: isLoading.value
-            ? Center(
-                child: Container(
-                    width: 250,
-                    height: 250,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      /* color: Colors.white, */
-                    ),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.asset(appIcon))),
-              )
-            : Stack(
+            ? LoadingBarWithLabel(label: 'Cargando Mapa',)
+            :  Stack(
                 children: [
                   GoogleMap(
                     mapType: MapType.normal,
@@ -202,16 +191,12 @@ class MapFindLocationScreen extends HookConsumerWidget {
                     child: Container(
                       /* color: Colors.red, */
                       width: double.infinity,
-                      height: kToolbarHeight,
+                      height: MediaQuery.of(context).size.height * 0.1,
                       child: Row(
                         children: [
-                          IconButton(
-                            onPressed: () {
-                              context.pop();
-                            },
-                            icon: BackIcon(
-                              size: 40,
-                            ),
+                          SizedBox(width: 10),
+                          BackSquareIcon(
+                            size: 40,
                           ),
                           SimpleText(
                             padding: const EdgeInsets.only(left: 10),
@@ -241,7 +226,9 @@ class MapFindLocationScreen extends HookConsumerWidget {
                   )
                 ],
               ),
+            
       ),
     );
   }
 }
+

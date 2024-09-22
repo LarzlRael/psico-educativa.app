@@ -33,14 +33,14 @@ class MenuProfileOption extends StatelessWidget {
           title: SimpleText(
             title,
             fontSize: 16,
-            color: textColor ?? Colors.black87,
+            color: textColor ?? Color(0xff0E1B1A),
             fontWeight: FontWeight.w500,
           ),
           trailing: trailingWidget ??
               const Icon(
                 Icons.arrow_forward_ios,
                 size: 15,
-                color: Colors.black87,
+                color: Color(0xff0E1B1A),
               ),
         ),
       ),

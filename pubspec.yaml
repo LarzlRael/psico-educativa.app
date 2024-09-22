@@ -69,16 +69,16 @@ dependencies:
 
 flutter_native_splash:
   color: '#2e7c78'
-  image: assets/logo-psicoeducativa.png
+  image: assets/logos/logo_full.png
   #branding: assets/branding-development.png
   color_dark: '#2e7c78'
-  image_dark: assets/logo-psicoeducativa.png
+  image_dark: assets/logos/logo_full.png
   #branding_dark: assets/branding-development.png
   android_12:
-    image: assets/logo-psicoeducativa.png
-    icon_background_color: '#ffffff'
-    image_dark: assets/logo-psicoeducativa.png
-    icon_background_color_dark: '#121212'
+    image: assets/logos/logo_full.png
+    icon_background_color: '#2e7c78'
+    image_dark: assets/logos/logo_full.png
+    icon_background_color_dark: '#2e7c78'
 
   web: false
 

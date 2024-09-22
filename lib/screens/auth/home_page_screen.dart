@@ -196,9 +196,15 @@ class SquareAvatar extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+        width: size,
+        height: size,
+        /* padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7), */
         decoration: BoxDecoration(
-          color: colorScheme.secondary,
+          color: 
+          user!.profileImageUrl == null
+              ? colorScheme.secondary.withOpacity(0.4)
+              :
+          null,
           borderRadius: BorderRadius.circular(10),
         ),
         child: ClipRRect(

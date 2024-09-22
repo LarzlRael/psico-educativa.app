@@ -8,8 +8,8 @@ class LoginButton extends StatelessWidget {
   final Widget? iconWidget;
 
   final bool isLoading;
-  final double marginVertical;
-  final double marginHorizontal;
+  final EdgeInsetsGeometry? margin;
+  
 
   final double spacing;
   final bool disabled;
@@ -22,8 +22,7 @@ class LoginButton extends StatelessWidget {
     this.backgroundColor,
     this.isLoading = false,
     this.iconWidget,
-    this.marginVertical = 5,
-    this.marginHorizontal = 0,
+    this.margin,
     this.borderRadius = 15,
     this.spacing = 5,
     this.disabled = false,
@@ -35,8 +34,7 @@ class LoginButton extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.symmetric(
-          vertical: marginVertical, horizontal: marginHorizontal),
+      margin: margin,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: color,

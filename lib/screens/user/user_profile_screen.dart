@@ -13,6 +13,50 @@ class UserProfileScreen extends HookConsumerWidget {
     final authProviderN = ref.read(authNotifierProvider.notifier);
     final authProviderS = ref.watch(authNotifierProvider);
     final changeMenuIndex = ref.read(menuProvider.notifier);
+
+    final profileOptions = [
+      const MenuProfileOption(
+        title: "Cursos",
+        leadingWidget: const Icon(FontAwesomeIcons.book),
+      ),
+      Divider(color: Colors.grey[100]),
+      const MenuProfileOption(
+        title: "Certificados",
+        leadingWidget: Icon(FontAwesomeIcons.certificate),
+      ),
+      MenuProfileOption(
+        leadingWidget: Icon(Icons.person),
+        title: "Perfil",
+        onTap: () => context.push(UserUpdateProfileInfoScreen.routeName),
+      ),
+      const MenuProfileOption(
+        leadingWidget: Icon(Icons.settings),
+        title: "Configuraciones",
+      ),
+      MenuProfileOption(
+        trailingWidget: const SizedBox(),
+        textColor: Colors.red,
+        leadingWidget: Icon(Icons.logout, color: Colors.red),
+        title: "Cerrar sesión",
+        onTap: () async {
+          await showCustomConfirmDialog(
+            context,
+            title: 'Cerrar sesión',
+            content: '¿Estás seguro de que quieres cerrar sesión?',
+            acceptText: 'Ok',
+            onAccept: () {
+              authProviderN.logout().then((value) {
+                if (value) {
+                  changeMenuIndex.selectItem(0);
+                  context.go(SignInScreen.routeName);
+                }
+              });
+            },
+          );
+        },
+      )
+    ];
+
     return ScaffoldWithBackground(
       /* appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -70,7 +114,7 @@ class UserProfileScreen extends HookConsumerWidget {
               Row(
                 children: [
                   UserAvatar(
-                    radius: 40,
+                    radius: 30,
                     username: authProviderS.user!.username,
                     firstName: authProviderS.user!.firstName,
                     lastName: authProviderS.user!.lastName,
@@ -90,69 +134,34 @@ class UserProfileScreen extends HookConsumerWidget {
                     children: [
                       SimpleText(
                         authProviderS.user!.username.toCapitalize(),
-                        fontSize: 27,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
                         /* color: colorScheme.secondary, */
                         /* padding: const EdgeInsets.only(top: 10, bottom: 5), */
                       ),
                       if (authProviderS.user!.email != null)
-                        SimpleText(authProviderS.user!.email, fontSize: 14),
+                        SimpleText(authProviderS.user!.email, fontSize: 13),
                       if (authProviderS.user!.firstName != null)
                         SimpleText(
-                            fontSize: 14,
+                            fontSize: 13,
                             '${authProviderS.user!.firstName!} ${authProviderS.user!.lastName!}'
                                 .toTitleCase()),
                     ],
                   ),
                   Spacer(),
-                  IconButton(
-                    icon: const Icon(FontAwesomeIcons.penToSquare),
-                    onPressed: () => context.push(UserUpdateProfileInfoScreen.routeName),
+                  CircleAvatar(
+                    radius: 18,
+                    backgroundColor: Colors.white,
+                    child: IconButton(
+                      icon: Icon(FontAwesomeIcons.pencil, size: 16),
+                      onPressed: () =>
+                          context.push(UserUpdateProfileInfoScreen.routeName),
+                    ),
                   ),
                 ],
               ),
               const SizedBox(height: 10),
-              const MenuProfileOption(
-                title: "Cursos",
-                leadingWidget: const Icon(FontAwesomeIcons.book),
-              ),
-              Divider(color: Colors.grey[100]),
-              const MenuProfileOption(
-                title: "Certificados",
-                leadingWidget: Icon(FontAwesomeIcons.certificate),
-              ),
-              MenuProfileOption(
-                leadingWidget: Icon(Icons.person),
-                title: "Perfil",
-                onTap: () =>
-                    context.push(UserUpdateProfileInfoScreen.routeName),
-              ),
-              const MenuProfileOption(
-                leadingWidget: Icon(Icons.settings),
-                title: "Configuraciones",
-              ),
-              MenuProfileOption(
-                trailingWidget: const SizedBox(),
-                textColor: Colors.red,
-                leadingWidget: Icon(Icons.logout, color: Colors.red),
-                title: "Cerrar sesión",
-                onTap: () async {
-                  await showCustomConfirmDialog(
-                    context,
-                    title: 'Cerrar sesión',
-                    content: '¿Estás seguro de que quieres cerrar sesión?',
-                    acceptText: 'Ok',
-                    onAccept: () {
-                      authProviderN.logout().then((value) {
-                        if (value) {
-                          changeMenuIndex.selectItem(0);
-                          context.go(SignInScreen.routeName);
-                        }
-                      });
-                    },
-                  );
-                },
-              ),
+              ...profileOptions
             ],
           ),
         ),

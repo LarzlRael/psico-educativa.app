@@ -14,7 +14,8 @@ class ForgotPasswordScreen extends HookConsumerWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final authProviderN = ref.read(authNotifierProvider.notifier);
     final formKey = useMemoized(() => GlobalKey<FormBuilderState>());
-    return Scaffold(
+    return ScaffoldWithCustomBackground(
+        color: Color(0xff2e7c78),
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(
@@ -30,7 +31,6 @@ class ForgotPasswordScreen extends HookConsumerWidget {
             fontSize: 16,
           ),
         ),
-        backgroundColor: Color(0xff2e7c78),
         body: SizedBox.expand(
             child: SingleChildScrollView(
           child: Container(
@@ -39,20 +39,23 @@ class ForgotPasswordScreen extends HookConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(
-                    Ionicons.mail_open_outline,
-                    size: 150,
-                    color: colorScheme.secondary,
+                  Center(
+                    child: Icon(
+                      Ionicons.mail_open_outline,
+                      size: 150,
+                      color: colorScheme.primary,
+                    ),
                   ),
                   const SimpleText('Recuperación de contraseña',
-                      fontSize: 22,
-                      fontWeight: FontWeight.w500,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
                       color: Colors.white),
                   const SimpleText(
                     'Por favor ingrese su correo electronico. Recibiras un enlace para crear una nueva contraseña',
                     padding: EdgeInsets.symmetric(vertical: 15),
                     color: Colors.white,
-                    fontSize: 15,
+                    fontWeight: FontWeight.w300,
+                    fontSize: 14,
                   ),
                   FormBuilder(
                     enabled: !isLocalLoading.value,
@@ -75,6 +78,7 @@ class ForgotPasswordScreen extends HookConsumerWidget {
                           ),
                         ),
                         LoginButton(
+                          margin: const EdgeInsets.symmetric(vertical: 10),
                           isLoading: isLocalLoading.value,
                           backgroundColor: colorScheme.primary,
                           child: SimpleText(

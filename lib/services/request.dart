@@ -29,21 +29,30 @@ class Request {
 
     String requestBody = body != null ? jsonEncode(body) : '{}';
     late http.Response res;
-    switch (method) {
-      case RequestType.get:
-        res = await http.get(uri);
-        break;
-      case RequestType.post:
-        res = await http.post(uri, body: requestBody, headers: headers);
-        break;
-      case RequestType.put:
-        res = await http.put(uri, body: requestBody, headers: headers);
-        break;
-      case RequestType.delete:
-        res = await http.delete(uri);
+    try {
+      switch (method) {
+        case RequestType.get:
+          res = await http.get(uri);
+          break;
+        case RequestType.post:
+          res = await http.post(uri, body: requestBody, headers: headers);
+          break;
+        case RequestType.put:
+          res = await http.put(uri, body: requestBody, headers: headers);
+          break;
+        case RequestType.delete:
+          res = await http.delete(uri);
+      }
+      inspect(res);
+      return res;
+    } on HttpException catch (e) {
+      print(e);
+      return null;
+    } catch (e) {
+      // Manejo genérico de otros posibles errores
+      print('Error al realizar la solicitud: $e');
+      return null;
     }
-    inspect(res);
-    return res;
   }
 
   static Future<http.Response?> sendAuthRequest(

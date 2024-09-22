@@ -24,8 +24,9 @@ class CourseEnrollmentScreen extends HookConsumerWidget {
 
     return ScaffoldWithBackground(
         appBar: AppBar(
-          leading: BackIcon(
-            size: 20,
+          backgroundColor: colorScheme.primary,
+          leading: BackSquareIcon(
+            size: 15,
           ),
           actions: [
             IconButton(
@@ -495,7 +496,7 @@ class EnrollButton extends StatelessWidget {
                       color: Colors.white,
                     ),
                     borderRadius: 5,
-                    backgroundColor: colorScheme.primary,
+                    backgroundColor: colorScheme.secondary,
                     onPressed: onPressed,
                   ),
                 ),
