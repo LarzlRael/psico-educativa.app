@@ -143,7 +143,7 @@ class MapFindLocationScreen extends HookConsumerWidget {
       ), */
       body: SafeArea(
         child: isLoading.value
-            ? LoadingBarWithLabel(label: 'Cargando Mapa',)
+            ? const LoadingBarWithLabel(label: 'Cargando mapa',)
             :  Stack(
                 children: [
                   GoogleMap(

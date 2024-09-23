@@ -9,16 +9,29 @@ class LoadingBarWithLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SimpleText(label,
-            style: Theme.of(context).textTheme.displayMedium
-            /* fontSize: 20, */
-            /* color: Colors.black, */
+    return SizedBox.expand(
+      
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SimpleText(label,
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+              /* color: Colors.black, */
+              ),
+          SizedBox(height: 20),
+          /* LoadingAnimationWidget(), */
+          SizedBox(
+            width: 200,
+            height: 10,
+            child: LinearProgressIndicator(
+              minHeight: 10,
+              borderRadius: BorderRadius.circular(100),
             ),
-        SizedBox(height: 20),
-        LoadingAnimationWidget(),
-      ],
+          ),
+        ],
+      ),
     );
   }
 }

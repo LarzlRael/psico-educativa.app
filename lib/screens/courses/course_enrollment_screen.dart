@@ -41,7 +41,7 @@ class CourseEnrollmentScreen extends HookConsumerWidget {
         ),
         child: SizedBox.expand(
           child: Container(
-            margin: const EdgeInsets.only(top: kToolbarHeight),
+            
             child: Stack(
               children: [
                 /* TODO Improve this part of the code */
@@ -266,25 +266,27 @@ class CourseEnrollmentScreen extends HookConsumerWidget {
                           ],
                         ),
                       ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: EnrollButton(
-                    isLoading: courseState.isLoading,
-                    priceAndCurrency:
-                        'Bs. ${courseState.courseSelected?.coursePrice}',
-                    onPressed: () {
-                      /* if (userInfoState.user?.isAuthenticated == true) {
-                        context.push(
-                          PaymentScreen.routeName,
-                          arguments: PaymentScreenArguments(
-                            course: courseState.courseSelected!,
-                          ),
-                        );
-                      } else {
-                        context.push(LoginScreen.routeName);
-                      } */
-                    },
-                  
+                SlideInUp(
+                  duration: const Duration(milliseconds: 750),
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: EnrollButton(
+                      isLoading: courseState.isLoading,
+                      priceAndCurrency:
+                          'Bs. ${courseState.courseSelected?.coursePrice}',
+                      onPressed: () {
+                        /* if (userInfoState.user?.isAuthenticated == true) {
+                          context.push(
+                            PaymentScreen.routeName,
+                            arguments: PaymentScreenArguments(
+                              course: courseState.courseSelected!,
+                            ),
+                          );
+                        } else {
+                          context.push(LoginScreen.routeName);
+                        } */
+                      },
+                    ),
                   ),
                 )
               ],
@@ -458,10 +460,7 @@ class EnrollButton extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return isLoading
-        ? const ShimmerWidget(
-            margin: EdgeInsets.symmetric(vertical: 10),
-            height: 50,
-            shape: ShimmerShape.rounded)
+        ? const SizedBox()
         : Container(
             width: double.infinity,
             height: height,

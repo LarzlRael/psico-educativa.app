@@ -64,7 +64,7 @@ class HomeScreenItem extends HookConsumerWidget {
                     ),
                     Spacer(),
                     SquareAvatar(
-                      size: 60,
+                      size: 50,
                       user: authProviderS.user,
                       onTap: () =>
                           ref.read(menuProvider.notifier).selectItem(3),
@@ -215,6 +215,7 @@ class SquareAvatar extends StatelessWidget {
                   image: NetworkImage(user!.profileImageUrl!),
                   width: size,
                   height: size,
+                  fit: BoxFit.fill,
                 )
               : SimpleText(
                   fontSize: 20,
